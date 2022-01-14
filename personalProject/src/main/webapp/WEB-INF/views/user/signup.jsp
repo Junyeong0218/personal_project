@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -6,8 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>캘린더 관리</title>
-    <link href="../../../static/css/layout.css" rel="stylesheet" type="text/css">
-    <link href="../../../static/css/signup.css" rel="stylesheet" type="text/css">
+    <link href="/css/layout2.css" rel="stylesheet" type="text/css">
+    <link href="/css/signup.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -60,7 +62,7 @@
             </div>
         </main>
     </div>
-    <script src="../../../static/js/background_control.js"></script>
+    <script src="/js/background_control.js"></script>
 </body>
 
 </html>

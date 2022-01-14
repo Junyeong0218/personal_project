@@ -30,7 +30,7 @@ main {
 h1 {
     position: absolute;
     top: -80px;
-    left: 80px;
+    left: 120px;
     text-align: center;
     color: white;
     z-index: 1;
@@ -43,6 +43,7 @@ h1 {
 form > div{
     display: flex;
     flex-direction: column;
+    margin-bottom: 10px;
 }
 
 label {
@@ -75,14 +76,40 @@ label > input, label > button {
     font-weight: bold;
 }
 
-#loginBtn > button, #loginBtn {
+label > input {
+    border-left: 1px solid white;
+    padding-left: 10px;
+}
+
+#backtoBtn > button, #backtoBtn,
+#submitBtn > button, #submitBtn {
     justify-content: center;
     cursor: pointer;
 }
 
-#backtoBtn > button, #backtoBtn {
-    justify-content: center;
-    cursor: pointer;
+label > input:focus {
+    outline:none;
+}
+
+.question {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 60px;
+}
+
+.question > * {
+}
+
+.question > span {
+    margin-top: 7px;
+}
+
+.question > select {
+    margin: 5px 10px 10px;
+    width: 320px;
+    border: none;
+    border-radius: 5px;
 }
 
 .to-hidden {
@@ -93,32 +120,6 @@ label > input, label > button {
 .to-show {
     animation: fadeIn 1.5s;
     -webkit-animation: fadeIn 1.5s;
-}
-
-.go-up {
-    animation: goUp 1.5s;
-    -webkit-animation: goUp 1.5s;
-}
-
-.go-down {
-    animation: goDown 1.5s;
-    -webkit-animation: goDown 1.5s;
-}
-
-@-webkit-keyframes goUp {
-    from{
-        top: -80px;
-    } to {
-        top: -122px;
-    }
-}
-
-@-webkit-keyframes goDown {
-    from{
-        top: -80px;
-    } to {
-        top: -40px;
-    }
 }
 
 @-webkit-keyframes fadeIn {

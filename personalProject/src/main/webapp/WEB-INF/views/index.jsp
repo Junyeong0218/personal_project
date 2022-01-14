@@ -1,29 +1,56 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>д╤╦╟╢У ╟Э╦╝</title>
-    <link href="../../static/css/layout.css" rel="stylesheet" type="text/css">
+    <title>Л╨≤К╕╟К█■ Й╢─К╕╛</title>
+    <link href="/css/index.css" rel="stylesheet" type="text/css">
+    <link href="/css/layout2.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <div id="container">
 
         <main>
-            <h1>х╞©╣гу╢о╢ы.</h1>
-            <div>
-                <button>
-                    ╥н╠вюн
-                </button>
+            <h1 id="welcome" class="first_position">М≥≤Л≤│М∙╘К▀┬К▀╓.</h1>
+            <div id="btns">
+                <div class="btn">
+                    <button onclick="toSignin()">
+                        К║°Й╥╦Л²╦
+                    </button>
+                </div>
+                <a href="/user/signup">
+	                <div class="btn">
+	                    <button>М ▄Л⌡░Й╟─Л·┘</button>
+	                </div>
+	            </a>
             </div>
-            <div>
-                <button>
-                    х╦©Ь╟║ют
-                </button>
+
+            <div id="login-form" class="hidden">
+                <form action="" method="post">
+                    <div>
+                        <label>
+                            <span>Л∙└Л²╢К■■</span>
+                            <input type="text" name="username" id="username">
+                        </label>
+                        <label>
+                            <span>К╧└К╟─К╡┬М≤╦</span>
+                            <input type="password" name="password" id="password">
+                        </label>
+                        <label id="loginBtn">
+                            <button type="submit">К║°Й╥╦Л²╦</button>
+                        </label>
+                        <label id="backtoBtn">
+                            <button type="button" onclick="goToSelect()">К▓╓К║°Й╟─Й╦╟</button>
+                        </label>
+                    </div>
+                </form>
             </div>
+
         </main>
 
         <footer>
@@ -31,6 +58,8 @@
 
         </footer>
     </div>
+    <script src="/js/index.js"></script>
+    <script src="/js/background_control.js"></script>
 </body>
 
 </html>
