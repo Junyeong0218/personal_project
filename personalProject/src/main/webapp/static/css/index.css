@@ -75,6 +75,15 @@ label > input, label > button {
     font-weight: bold;
 }
 
+label > input {
+    padding-left: 10px;
+    border-left: 1px solid white;
+}
+
+label > input:focus {
+    outline: none;
+}
+
 #loginBtn > button, #loginBtn {
     justify-content: center;
     cursor: pointer;

@@ -12,8 +12,8 @@
 
 <body>
     <div id="container">
-        <main>
-            <h1>회원가입</h1>
+        <main class="hidden">
+            <h1 id="signup-title">회원가입</h1>
             <div>
                 <form action="" method="post" class="signup-form">
                     <div>
@@ -53,7 +53,7 @@
                             <button type="submit">가입하기</button>
                         </label>
                         <label id="backtoBtn">
-                            <button type="button">뒤로가기</button>
+                            <button type="button" onclick="showToHide()">뒤로가기</button>
                         </label>
                     </div>
                 </form>
@@ -61,6 +61,7 @@
         </main>
     </div>
     <script src="../../../static/js/background_control.js"></script>
+    <script src="../../../static/js/signup.js"></script>
 </body>
 
 </html>
