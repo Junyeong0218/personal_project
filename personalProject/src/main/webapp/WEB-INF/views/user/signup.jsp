@@ -14,27 +14,28 @@
 
 <body>
     <div id="container">
-        <main>
-            <h1>회원가입</h1>
+        <main class="hidden">
+            <h1 id="signup-title">회원가입</h1>
             <div>
-                <form action="" method="post" class="signup-form">
+                <form action="signup" method="post" class="signup-form">
                     <div>
                         <label>
                             <span>아이디</span>
-                            <input type="text" name="username">
+                            <input type="text" name="username" oninput="checkUsername()" required autocomplete="off" >
                         </label>
+                        <span id="wrongid" class="hidden"></span>
                         <label>
                             <span>비밀번호</span>
-                            <input type="password" name="password">
+                            <input type="password" name="password" oninput="checkPassword()">
                         </label>
                         <label>
                             <span>비밀번호 확인</span>
-                            <input type="password" name="pwConfirm">
+                            <input type="password" name="pwConfirm" oninput="checkPassword()" >
                         </label>
-                        <label id="wrongpw" class="hidden"></label>
+                        <span id="wrongpw" class="hidden"></span>
                         <label>
                             <span>이름</span>
-                            <input type="text" name="name">
+                            <input type="text" name="name" required autocomplete="off">
                         </label>
                         <label class="question">
                             <span>비밀번호 찾기 질문</span>
@@ -47,22 +48,24 @@
                         </label>
                         <label>
                             <span>답변</span>
-                            <input type="text" name="answer">
+                            <input type="text" name="answer" required autocomplete="off">
                         </label>
                     </div>
                     <div id=btns>
                         <label id="submitBtn">
-                            <button type="submit">가입하기</button>
+                            <button type="submit" disabled>가입하기</button>
                         </label>
                         <label id="backtoBtn">
-                            <button type="button">뒤로가기</button>
+                            <button type="button" onclick="showToHide()">뒤로가기</button>
                         </label>
                     </div>
                 </form>
             </div>
         </main>
     </div>
+    <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/background_control.js"></script>
+    <script src="/js/signup.js"></script>
 </body>
 
 </html>

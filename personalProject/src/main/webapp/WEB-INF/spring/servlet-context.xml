@@ -13,7 +13,8 @@
         http://www.springframework.org/schema/context
         https://www.springframework.org/schema/context/spring-context.xsd">
         
-    <context:component-scan base-package="com.jun.web.controller" />
+    <context:component-scan base-package="com.jun.web.controller,
+    									  com.jun.web.api" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     	<property name="prefix" value="/WEB-INF/views/" />

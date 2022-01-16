@@ -45,14 +45,10 @@ function goToSelect() {
 }
 
 function toSignup() {
-    welcomeMessage.classList.add("to-hidden");
-    btns.classList.remove("to-show");
-    btns.classList.add("to-hidden");
+    main.classList.remove("to-show");
+    main.classList.add("to-hidden");
     setTimeout(() => {
-        welcomeMessage.classList.add("hidden");
-        btns.classList.add("hidden");
-    }, 1500);
-    setTimeout(() => {
-        location.href = "http://127.0.0.1:5500/WEB-INF/views/user/signup.html";
-    }, 1540);
+        main.classList.add("hidden");
+        location.href="http://localhost:8080/user/signup"
+    }, 1450);
 }

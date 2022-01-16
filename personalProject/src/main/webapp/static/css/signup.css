@@ -65,6 +65,20 @@ label > span {
     padding: 0px 10px;
 }
 
+.wrong-input {
+	height: 20px;
+	margin-bottom: 10px;
+	font: inherit;
+	color: red;
+}
+
+.correct-input {
+	height: 20px;
+	margin-bottom: 10px;
+	font: inherit;
+	color: white;
+}
+
 label > input, label > button {
     width: 210px;
     height: 30px;

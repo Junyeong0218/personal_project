@@ -15,7 +15,7 @@
 <body>
     <div id="container">
 
-        <main>
+        <main class="hidden">
             <h1 id="welcome" class="first_position">환영합니다.</h1>
             <div id="btns">
                 <div class="btn">
@@ -23,11 +23,9 @@
                         로그인
                     </button>
                 </div>
-                <a href="/user/signup">
-	                <div class="btn">
-	                    <button>회원가입</button>
-	                </div>
-	            </a>
+                <div class="btn">
+                    <button onclick="toSignup()">회원가입</button>
+                </div>
             </div>
 
             <div id="login-form" class="hidden">
