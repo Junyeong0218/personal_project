@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.jun.web.dao.UserDao;
 import com.jun.web.domain.user.User;
+import com.jun.web.dto.SigninDto;
 import com.jun.web.dto.SignupDto;
 
 @Service
@@ -14,9 +15,12 @@ public class AuthServiceImpl implements AuthService {
 	private UserDao userDao;
 	
 	@Override
-	public int signin() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int signin(SigninDto signinDto) {
+		User user = signinDto.toEntity();
+		
+		int result = userDao.signin(user);
+		
+		return result;
 	}
 	
 	@Override

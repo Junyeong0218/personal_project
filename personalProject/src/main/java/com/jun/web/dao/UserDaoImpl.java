@@ -49,9 +49,35 @@ public class UserDaoImpl implements UserDao {
 	}
 	
 	@Override
-	public int signin() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int signin(User user) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select count(um.username) + count(um2.password) from user_mst um "
+					+ "left outer join user_mst um2 on(um.id = um2.id and um2.password = ?) "
+					+ "where um.username = ?";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, user.getPassword());
+			pstmt.setString(2, user.getUsername());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	@Override

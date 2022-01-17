@@ -6,6 +6,6 @@ public interface UserDao {
 
 	public int selectUsernameByUsername(String username);
 	
-	public int signin();
+	public int signin(User user);
 	public int signup(User user);
 }
