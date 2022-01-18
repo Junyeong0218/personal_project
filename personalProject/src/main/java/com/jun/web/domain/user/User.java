@@ -19,7 +19,7 @@ public class User {
 	private String name;
 	private int pwQuestion;
 	private String pwAnswer;
-	private LocalDateTime create_date;
-	private LocalDateTime update_date;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
 	
 }

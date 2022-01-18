@@ -18,35 +18,6 @@ public class UserDaoImpl implements UserDao {
 	
 	@Autowired
 	private DataSource dataSource;
-
-	@Override
-	public int selectUsernameByUsername(String username) {
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = "select count(*) from user_mst where username = ?";
-		int result = 0;
-		
-		try {
-			con = dataSource.getConnection();
-			pstmt = con.prepareStatement(sql);
-			
-			pstmt.setString(1, username);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				result = rs.getInt(1);
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
 	
 	@Override
 	public int signin(User user) {
@@ -73,7 +44,6 @@ public class UserDaoImpl implements UserDao {
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -104,10 +74,74 @@ public class UserDaoImpl implements UserDao {
 			con.close();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public int selectUsernameByUsername(String username) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select count(*) from user_mst where username = ?";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, username);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public User selectUserByUsername(String username) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select * from user_mst where username = ?";
+		User user = null;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, username);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				user = new User();
+				
+				user.setId(rs.getInt("id"));
+				user.setUsername(rs.getString("username"));
+				user.setPassword(rs.getString("password"));
+				user.setName(rs.getString("name"));
+				user.setPwQuestion(rs.getInt("pw_question"));
+				user.setPwAnswer(rs.getString("pw_answer"));
+				user.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
+				user.setUpdateDate(rs.getTimestamp("update_date").toLocalDateTime());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
 }

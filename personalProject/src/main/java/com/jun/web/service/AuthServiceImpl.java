@@ -39,5 +39,12 @@ public class AuthServiceImpl implements AuthService {
 		
 		return result;
 	}
+	
+	@Override
+	public User selectUserByUsername(String username) {
+		User user = userDao.selectUserByUsername(username);
+		
+		return user;
+	}
 
 }
