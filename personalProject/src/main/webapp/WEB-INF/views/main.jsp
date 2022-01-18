@@ -7,6 +7,8 @@
 <title>메인 페이지</title>
 </head>
 <body>
-	로그인 완료.
+	<div>
+		
+	</div>
 </body>
 </html>

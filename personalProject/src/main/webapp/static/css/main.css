@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Dongle', sans-serif;
+    background-image: url("../../../static/images/index_background1.jpg");
+}
+
+#container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0 ,0, 0, 0.4);
+    position: relative;
+    font: inherit;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    min-height: 45px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+nav {
+    display: flex;
+    height: 45px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo > a {
+    width: auto;
+    height: 31px;
+}
+
+.user-info {
+    width: auto;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    font: inherit;
+    font-size: 25px;
+    color: white;
+    margin-right: 10px;
+}
+
+.user-info > button {
+    border-radius: 20px;
+    border: 2px solid white;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-info > button > img {
+    width: 40px;
+    height: 40px;
+}
+
+main {
+    margin: 15px 15px 15px;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    font: inherit;
+    align-items: center;
+}
+
+input[type="month"] {
+    position: relative;
+    margin-bottom: 10px;
+    width: 200px;
+    text-align: center;
+    font: inherit;
+    font-size: 25px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+input[type="month"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+}
+
+input[type="month"]:focus {
+    outline: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+}
+
+tr {
+    padding: 0;
+    min-height: 100px;
+    height: 148px;
+}
+
+td {
+    padding: 0;
+    width: 250px;
+    min-width: 100px;
+}
+
+.date {
+    padding: 0;
+    min-width: 100px;
+    min-height: 100px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    font: inherit;
+    background-color: rgba(211, 211, 211, 0.8);
+}
+
+.date > button {
+    padding: 0;
+    width: 100%;
+    height: 16%;
+    text-align: center;
+    border: none;
+    background-color:rgb(126, 126, 126);
+    cursor: pointer;
+    font: inherit;
+    font-size: 25px;
+    line-height: 24px;
+    color: white;
+}
+
+.schedule {
+    padding: 0;
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    font: inherit;
+}
+
+.schedule > button {
+    font: inherit;
+    cursor: pointer;
+}
+
+.schedule > button > span {
+    font: inherit;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.oneday > button, .lastday > button, 
+.firstday > button, .middleday > button {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.oneday {
+    width: auto;
+    height: 100%;
+    padding: 1px 3px;
+}
+
+.oneday > button {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.firstday {
+    width: auto;
+    height: 100%;
+    padding: 1px 0px 1px 3px;
+}
+
+.firstday > button {
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.middleday {
+    width: auto;
+    height: 100%;
+    padding: 1px 0px;
+}
+
+.lastday {
+    width: auto;
+    height: 100%;
+    padding: 1px 3px 1px 0px;
+}
+
+.lastday > button {
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+tr > td:first-child > .date {
+    background-color: rgb(255, 97, 97);
+}
+
+tr > td:first-child > .date > button {
+    background-color: rgb(255, 97, 97);
+}
+
+tr > td:last-child > .date {
+    background-color: rgb(97, 97, 238);
+}
+
+tr > td:last-child > .date > button {
+    background-color: rgb(97, 97, 238);
+}
+
+tr:first-child > td:first-child > .date {
+    border-top-left-radius: 10px;
+}
+
+tr:first-child > td:last-child > .date {
+    border-top-right-radius: 10px;
+}
+
+tr:last-child > td:first-child > .date {
+    border-bottom-left-radius: 10px;
+}
+
+tr:last-child > td:last-child > .date {
+    border-bottom-right-radius: 10px;
+}

@@ -29,7 +29,7 @@
             </div>
 
             <div id="login-form" class="hidden">
-                <form action="" method="post">
+                <form action="javascript:signin()" method="post">
                     <div>
                         <label>
                             <span>아이디</span>
@@ -48,16 +48,23 @@
                     </div>
                 </form>
             </div>
+            
+            <div class="pop-up-bg">
+	            <div class="pop-up-win">
+	            	<div class="pop-up">
+						<span id="message"></span>
+						<button id="closeBtn" type="button" onclick="closePopUp()">close</button>
+					</div>
+	            </div>
+			</div>
 
         </main>
-
-        <footer>
-
-
-        </footer>
+        
     </div>
+    <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/index.js"></script>
     <script src="/js/background_control.js"></script>
+    <script src="/js/signin.js"></script>
 </body>
 
 </html>
