@@ -21,6 +21,8 @@
     	<property name="suffix" value=".jsp" />
     </bean>
     
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+    
     <mvc:resources location="/static/" mapping="/**" />
     <mvc:annotation-driven>
     	<mvc:message-converters>

@@ -1,17 +1,21 @@
 package com.jun.web.controller.user;
 
 import java.io.IOException;
+import java.util.Collection;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.jun.web.dto.UpdateReqDto;
 import com.jun.web.service.AuthService;
 
 @Controller
@@ -39,10 +43,13 @@ public class UserInfoController {
 	}
 	
 	@PostMapping("userinfo")
-	public void modifyUserInfo(UpdateReqDto updateReqDto,
-							   HttpServletResponse response) throws IOException {
+	public void modifyUserInfo(@RequestParam String password,
+							   HttpServletResponse response) throws IOException, ServletException {
 		
-		System.out.println(updateReqDto);
+		
+		
+		
+		System.out.println(password);
 		
 	}
 }

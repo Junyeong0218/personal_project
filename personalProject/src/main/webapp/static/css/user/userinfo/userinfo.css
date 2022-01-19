@@ -37,6 +37,21 @@ form > div > span {
 	font-size: 15px;
 }
 
+.profile-image {
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border: 2px solid white;
+	border-radius: 10px;
+}
+
+.profile-image > span {
+	padding: 0px 10px;
+	font-size: 25px;
+	color: white;
+}
+
 .profile-image > div {
 	display: flex;
 	align-items: center;

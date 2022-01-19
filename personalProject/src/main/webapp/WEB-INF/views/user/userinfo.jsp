@@ -53,7 +53,7 @@
 	        
 	        <main>
 	        
-		        <form action="/user/userinfo" method="post" enctype="multipart/form-data" modelAttribute="employee">
+		        <form action="/user/userinfo" method="post" enctype="multipart/form-data">
 				    <div>
 				        <label>
 				            <span>아이디</span>
@@ -72,7 +72,7 @@
 				            <span>이름</span>
 				            <input type="text" name="name" required autocomplete="off" value="${sessionScope.user.name}">
 				        </label>
-				        <label class="profile-image">
+				        <%-- <div class="profile-image">
 				            <span>프로필 이미지</span>
 				            <div>
 				            	<div>
@@ -81,7 +81,7 @@
 				            	<label for="profile_image">파일 선택</label>
 				            	<input type="file" accept="image/*" id="profile_image" name="file" class="hidden">
 				        	</div>
-				        </label>
+				        </div> --%>
 				        <label class="question">
 				            <span>비밀번호 찾기 질문</span>
 				            
