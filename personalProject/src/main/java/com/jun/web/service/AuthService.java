@@ -10,6 +10,8 @@ public interface AuthService {
 	public int signin(SigninDto signinDto);
 	
 	public int checkUsername(String username);
+	public int checkPassword(SigninDto signinDto);
 	
 	public User selectUserByUsername(String username);
+	
 }

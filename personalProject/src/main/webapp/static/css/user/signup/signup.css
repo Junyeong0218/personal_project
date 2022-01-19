@@ -98,7 +98,10 @@ label > input {
 #backtoBtn > button, #backtoBtn,
 #submitBtn > button, #submitBtn {
     justify-content: center;
-    cursor: pointer;
+}
+
+#backtoBtn > button, #backtoBtn {
+	cursor: pointer;
 }
 
 label > input:focus {

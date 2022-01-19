@@ -34,8 +34,16 @@ public class AuthServiceImpl implements AuthService {
 	
 	@Override
 	public int checkUsername(String username) {
-		
 		int result = userDao.selectUsernameByUsername(username);
+		
+		return result;
+	}
+	
+	@Override
+	public int checkPassword(SigninDto signinDto) {
+		User user = signinDto.toEntity();
+		
+		int result = userDao.signin(user);
 		
 		return result;
 	}

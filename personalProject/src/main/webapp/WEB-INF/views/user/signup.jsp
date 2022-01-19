@@ -8,8 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>캘린더 관리</title>
-    <link href="/css/layout2.css" rel="stylesheet" type="text/css">
-    <link href="/css/signup.css" rel="stylesheet" type="text/css">
+    <link href="/css/layout.css" rel="stylesheet" type="text/css">
+    <link href="/css/signup/signup.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -26,11 +26,11 @@
                         <span id="wrongid" class="hidden"></span>
                         <label>
                             <span>비밀번호</span>
-                            <input type="password" name="password" oninput="checkPassword()">
+                            <input type="password" name="password" oninput="checkPassword()" required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$">>
                         </label>
                         <label>
                             <span>비밀번호 확인</span>
-                            <input type="password" name="pwConfirm" oninput="checkPassword()" >
+                            <input type="password" name="pwConfirm" oninput="checkPassword()" required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$">>
                         </label>
                         <span id="wrongpw" class="hidden"></span>
                         <label>
@@ -39,8 +39,8 @@
                         </label>
                         <label class="question">
                             <span>비밀번호 찾기 질문</span>
-                            <select name="question">
-                                <option value="1">ㅁㄴㅇㄹ</option>
+                            <select name="question" required>
+                                <option value="1" selected>ㅁㄴㅇㄹ</option>
                                 <option value="2">ㅁㄴㄹㅇ</option>
                                 <option value="3">ㅁㄴㄹㅇ</option>
                                 <option value="4">ㅁㄴㅇㄹ</option>
@@ -65,7 +65,7 @@
     </div>
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/background_control.js"></script>
-    <script src="/js/signup.js"></script>
+    <script src="/js/user/signup/signup.js"></script>
 </body>
 
 </html>

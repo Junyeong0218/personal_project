@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>캘린더 관리</title>
     <link href="/css/index.css" rel="stylesheet" type="text/css">
-    <link href="/css/layout2.css" rel="stylesheet" type="text/css">
+    <link href="/css/layout.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>

@@ -13,3 +13,7 @@ function toggleWidget() {
 function logout() {
 	location.href="/logout";
 }
+
+function confirmPw() {
+	location.href="/user/checkpw";
+}

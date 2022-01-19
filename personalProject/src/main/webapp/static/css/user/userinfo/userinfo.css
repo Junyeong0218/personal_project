@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+main {
+	width: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+form > div > label {
+	height: 50px;
+	font-size: 25px;
+}
+
+form > div > label:first-child > span:nth-child(2) {
+	padding: 1px 7px 1px 5px;
+	width: 210px;
+	text-align: right;
+}
+
+.wrong-input {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+.correct-input {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+form > div > label > input {
+	height: 50px;
+	font-size: 25px;
+}
+
+form > div > span {
+	font-size: 15px;
+}
+
+.profile-image > div {
+	display: flex;
+	align-items: center;
+	border-left: 1px solid white;
+	width: 222px;
+	height: 50px;
+	justify-content: space-between;
+}
+
+.profile-image > div > label {
+	margin: 0;
+	padding: 1px 7px 1px 5px;
+	font: inherit;
+	font-size: 20px;
+	border: none;
+}
+
+.profile-image > div > div {
+	border-radius: 20px;
+	border: 1px solid white;
+	width: 40px;
+	height: 40px;
+	overflow: hidden;
+	margin-left: 5px;
+}
+
+.profile-image > div > div > img {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+.question > span {
+	margin: 0;
+}
+
+.question > select {
+	margin-top: 0;
+}
+
+#submitBtn > button {
+	font-size: 25px;
+	line-height: 30px;
+}

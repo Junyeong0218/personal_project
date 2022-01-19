@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>캘린더 관리</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/main/main.css">
 </head>
 
 <body>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="user-info">
                         <span class="username">${sessionScope.user.name} 님</span>
-                        <button type="button" onclick="toggleWidget()"><img src="/images/userProfile/profile_image.png"></button>
+                        <button type="button" onclick="toggleWidget()"><img src="/images/userinfo/${sessionScope.user.username}/profile_image.png"></button>
                     </div>
                     <div id="user-widget" class="user-widget hide">
                     	<div class="user-desc">
@@ -41,7 +41,7 @@
 								<fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd"/>
                     		</span>
                     		<div class="widget-btns">
-                    			<button type="button"><span>수정하기</span></button>
+                    			<button type="button"  onclick="confirmPw()"><span>수정하기</span></button>
                     			<button type="button" onclick="logout()"><span>로그아웃</span></button>
                     		</div>
                     	</div>
@@ -773,8 +773,8 @@
         </main>
 
     </div>
-    <script src="/js/background_control_main.js"></script>
-    <script src="/js/monthSelector.js"></script>
+    <script src="/js/main/background_control.js"></script>
+    <script src="/js/main/monthSelector.js"></script>
     <script src="/js/widgetControl.js"></script>
 </body>
 
