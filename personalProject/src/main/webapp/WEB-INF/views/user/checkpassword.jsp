@@ -54,7 +54,7 @@
 	        	<div>
 	        		<form class="check-form" action="javascript:checkPw()">
 	        			<span>현재 비밀번호를 입력해주세요.</span>
-	        			<input id="password" class="password" type="password" name="password">
+	        			<input id="password" class="password" type="password" name="password" autofocus autocapitalize="off">
 	        			<button type="submit">확인</button>
 	        		</form>
 	        	</div>

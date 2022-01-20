@@ -15,9 +15,9 @@
 <body>
     <div id="container">
 
-        <main class="hidden">
-            <h1 id="welcome" class="first_position">환영합니다.</h1>
-            <div id="btns">
+        <main>
+            <h1 id="welcome">환영합니다</h1>
+            <div id="btns" class="btns">
                 <div class="btn">
                     <button onclick="toSignin()">
                         로그인
@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <div id="login-form" class="hidden">
+            <div id="login-form" class="login-form">
                 <form action="javascript:signin()" method="post">
                     <div>
                         <label>

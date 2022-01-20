@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>캘린더 관리</title>
     <link href="/css/layout.css" rel="stylesheet" type="text/css">
-    <link href="/css/signup/signup.css" rel="stylesheet" type="text/css">
+    <link href="/css/user/signup/signup.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -26,11 +26,11 @@
                         <span id="wrongid" class="hidden"></span>
                         <label>
                             <span>비밀번호</span>
-                            <input type="password" name="password" oninput="checkPassword()" required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$">>
+                            <input type="password" name="password" oninput="checkPassword()" required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$">
                         </label>
                         <label>
                             <span>비밀번호 확인</span>
-                            <input type="password" name="pwConfirm" oninput="checkPassword()" required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$">>
+                            <input type="password" name="pwConfirm" oninput="checkPassword()" required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$">
                         </label>
                         <span id="wrongpw" class="hidden"></span>
                         <label>
