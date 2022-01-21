@@ -7,6 +7,7 @@ import com.jun.web.dao.UserDao;
 import com.jun.web.domain.user.User;
 import com.jun.web.dto.SigninDto;
 import com.jun.web.dto.SignupDto;
+import com.jun.web.dto.UpdateUserInfoReqDto;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -53,6 +54,13 @@ public class AuthServiceImpl implements AuthService {
 		User user = userDao.selectUserByUsername(username);
 		
 		return user;
+	}
+	
+	@Override
+	public int updateUserByReqDto(UpdateUserInfoReqDto dto) {
+		int result = userDao.updateUserByReqDto(dto);
+		
+		return result;
 	}
 
 }

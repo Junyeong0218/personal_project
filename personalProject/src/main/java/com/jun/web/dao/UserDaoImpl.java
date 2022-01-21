@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.jun.web.domain.user.User;
+import com.jun.web.dto.UpdateUserInfoReqDto;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -143,5 +144,37 @@ public class UserDaoImpl implements UserDao {
 		}
 		
 		return user;
+	}
+	
+	@Override
+	public int updateUserByReqDto(UpdateUserInfoReqDto dto) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "update user_mst set password = ?, name = ?, pw_question = ?, pw_answer = ?, update_date = now() where id = ?";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getPassword());
+			pstmt.setString(2, dto.getName());
+			pstmt.setInt(3, dto.getQuestion());
+			pstmt.setString(4, dto.getAnswer());
+			pstmt.setInt(5, dto.getId());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }
