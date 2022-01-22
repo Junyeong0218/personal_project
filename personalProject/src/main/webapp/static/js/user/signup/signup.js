@@ -2,23 +2,20 @@ let UsableId = false;
 let UsablePw = false;
 
 function hideToShow() {
-    main.classList.add("to-show");
-    setTimeout(() => {
-        main.classList.remove("hidden");
-    }, 1500);
+    main.className = "to-show";
 }
 
 function showToHide() {
-    main.classList.remove("to-show");
-    main.classList.add("to-hidden");
+    main.className = "to-hidden";
     setTimeout(() => {
-        main.classList.add("hidden");
         location.href = "http://localhost:8080/index";
-    }, 1500);
+    }, 450);
 }
 
 function checkUsername() {
-	const username = document.querySelector("input[name='username']").value;
+	const username = document.querySelector("#username").value;
+	
+	console.log(username);
 	const wrongId = document.querySelector("#wrongid");
 	const regex = /^[a-z0-9]*$/;
 	

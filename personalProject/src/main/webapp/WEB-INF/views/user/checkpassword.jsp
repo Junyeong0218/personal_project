@@ -27,7 +27,14 @@
 	                    </div>
 	                    <div class="user-info">
 	                        <span class="username">${sessionScope.user.name} 님</span>
-	                        <button type="button" onclick="toggleWidget()"><img src="/images/userinfo/${sessionScope.user.username}/profile_image.png"></button>
+	                        <button type="button" onclick="toggleWidget()">
+	                        	<c:if test="${sessionScope.user.imgType == null}">
+	                        		<img src="/images/userinfo/profile_image.png">
+	                        	</c:if>
+	                        	<c:if test="${sessionScope.user.imgType != null}">
+	                        		<img src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
+	                        	</c:if>
+	                        </button>
 	                    </div>
 	                    <div id="user-widget" class="user-widget hide">
 	                    	<div class="user-desc">

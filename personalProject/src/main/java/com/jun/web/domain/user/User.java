@@ -19,6 +19,7 @@ public class User {
 	private String name;
 	private int pwQuestion;
 	private String pwAnswer;
+	private String imgType;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 	

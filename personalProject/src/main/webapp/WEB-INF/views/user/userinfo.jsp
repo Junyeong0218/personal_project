@@ -29,7 +29,14 @@
 	                    </div>
 	                    <div class="user-info">
 	                        <span class="username">${sessionScope.user.name} 님</span>
-	                        <button type="button" onclick="toggleWidget()"><img src="/images/userinfo/${sessionScope.user.username}/profile_image.png"></button>
+	                        <button type="button" onclick="toggleWidget()">
+	                        	<c:if test="${sessionScope.user.imgType == null}">
+	                        		<img src="/images/userinfo/profile_image.png">
+	                        	</c:if>
+	                        	<c:if test="${sessionScope.user.imgType != null}">
+	                        		<img src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
+	                        	</c:if>
+	                        </button>
 	                    </div>
 	                    <div id="user-widget" class="user-widget hide">
 	                    	<div class="user-desc">
@@ -52,22 +59,23 @@
 	        </header>
 	        
 	        <main>
+	        	
+	        	<div id="formSelector">
+	        		<button onclick="selectMB()" disabled>
+	        			<span>기본 정보 변경</span>
+	        		</button>
+	        		<button onclick="selectMP()" style="cursor: pointer;">
+	        			<span>비밀번호 변경</span>
+	        		</button>
+	        		<span id="selectorBar"></span>
+	        	</div>
 	        
-		        <form action="/user/userinfo" method="post" enctype="multipart/form-data">
+		        <form action="/user/modify-userinfo" method="post" enctype="multipart/form-data" id="modifyUserInfo">
 				    <div>
 				        <label>
 				            <span>아이디</span>
 				            <span>${sessionScope.user.username}</span>
 				        </label>
-				        <label>
-				            <span>비밀번호</span>
-				            <input type="password" name="password" oninput="checkPassword()" >
-				        </label>
-				        <label>
-				            <span>비밀번호 확인</span>
-				            <input type="password" name="pwConfirm" oninput="checkPassword()" >
-				        </label>
-				        <span id="wrongpw" class="hidden"></span>
 				        <label>
 				            <span>이름</span>
 				            <input type="text" name="name" required autocomplete="off" value="${sessionScope.user.name}">
@@ -76,7 +84,12 @@
 				            <span>프로필 이미지</span>
 				            <div>
 				            	<div>
-				            		<img id="pre-img" src="/images/userinfo/${sessionScope.user.username}/profile_image.png" alt="profileImage">
+				            		<c:if test="${sessionScope.user.imgType == null}">
+		                        		<img id="pre-img" src="/images/userinfo/profile_image.png">
+		                        	</c:if>
+		                        	<c:if test="${sessionScope.user.imgType != null}">
+		                        		<img id="pre-img" src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
+		                        	</c:if>
 				            	</div>
 				            	<label for="profile_image">파일 선택</label>
 				            	<input type="file" accept="image/*" id="profile_image" name="file" class="hidden">
@@ -106,19 +119,56 @@
 				        </label>
 				    </div>
 				    
-				    <div id=btns>
-				        <label id="submitBtn">
-				            <button type="submit" disabled>회원정보 수정</button>
+				    <div class="btns">
+				        <label class="submitBtn">
+				            <button type="button">회원정보 수정</button>
 				        </label>
 				    </div>
 				    
 				</form>
+				
+				<form action="" method="post" id="modifyPw" class="hidden">
+					<div>
+						<label>
+				            <span>아이디</span>
+				            <span>${sessionScope.user.username}</span>
+				        </label>
+				        <label>
+				            <span>비밀번호</span>
+				            <input type="password" id="password" name="password" oninput="checkPassword()" >
+				        </label>
+				        <label>
+				            <span>비밀번호 확인</span>
+				            <input type="password" name="pwConfirm" oninput="checkPassword()" >
+				        </label>
+				        <span id="wrongpw" class="hidden"></span>
+					</div>
+					
+					<div id="btns">
+				        <label id="submitBtn">
+				            <button type="button" disabled>회원정보 수정</button>
+				        </label>
+				    </div>
+				    
+				</form>
+				
+				<div class="pop-up-bg">
+		            <div class="pop-up-win">
+		            	<div class="pop-up">
+							<span id="message"></span>
+							<button id="closeBtn" type="button" onclick="closePopUp()">close</button>
+						</div>
+		            </div>
+				</div>
 	        
 	        </main>
 		</div>
-		<script src="/js/user/userinfo/background_control.js"></script>
+		<script src="/js/jquery-3.6.0.min.js"></script>
 		<script src="/js/widgetControl.js"></script>
 		<script src="/js/user/userinfo/input_file_control.js"></script>
 		<script src="/js/user/userinfo/validate_control.js"></script>
+		<script src="/js/user/userinfo/change_form.js"></script>
+		<script src="/js/user/userinfo/background_control.js"></script>
+		<script src="/js/user/userinfo/modify_control.js"></script>
 	</body>
 </html>

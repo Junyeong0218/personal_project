@@ -40,6 +40,10 @@ h1 {
     z-index: 0;
 }
 
+.btns {
+	z-index: 0;
+}
+
 form > div{
     display: flex;
     flex-direction: column;
@@ -100,6 +104,12 @@ label > input {
     justify-content: center;
 }
 
+.submitBtn > button, .submitBtn {
+	justify-content: center;
+	line-height: 30px;
+	cursor: pointer;
+}
+
 #backtoBtn > button, #backtoBtn {
 	cursor: pointer;
 }
@@ -115,9 +125,6 @@ label > input:focus {
     height: 60px;
 }
 
-.question > * {
-}
-
 .question > span {
     margin-top: 7px;
 }
@@ -130,13 +137,13 @@ label > input:focus {
 }
 
 .to-hidden {
-    animation: fadeOut 1.5s;
-    -webkit-animation: fadeOut 1.5s;
+    animation: fadeOut .5s forwards;
+    -webkit-animation: fadeOut .5s forwards;
 }
 
 .to-show {
-    animation: fadeIn 1.5s;
-    -webkit-animation: fadeIn 1.5s;
+    animation: fadeIn .5s forwards;
+    -webkit-animation: fadeIn .5s forwards;
 }
 
 @-webkit-keyframes fadeIn {

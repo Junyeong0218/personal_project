@@ -188,23 +188,23 @@ label > input:focus {
 }
 
 .to-hidden {
-    animation: fadeOut 1.5s;
-    -webkit-animation: fadeOut 1.5s;
+    animation: fadeOut .5s forwards;
+    -webkit-animation: fadeOut .5s forwards;
 }
 
 .to-show {
-    animation: fadeIn 1.5s;
-    -webkit-animation: fadeIn 1.5s;
+    animation: fadeIn .5s forwards;
+    -webkit-animation: fadeIn .5s forwards;
 }
 
 .go-up {
-    animation: goUp 1.5s forwards;
-    -webkit-animation: goUp 1.5s forwards;
+    animation: goUp .5s forwards;
+    -webkit-animation: goUp .5s forwards;
 }
 
 .go-down {
-    animation: goDown 1.5s forwards;
-    -webkit-animation: goDown 1.5s forwards;
+    animation: goDown .5s forwards;
+    -webkit-animation: goDown .5s forwards;
 }
 
 @-webkit-keyframes goUp {

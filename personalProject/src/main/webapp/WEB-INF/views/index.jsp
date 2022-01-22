@@ -16,7 +16,7 @@
     <div id="container">
 
         <main>
-            <h1 id="welcome">환영합니다</h1>
+            <h1 id="welcome" class="first-position">환영합니다</h1>
             <div id="btns" class="btns">
                 <div class="btn">
                     <button onclick="toSignin()">
@@ -63,8 +63,8 @@
     </div>
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/index.js"></script>
-    <script src="/js/background_control.js"></script>
     <script src="/js/signin.js"></script>
+    <script src="/js/background_control.js"></script>
 </body>
 
 </html>

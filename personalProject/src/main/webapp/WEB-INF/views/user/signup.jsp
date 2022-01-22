@@ -21,7 +21,7 @@
                     <div>
                         <label>
                             <span>아이디</span>
-                            <input type="text" name="username" oninput="checkUsername()" required autocomplete="off" >
+                            <input type="text" id="username" name="username" oninput="checkUsername()" required autocomplete="off" >
                         </label>
                         <span id="wrongid" class="hidden"></span>
                         <label>
@@ -64,8 +64,8 @@
         </main>
     </div>
     <script src="/js/jquery-3.6.0.min.js"></script>
-    <script src="/js/background_control.js"></script>
     <script src="/js/user/signup/signup.js"></script>
+    <script src="/js/background_control.js"></script>
 </body>
 
 </html>

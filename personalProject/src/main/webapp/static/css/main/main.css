@@ -196,6 +196,7 @@ input[type="month"]:focus {
 	font: inherit;
 	font-size: 25px;
 	align-items: center;
+	cursor: pointer;
 }
 
 table {

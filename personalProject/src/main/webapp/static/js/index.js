@@ -14,7 +14,7 @@ function toSignin() {
     setTimeout(() => {
 		btns.classList.add("hidden")
         loginForm.className = "to-show";
-    }, 1450);
+    }, 450);
 }
 
 function goToSelect() {
@@ -23,12 +23,12 @@ function goToSelect() {
     setTimeout(() => {
 		loginForm.classList.add("hidden")
         btns.className = "btns to-show";
-    }, 1450);
+    }, 450);
 }
 
 function toSignup() {
     main.className = "to-hidden";
     setTimeout(() => {
         location.href="http://localhost:8080/user/signup"
-    }, 1450);
+    }, 450);
 }

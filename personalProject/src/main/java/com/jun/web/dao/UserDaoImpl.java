@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.jun.web.domain.user.User;
-import com.jun.web.dto.UpdateUserInfoReqDto;
+import com.jun.web.dto.UpdatePasswordDto;
+import com.jun.web.dto.UpdateUserInfoDto;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -44,6 +45,10 @@ public class UserDaoImpl implements UserDao {
 				result = rs.getInt(1);
 			}
 			
+			rs.close();
+			pstmt.close();
+			con.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -56,7 +61,7 @@ public class UserDaoImpl implements UserDao {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String sql = "insert into user_mst values(0, ?, ?, ?, ?, ?, now(), now())";
+		String sql = "insert into user_mst values(0, ?, ?, ?, ?, ?, NULL, now(), now())";
 		int result = 0;
 		
 		try {
@@ -102,11 +107,57 @@ public class UserDaoImpl implements UserDao {
 				result = rs.getInt(1);
 			}
 			
+			rs.close();
+			pstmt.close();
+			con.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public User selectUserById(int id) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select * from user_mst where id = ?";
+		User user = null;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				user = new User();
+				
+				user.setId(rs.getInt("id"));
+				user.setUsername(rs.getString("username"));
+				user.setPassword(rs.getString("password"));
+				user.setName(rs.getString("name"));
+				user.setPwQuestion(rs.getInt("pw_question"));
+				user.setPwAnswer(rs.getString("pw_answer"));
+				user.setImgType(rs.getString("image_type"));
+				user.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
+				user.setUpdateDate(rs.getTimestamp("update_date").toLocalDateTime());
+			}
+			
+			rs.close();
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
 	
 	@Override
@@ -135,9 +186,14 @@ public class UserDaoImpl implements UserDao {
 				user.setName(rs.getString("name"));
 				user.setPwQuestion(rs.getInt("pw_question"));
 				user.setPwAnswer(rs.getString("pw_answer"));
+				user.setImgType(rs.getString("image_type"));
 				user.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
 				user.setUpdateDate(rs.getTimestamp("update_date").toLocalDateTime());
 			}
+			
+			rs.close();
+			pstmt.close();
+			con.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -147,29 +203,72 @@ public class UserDaoImpl implements UserDao {
 	}
 	
 	@Override
-	public int updateUserByReqDto(UpdateUserInfoReqDto dto) {
+	public int updateUserByDto(UpdateUserInfoDto updateUserInfoDto) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			
+			if(updateUserInfoDto.getFile() == null) {
+				sql = "update user_mst set name = ?, pw_question = ?, pw_answer = ?, image_type = NULL, update_date = now() where id = ?";
+				
+				pstmt = con.prepareStatement(sql);
+
+				pstmt.setString(1, updateUserInfoDto.getName());
+				pstmt.setInt(2, updateUserInfoDto.getQuestion());
+				pstmt.setString(3, updateUserInfoDto.getAnswer());
+				pstmt.setInt(4, updateUserInfoDto.getId());
+				
+				result = pstmt.executeUpdate();
+				
+			} else {
+				sql = "update user_mst set name = ?, pw_question = ?, pw_answer = ?, image_type = ?, update_date = now() where id = ?";
+				
+				pstmt = con.prepareStatement(sql);
+
+				pstmt.setString(1, updateUserInfoDto.getName());
+				pstmt.setInt(2, updateUserInfoDto.getQuestion());
+				pstmt.setString(3, updateUserInfoDto.getAnswer());
+				pstmt.setString(4, updateUserInfoDto.getImgType());
+				pstmt.setInt(5, updateUserInfoDto.getId());
+				
+				result = pstmt.executeUpdate();
+			}
+			
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int updatePasswordByPassword(UpdatePasswordDto updatePasswordDto) {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "update user_mst set password = ?, name = ?, pw_question = ?, pw_answer = ?, update_date = now() where id = ?";
+		String sql = "update user_mst set password = ?, update_date = now() where id = ?";
 		int result = 0;
 		
 		try {
 			con = dataSource.getConnection();
 			pstmt = con.prepareStatement(sql);
+
+			pstmt.setString(1, updatePasswordDto.getPassword());
+			pstmt.setInt(2, updatePasswordDto.getId());
 			
-			pstmt.setString(1, dto.getPassword());
-			pstmt.setString(2, dto.getName());
-			pstmt.setInt(3, dto.getQuestion());
-			pstmt.setString(4, dto.getAnswer());
-			pstmt.setInt(5, dto.getId());
+			result = pstmt.executeUpdate();
 			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				result = rs.getInt(1);
-			}
+			pstmt.close();
+			con.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

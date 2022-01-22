@@ -8,6 +8,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="chrome">
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<META HTTP-EQUIV="Expires" CONTENT="-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>캘린더 관리</title>
     <link rel="stylesheet" href="/css/main/main.css">
@@ -29,7 +31,14 @@
                     </div>
                     <div class="user-info">
                         <span class="username">${sessionScope.user.name} 님</span>
-                        <button type="button" onclick="toggleWidget()"><img src="/images/userinfo/${sessionScope.user.username}/profile_image.png"></button>
+                        <button type="button" onclick="toggleWidget()">
+                        	<c:if test="${sessionScope.user.imgType == null}">
+                        		<img src="/images/userinfo/profile_image.png">
+                        	</c:if>
+                        	<c:if test="${sessionScope.user.imgType != null}">
+                        		<img src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
+                        	</c:if>
+                        </button>
                     </div>
                     <div id="user-widget" class="user-widget hide">
                     	<div class="user-desc">
