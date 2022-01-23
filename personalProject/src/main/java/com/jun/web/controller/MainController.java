@@ -1,16 +1,22 @@
 package com.jun.web.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.jun.web.domain.user.User;
+import com.jun.web.service.CalendarService;
 
 @Controller
 @RequestMapping("/")
@@ -19,17 +25,29 @@ public class MainController {
 	private final String MAIN_URL = "main";
 	private final String INDEX_URL = "index";
 	
+	@Autowired
+	private CalendarService calendarService;
+	
 	@GetMapping("main")
-	public String main(HttpServletRequest request) {
+	public ModelAndView main(@RequestParam(required = false, defaultValue = "0") int ym,
+							 HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
 		User user = (User) session.getAttribute("user");
 		
 		if(user != null) {
-			return MAIN_URL;
+			ModelAndView mav = new ModelAndView(MAIN_URL);
+			
+			if(ym == 0) {
+				ym = LocalDateTime.now().getYear() * 100 + LocalDateTime.now().getMonthValue();
+			}
+			
+			List<Integer> dates = calendarService.selectAllDates(ym);
+			
+			return mav;
 		} else {
-			return INDEX_URL;
+			return new ModelAndView(INDEX_URL);
 		}
 	}
 	

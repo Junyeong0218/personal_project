@@ -1,0 +1,141 @@
+@charset "UTF-8";
+
+.pop-up-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 1000;
+
+	z-index: -1;
+	opacity: 0;
+}
+
+.pop-up-win {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.show-pop {
+	opacity: 1;
+	z-index: 1000;
+	transition: all .5s;
+}
+
+.hide-pop {
+	opacity: 0;
+	z-index: -1;
+	transition: all .5s;
+}
+
+.pop-up {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 2px solid white;
+	border-radius: 10px;
+	background: black;
+	font: inherit;
+	font-size: 25px;
+	color: white;
+	
+	width: 400px;
+	height: auto;
+}
+
+.show-pop .pop-up {
+	transform: translate(-50%, -50%);
+	transition: all .5s;
+}
+
+.hide-pop .pop-up {
+	transform: translate(50%, 50%);
+	transition: all .5s;
+}
+
+.pop-up > button {
+	width: 20px;
+	height: 20px;
+	position: fixed;
+	top: 15px;
+	right: 15px;
+	border: 2px solid red;
+	border-radius: 10px;
+	background: rgba(0, 0, 0, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font: inherit;
+	font-size: 15px;
+	color: white;
+	line-height: 20px;
+	cursor: pointer;
+}
+
+form {
+	width: 90%;
+}
+
+form > div:first-child {
+	margin-top: 10px;
+	text-align: center;
+	font-size: 35px;
+}
+
+form > div {
+	width: 100%;
+}
+
+form > div:not(:last-child) {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+form > div > span {
+	font: inherit;
+	
+}
+
+form > div > input, form > div > textarea {
+	height:30px;
+	line-height: 30px;
+	font: inherit;
+	font-size: 25px;
+}
+
+form > div > textarea {
+	height: 120px;
+}
+
+.btns {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.btns > button {
+	padding: 0;
+	width: 35%;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font: inherit;
+}
+
+.btns > button > span {
+	font: inherit;
+	font-size: 25px;
+}

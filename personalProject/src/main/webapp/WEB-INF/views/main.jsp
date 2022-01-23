@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>캘린더 관리</title>
     <link rel="stylesheet" href="/css/main/main.css">
+    <link rel="stylesheet" href="/css/main/popup.css">
 </head>
 
 <body>
@@ -68,723 +69,161 @@
             	<button type="button" onclick="setNextMonth()">▶</button>
             </div>
             <table>
-                <tr>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule firstday">
-                                <button type="button"><span></span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule middleday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule lastday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date">
-                            <button type="button">날짜</button>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                            <div class="schedule oneday">
-                                <button type="button"><span>asdf</span></button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+            
+            	<c:forEach var="i" begin="0" end="4">
+                
+	                <tr>
+	                
+	                	<c:forEach var="j" begin="0" end="6">
+	                	
+		                    <td>
+		                        <div class="date">
+		                            <button class="dateBtn" type="button" onclick="showPopUp(event)">${i*7 + j}</button>
+		                            
+		                            <c:forEach var="k" begin="0" end="4">
+		                            
+			                            <div class="schedule oneday">
+			                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${k}</button>
+			                            </div>
+		                            
+		                            </c:forEach>
+								
+		                        </div>
+		                    
+		                    </td>
+	                    
+	                    </c:forEach>
+	                
+	                </tr>
+                
+                </c:forEach>
+                
             </table>
+            
+            <div id="show-schedule" class="pop-up-bg">
+	            <div class="pop-up-win">
+	            	<div class="pop-up">
+	            	
+	            		<button id="showcloseBtn" type="button">
+	            			<span>X</span>
+	            		</button>
+	            	
+						<form action="">
+							<div>
+								<span>일정등록</span>
+							</div>
+							<div>
+								<span>제목</span>
+								<input type="text" id="inst-title" name="inst-title">							
+							</div>
+							<div>
+								<span>시작일자</span>
+								<input type="datetime-local" id="inst-start-data" name="inst-start-date">							
+							</div>
+							<div>
+								<span>종료일자</span>
+								<input type="datetime-local" id="inst-end-data" name="inst-end-date">							
+							</div>
+							<div>
+								<span>제목</span>
+								<textarea rows="" cols="" id="inst-desc" name="desc" placeholder="적지 않아도 됩니다."></textarea>
+							</div>
+							
+							<div class="btns">
+								<button type="button"><span>저장</span></button>
+								<button type="reset"><span>리셋</span></button>
+							</div>
+						</form>
+						
+					</div>
+	            </div>
+			</div>
+			
+			<div id="insert-schedule" class="pop-up-bg">
+	            <div class="pop-up-win">
+	            	<div class="pop-up">
+	            	
+	            		<button id="instcloseBtn" type="button">
+	            			<span>X</span>
+	            		</button>
+	            	
+						<form action="">
+							<div>
+								<span>일정등록</span>
+							</div>
+							<div>
+								<span>제목</span>
+								<input type="text" id="inst-title" name="inst-title">							
+							</div>
+							<div>
+								<span>시작일자</span>
+								<input type="datetime-local" id="inst-start-data" name="inst-start-date">							
+							</div>
+							<div>
+								<span>종료일자</span>
+								<input type="datetime-local" id="inst-end-data" name="inst-end-date">							
+							</div>
+							<div>
+								<span>제목</span>
+								<textarea rows="" cols="" id="inst-desc" name="desc" placeholder="적지 않아도 됩니다."></textarea>
+							</div>
+							
+							<div class="btns">
+								<button type="button"><span>저장</span></button>
+								<button type="reset"><span>리셋</span></button>
+							</div>
+						</form>
+						
+					</div>
+	            </div>
+			</div>
+			
+			<div id="modify-schedule" class="pop-up-bg">
+	            <div class="pop-up-win">
+	            	<div class="pop-up">
+	            	
+	            		<button id="modicloseBtn" type="button">
+	            			<span>X</span>
+	            		</button>
+	            	
+						<form action="">
+							<div>
+								<span>일정등록</span>
+							</div>
+							<div>
+								<span>제목</span>
+								<input type="text" id="inst-title" name="inst-title">							
+							</div>
+							<div>
+								<span>시작일자</span>
+								<input type="datetime-local" id="inst-start-data" name="inst-start-date">							
+							</div>
+							<div>
+								<span>종료일자</span>
+								<input type="datetime-local" id="inst-end-data" name="inst-end-date">							
+							</div>
+							<div>
+								<span>제목</span>
+								<textarea rows="" cols="" id="inst-desc" name="desc" placeholder="적지 않아도 됩니다."></textarea>
+							</div>
+							
+							<div class="btns">
+								<button type="button"><span>저장</span></button>
+								<button type="reset"><span>리셋</span></button>
+							</div>
+						</form>
+						
+					</div>
+	            </div>
+			</div>
+			
         </main>
 
     </div>
     <script src="/js/main/background_control.js"></script>
     <script src="/js/main/monthSelector.js"></script>
     <script src="/js/widgetControl.js"></script>
+    <script src="/js/main/popup_control.js"></script>
 </body>
 
 </html>
