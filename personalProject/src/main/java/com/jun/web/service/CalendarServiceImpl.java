@@ -25,20 +25,56 @@ public class CalendarServiceImpl implements CalendarService {
 		
 		List<Integer> dates = new ArrayList<Integer>();
 		
-		int year = yearmonth / 100;
-		int month = yearmonth % 100;
-		int lastyear = year;
-		int lastmonth = month - 1;
+		int preYear = yearmonth / 100;
+		int preMonth = yearmonth % 100;
+		int lastYear = preYear;
+		int lastMonth = preMonth - 1;
+		int nextYear = preYear;
+		int nextMonth = preMonth + 1;
+		int preDay = 1;
 		
-		if(lastmonth == 0) {
-			lastyear--;
-			lastmonth = 12;
+		if(lastMonth == 0) {
+			lastYear--;
+			lastMonth = 12;
 		}
 		
-		LocalDateTime firstDay = LocalDateTime.of(year, month, 1, 0, 0);
-		int weekday = firstDay.getDayOfWeek().getValue();
+		if(nextMonth == 13) {
+			nextYear++;
+			nextMonth = 1;
+		}
 		
-		YearMonth.of(lastyear, lastmonth).lengthOfMonth();
+		LocalDateTime firstDay = LocalDateTime.of(preYear, preMonth, 1, 0, 0);
+		int firstDayWeekday = firstDay.getDayOfWeek().getValue();
+		
+		int lastDayInLastMonth = YearMonth.of(lastYear, lastMonth).lengthOfMonth();
+		int firstDayCalendar = lastDayInLastMonth - firstDayWeekday + 1;
+		
+		int i = 0;
+		
+		while(i < 35) {
+			
+			if(i < 7) {
+				if(firstDayWeekday == 7) {
+					dates.add(preYear * 10_000 + preMonth * 100 + preDay);
+					preDay++;
+					firstDayWeekday = lastDayInLastMonth + 1;
+					
+				} else if(firstDayCalendar < lastDayInLastMonth + 1){
+					dates.add(lastYear * 10_000 + lastMonth * 100 + firstDayCalendar);
+					firstDayCalendar++;
+					
+				} else {
+					dates.add(preYear * 10_000 + preMonth * 100 + preDay);
+					preDay++;
+				}
+			} else {
+				
+			}
+			
+			i++;
+		}
+		
+		
 		
 		return dates;
 	}
