@@ -14,6 +14,28 @@ function showPopUp(event) {
 			instSchedule.className = "pop-up-bg hide-pop";
 		});
 	} else if(event.target.className == 'scheBtn') {
+		const id = event.target.parentElement.id;
+		
+		$.ajax({
+	        type: "post",
+	        url: "/user/getSchedule",
+	        data: { "id": id },
+	        dataType: "text",
+	        success: function (data) {
+				data = JSON.parse(data);
+				
+				showSchedule.querySelector("#show-title").innerText = data.title;
+				showSchedule.querySelector("#show-start-date").innerText = `${data.startDate.year}`;
+				showSchedule.querySelector("#show-end-date").innerText = data.endDate;
+				showSchedule.querySelector("#show-desc").innerText = data.description;
+		  	},
+		  	error: function (xhr, status, error) {
+				console.log(xhr);
+				console.log(status);
+				console.log(error);
+			}
+		});
+		
 		showSchedule.className = "pop-up-bg show-pop";
 		showclsBtn.addEventListener("click", function() {
 			showSchedule.className = "pop-up-bg hide-pop";

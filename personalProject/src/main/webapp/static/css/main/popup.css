@@ -115,6 +115,7 @@ form > div > input, form > div > textarea {
 
 form > div > textarea {
 	height: 120px;
+	resize: none;
 }
 
 .btns {

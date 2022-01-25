@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -70,7 +71,8 @@
             </div>
             <table>
             
-            	<c:forEach var="i" begin="0" end="4">
+            	<c:set var="dateIndex" value="0"/>
+            	<c:forEach var="i" begin="0" end="5">
                 
 	                <tr>
 	                
@@ -78,16 +80,36 @@
 	                	
 		                    <td>
 		                        <div class="date">
-		                            <button class="dateBtn" type="button" onclick="showPopUp(event)">${i*7 + j}</button>
+		                            <button id="${intDates[dateIndex]}" class="dateBtn" type="button" onclick="showPopUp(event)">${fn:substring(strDates[dateIndex], 6, 8)}</button>
 		                            
-		                            <c:forEach var="k" begin="0" end="4">
+		                            <c:forEach var="schedule" items="${schedules[intDates[dateIndex]]}">
 		                            
-			                            <div class="schedule oneday">
-			                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${k}</button>
-			                            </div>
+		                            	<c:if test="${schedule.oneday == true}">
+				                            <div id="${schedule.id}" class="schedule oneday">
+				                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
+				                            </div>
+			                            </c:if>
+			                            <c:if test="${schedule.firstday == true}">
+			                            	<c:if test="${strDates[dateIndex] == schedule.startDate}">
+					                            <div id="${schedule.id}" class="schedule firstday">
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${k}</button>
+					                            </div>
+				                            </c:if>
+				                            <c:if test="${schedule.lastday == true}">
+					                            <div id="${schedule.id}" class="schedule lastday">
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${k}</button>
+					                            </div>
+				                            </c:if>
+				                            <c:if test="${schedule.middleday == true}">
+					                            <div id="${schedule.id}" class="schedule middleday">
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${k}</button>
+					                            </div>
+				                            </c:if>
+			                            </c:if>
 		                            
 		                            </c:forEach>
-								
+		                            <c:set var="dateIndex" value="${dateIndex + 1}"/>
+									
 		                        </div>
 		                    
 		                    </td>
@@ -110,28 +132,27 @@
 	            	
 						<form action="">
 							<div>
-								<span>일정등록</span>
+								<span>세부일정</span>
 							</div>
 							<div>
 								<span>제목</span>
-								<input type="text" id="inst-title" name="inst-title">							
+								<span id="show-title"></span>
 							</div>
 							<div>
 								<span>시작일자</span>
-								<input type="datetime-local" id="inst-start-data" name="inst-start-date">							
+								<span id="show-start-date"></span>
 							</div>
 							<div>
 								<span>종료일자</span>
-								<input type="datetime-local" id="inst-end-data" name="inst-end-date">							
+								<span id="show-end-date"></span>
 							</div>
 							<div>
-								<span>제목</span>
-								<textarea rows="" cols="" id="inst-desc" name="desc" placeholder="적지 않아도 됩니다."></textarea>
+								<span>내용</span>
+								<textarea rows="" cols="" id="show-desc" name="desc" readonly="readonly"></textarea>
 							</div>
 							
 							<div class="btns">
-								<button type="button"><span>저장</span></button>
-								<button type="reset"><span>리셋</span></button>
+								<button type="button"><span>수정</span></button>
 							</div>
 						</form>
 						
@@ -164,7 +185,7 @@
 								<input type="datetime-local" id="inst-end-data" name="inst-end-date">							
 							</div>
 							<div>
-								<span>제목</span>
+								<span>내용</span>
 								<textarea rows="" cols="" id="inst-desc" name="desc" placeholder="적지 않아도 됩니다."></textarea>
 							</div>
 							
@@ -220,6 +241,7 @@
         </main>
 
     </div>
+    <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/main/background_control.js"></script>
     <script src="/js/main/monthSelector.js"></script>
     <script src="/js/widgetControl.js"></script>

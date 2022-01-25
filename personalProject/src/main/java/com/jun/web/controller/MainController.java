@@ -2,7 +2,9 @@ package com.jun.web.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jun.web.domain.schedule.Schedule;
 import com.jun.web.domain.user.User;
 import com.jun.web.service.CalendarService;
 
@@ -43,7 +46,18 @@ public class MainController {
 				ym = LocalDateTime.now().getYear() * 100 + LocalDateTime.now().getMonthValue();
 			}
 			
-			List<Integer> dates = calendarService.selectAllDates(ym);
+			List<Integer> intDates = calendarService.selectAllDates(ym);
+			Map<Integer, List<Schedule>> schedules = calendarService.selectSchedules(intDates, user.getId());
+			
+			List<String> strDates = new ArrayList<String>();
+			
+			for(int intDate : intDates) {
+				strDates.add(Integer.toString(intDate));
+			}
+			
+			mav.addObject("strDates", strDates);
+			mav.addObject("intDates", intDates);
+			mav.addObject("schedules", schedules);
 			
 			return mav;
 		} else {

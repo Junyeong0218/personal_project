@@ -21,4 +21,9 @@ public class Schedule {
 	private LocalDateTime regDate;
 	private LocalDateTime updateDate;
 	private int userId;
+	private boolean oneday;
+	private boolean firstday;
+	private boolean lastday;
+	private boolean middleday;
+	
 }
