@@ -1,12 +1,10 @@
 const widget = document.querySelector("#user-widget");
 
 function toggleWidget() {
-	if(widget.classList.contains("hide")) {
-		widget.classList.add("show");
-		widget.classList.remove("hide");
+	if(widget.classList.contains("hide") || widget.classList.contains("hidden")) {
+		widget.className = "user-widget show";
 	} else {
-		widget.classList.add("hide");
-		widget.classList.remove("show");
+		widget.className = "user-widget hide";
 	}
 }
 

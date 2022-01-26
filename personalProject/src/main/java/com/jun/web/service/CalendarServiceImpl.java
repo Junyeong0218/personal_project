@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.jun.web.dao.CalendarDao;
 import com.jun.web.domain.schedule.Schedule;
+import com.jun.web.dto.InsertScheduleDto;
+import com.jun.web.dto.UpdateScheduleDto;
 
 @Service
 public class CalendarServiceImpl implements CalendarService {
@@ -27,13 +29,21 @@ public class CalendarServiceImpl implements CalendarService {
 		
 		Map<Integer, List<Schedule>> scheduleMap = new HashMap<Integer, List<Schedule>>();
 		
-		for(int date : dates) {
-			//2022 01 25
+		for(int i=0; i<dates.size(); i++) {
+			
+			int date = dates.get(i);
+
 			List<Schedule> schedulesEachDay = new LinkedList<Schedule>();
-			for(int i=0; i<schedules.size(); i++) {
-				// s 2022 01 24 e 2022 01 26
+			
+			for(int j=0; j<schedules.size(); j++) {
 				
-				Schedule schedule = schedules.get(i);
+				Schedule schedule = new Schedule();
+				schedule.setId(schedules.get(j).getId());
+				schedule.setTitle(schedules.get(j).getTitle());
+				schedule.setDescription(schedules.get(j).getDescription());
+				schedule.setStartDate(schedules.get(j).getStartDate());
+				schedule.setEndDate(schedules.get(j).getEndDate());
+				
 				int startDate = Integer.parseInt(schedule.getStartDate().toLocalDate().toString().replace("-", ""));
 				int endDate = Integer.parseInt(schedule.getEndDate().toLocalDate().toString().replace("-", ""));
 				
@@ -42,12 +52,15 @@ public class CalendarServiceImpl implements CalendarService {
 					if(endDate - startDate == 0) {
 						schedule.setOneday(true);
 						schedulesEachDay.add(schedule);
+						
 					} else if(date == startDate) {
 						schedule.setFirstday(true);
 						schedulesEachDay.add(schedule);
+						
 					} else if(date == endDate) {
 						schedule.setLastday(true);
 						schedulesEachDay.add(schedule);
+						
 					} else if(date > startDate && date < endDate){
 						schedule.setMiddleday(true);
 						schedulesEachDay.add(schedule);
@@ -138,5 +151,25 @@ public class CalendarServiceImpl implements CalendarService {
 	public Schedule getSchedule(int id) {
 		
 		return calendarDao.getScheduleById(id);
+	}
+	
+	@Override
+	public int insertSchedule(InsertScheduleDto insertScheduleDto, int userId) {
+		
+		Schedule schedule = insertScheduleDto.toEntity();
+
+		int result = calendarDao.insertScheduleBySchedule(schedule, userId);
+		
+		return result;
+	}
+	
+	@Override
+	public int updateSchedule(UpdateScheduleDto updateScheduleDto, int userId) {
+
+		Schedule schedule = updateScheduleDto.toEntity();
+
+		int result = calendarDao.updateScheduleBySchedule(schedule, userId);
+		
+		return result;
 	}
 }

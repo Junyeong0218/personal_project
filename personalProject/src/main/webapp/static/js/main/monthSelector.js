@@ -7,10 +7,22 @@ window.onload = function () {
 
 function setDefaultMonth() {
     const date = new Date();
+    
+    const url = String(location.href).replace("http://localhost:8080/main", "");
+    
+    if(url == null || url == "") {
+		const year = String(date.getFullYear());
+	    const month = String(date.getMonth() + 1).padStart(2, "0");
+	    
+	    monthSelector.value = `${year}-${month}`;
+	} else {
+		let ym = url.replace("?ym=", "");
+		const year = ym.substring(0, 4);
+		const month = ym.substring(4, 6);
+		
+		monthSelector.value = `${year}-${month}`;
+	}
 
-    const year = String(date.getFullYear());
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    monthSelector.value = `${year}-${month}`;
 }
 
 function setNextMonth() {
@@ -26,7 +38,7 @@ function setNextMonth() {
 	
 	month = String(month).padStart(2, "0");
 	
-	monthSelector.value = `${String(year)}-${month}`;
+	location.href = `/main?ym=${year}${month}`;
 }
 
 function setPrevMonth() {
@@ -42,5 +54,5 @@ function setPrevMonth() {
 	
 	month = String(month).padStart(2, "0");
 	
-	monthSelector.value = `${String(year)}-${month}`;
+	location.href = `/main?ym=${year}${month}`;
 }

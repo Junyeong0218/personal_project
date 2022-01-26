@@ -41,26 +41,29 @@
                         		<img src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
                         	</c:if>
                         </button>
+                        
                     </div>
-                    <div id="user-widget" class="user-widget hide">
-                    	<div class="user-desc">
-                    		<span class="username">${sessionScope.user.name} 님</span>
-                    		<div>-------------------------</div>
-                    		<span class="user-id">아이디 : ${sessionScope.user.username}</span>
-                    		<span class="create-date">가입일 : 
-                    			<fmt:parseDate var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss" value="${sessionScope.user.createDate}" type="both"/>
-								<fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd"/>
-                    		</span>
-                    		<div class="widget-btns">
-                    			<button type="button"  onclick="confirmPw()"><span>수정하기</span></button>
-                    			<button type="button" onclick="logout()"><span>로그아웃</span></button>
-                    		</div>
-                    	</div>
-                    </div>
+                    
                 </nav>
             </div>
 
         </header>
+        
+        <div id="user-widget" class="user-widget hidden">
+			<div class="user-desc">
+				<span class="username">${sessionScope.user.name} 님</span>
+				<div>-------------------------</div>
+				<span class="user-id">아이디 : ${sessionScope.user.username}</span>
+				<span class="create-date">가입일 : 
+					<fmt:parseDate var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss" value="${sessionScope.user.createDate}" type="both"/>
+					<fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd"/>
+				</span>
+				<div class="widget-btns">
+					<button type="button"  onclick="confirmPw()"><span>수정하기</span></button>
+					<button type="button" onclick="logout()"><span>로그아웃</span></button>
+				</div>
+			</div>
+		</div>
 
         <main>
             <!--캘린더 -->
@@ -90,21 +93,19 @@
 				                            </div>
 			                            </c:if>
 			                            <c:if test="${schedule.firstday == true}">
-			                            	<c:if test="${strDates[dateIndex] == schedule.startDate}">
-					                            <div id="${schedule.id}" class="schedule firstday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${k}</button>
-					                            </div>
-				                            </c:if>
-				                            <c:if test="${schedule.lastday == true}">
-					                            <div id="${schedule.id}" class="schedule lastday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${k}</button>
-					                            </div>
-				                            </c:if>
-				                            <c:if test="${schedule.middleday == true}">
-					                            <div id="${schedule.id}" class="schedule middleday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${k}</button>
-					                            </div>
-				                            </c:if>
+			                            	<div id="${schedule.id}" class="schedule firstday">
+				                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
+				                            </div>
+				                        </c:if>
+			                            <c:if test="${schedule.lastday == true}">
+				                            <div id="${schedule.id}" class="schedule lastday">
+				                                <button class="scheBtn" type="button" onclick="showPopUp(event)"></button>
+				                            </div>
+			                            </c:if>
+			                            <c:if test="${schedule.middleday == true}">
+				                            <div id="${schedule.id}" class="schedule middleday">
+				                                <button class="scheBtn" type="button" onclick="showPopUp(event)"></button>
+				                            </div>
 			                            </c:if>
 		                            
 		                            </c:forEach>
@@ -152,7 +153,7 @@
 							</div>
 							
 							<div class="btns">
-								<button type="button"><span>수정</span></button>
+								<button id="to-update" type="button"><span>수정</span></button>
 							</div>
 						</form>
 						
@@ -174,15 +175,16 @@
 							</div>
 							<div>
 								<span>제목</span>
-								<input type="text" id="inst-title" name="inst-title">							
+								<input type="text" id="inst-title" name="inst-title" oninput="">
+								<span id="inst-wrong-title"></span>
 							</div>
 							<div>
 								<span>시작일자</span>
-								<input type="datetime-local" id="inst-start-data" name="inst-start-date">							
+								<input type="datetime-local" id="inst-start-date" name="inst-start-date">							
 							</div>
 							<div>
 								<span>종료일자</span>
-								<input type="datetime-local" id="inst-end-data" name="inst-end-date">							
+								<input type="datetime-local" id="inst-end-date" name="inst-end-date">							
 							</div>
 							<div>
 								<span>내용</span>
@@ -190,7 +192,7 @@
 							</div>
 							
 							<div class="btns">
-								<button type="button"><span>저장</span></button>
+								<button type="button" id="insert-sche-Btn"><span>저장</span></button>
 								<button type="reset"><span>리셋</span></button>
 							</div>
 						</form>
@@ -199,11 +201,11 @@
 	            </div>
 			</div>
 			
-			<div id="modify-schedule" class="pop-up-bg">
+			<div id="update-schedule" class="pop-up-bg">
 	            <div class="pop-up-win">
 	            	<div class="pop-up">
 	            	
-	            		<button id="modicloseBtn" type="button">
+	            		<button id="updatecloseBtn" type="button">
 	            			<span>X</span>
 	            		</button>
 	            	
@@ -213,24 +215,24 @@
 							</div>
 							<div>
 								<span>제목</span>
-								<input type="text" id="inst-title" name="inst-title">							
+								<input type="text" id="upd-title" name="updTitle">							
 							</div>
 							<div>
 								<span>시작일자</span>
-								<input type="datetime-local" id="inst-start-data" name="inst-start-date">							
+								<input type="datetime-local" id="upd-start-date" name="updStartDate">							
 							</div>
 							<div>
 								<span>종료일자</span>
-								<input type="datetime-local" id="inst-end-data" name="inst-end-date">							
+								<input type="datetime-local" id="upd-end-date" name="updEndDate">							
 							</div>
 							<div>
 								<span>제목</span>
-								<textarea rows="" cols="" id="inst-desc" name="desc" placeholder="적지 않아도 됩니다."></textarea>
+								<textarea rows="" cols="" id="upd-desc" name="desc" placeholder="적지 않아도 됩니다."></textarea>
 							</div>
 							
 							<div class="btns">
-								<button type="button"><span>저장</span></button>
-								<button type="reset"><span>리셋</span></button>
+								<button id="upd-Btn" type="button"><span>저장</span></button>
+								<button id="upd-reset" type="button"><span>리셋</span></button>
 							</div>
 						</form>
 						

@@ -134,6 +134,7 @@ form > div > textarea {
 	justify-content: center;
 	align-items: center;
 	font: inherit;
+	cursor: pointer;
 }
 
 .btns > button > span {
