@@ -25,5 +25,6 @@ public class Schedule {
 	private boolean firstday;
 	private boolean lastday;
 	private boolean middleday;
+	private int rowNum;
 	
 }

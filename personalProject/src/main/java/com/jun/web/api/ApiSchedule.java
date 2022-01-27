@@ -2,6 +2,7 @@ package com.jun.web.api;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,9 +34,20 @@ public class ApiSchedule {
 		
 		Schedule schedule = calendarService.getSchedule(scheduleId);
 		
-		System.out.println(schedule);
-		
 		return schedule;
+		
+	}
+	
+	@PostMapping("getScheduleList")
+	@ResponseBody
+	public List<Schedule> getScheduleList(@RequestParam int ym,
+										HttpServletRequest request) {
+		
+		User user = (User) request.getSession().getAttribute("user");
+		
+		List<Schedule> scheduleList = calendarService.getScheduleList(ym, user.getId());
+		
+		return scheduleList;
 		
 	}
 	
@@ -70,11 +82,24 @@ public class ApiSchedule {
 			updateScheduleDto.setDescription(updateScheduleDto.getTitle());
 		}
 		
-		System.out.println(updateScheduleDto);
-		
 		User user = (User) request.getSession().getAttribute("user");
 		
 		int result = calendarService.updateSchedule(updateScheduleDto, user.getId());
+		
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.println("{\"result\": " + result + "}");
+		out.close();
+		
+	}
+	
+	@PostMapping("deleteSchedule")
+	@ResponseBody
+	public void deleteSchedule(@RequestParam int scheduleId,
+								HttpServletRequest request,
+								HttpServletResponse response) throws IOException {
+		
+		int result = calendarService.deleteSchedule(scheduleId);
 		
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();

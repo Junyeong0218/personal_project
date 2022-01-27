@@ -221,8 +221,10 @@ tr {
 	margin-bottom: 5px;
     padding: 0;
     min-height: 100px;
-    overflow: auto;
-    
+}
+
+tr:not(:last-child) {
+	border-bottom: 2px solid black;
 }
 
 td {
@@ -231,14 +233,18 @@ td {
     width: 250px;
     min-width: 100px;
     height: 100%;
-    overflow: inherit;
+}
+
+td:not(:last-child) {
+	border-right: 2px solid black;
 }
 
 .date {
+	position: relative;
     padding: 0;
     min-width: 100px;
     min-height: 100px;
-    max-height: 135px;
+    max-height: 133px;
     height: 135px;
     display: flex;
     flex-direction: column;
@@ -246,7 +252,7 @@ td {
     background-color:rgb(126, 126, 126);
 }
 
-.date > button {
+.date > button:first-child {
     padding: 0;
     width: 100%;
     height: 16%;
@@ -261,7 +267,45 @@ td {
 }
 
 .date > div {
-	background-color:rgb(126, 126, 126);
+	background-color:inherit;
+}
+
+.date > span {
+	width: 100%;
+	height: 22px;
+}
+
+.schedule-list-Btn {
+	position: absolute;
+	top: 0;
+	left: 20px;
+	margin: 0;
+	padding: 0;
+	width: 19px;
+	height: 19px;
+	justify-content: center;
+	z-index: 1;
+	cursor: pointer;
+	
+	font: inherit;
+	font-size: 19px;
+	text-align: center;
+	line-height: 19px;
+	
+	border: none;
+	background: none;
+	background-image: url("/images/scheduleListBtn.png");
+	background-size: contain;
+}
+
+.schedule-list-Btn > span {
+	font: inherit;
+	font-size: 19px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 19px;
+	
+	pointer-events: none;
 }
 
 .schedule {
@@ -292,7 +336,8 @@ td {
     width: 100%;
     height: 20px;
     border: none;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
 }
 
 .oneday {

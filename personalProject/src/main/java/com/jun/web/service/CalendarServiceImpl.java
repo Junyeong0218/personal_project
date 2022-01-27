@@ -51,18 +51,22 @@ public class CalendarServiceImpl implements CalendarService {
 					
 					if(endDate - startDate == 0) {
 						schedule.setOneday(true);
+						schedule.setRowNum(-1);
 						schedulesEachDay.add(schedule);
 						
 					} else if(date == startDate) {
 						schedule.setFirstday(true);
+						schedule.setRowNum(-1);
 						schedulesEachDay.add(schedule);
 						
 					} else if(date == endDate) {
 						schedule.setLastday(true);
+						schedule.setRowNum(-1);
 						schedulesEachDay.add(schedule);
 						
 					} else if(date > startDate && date < endDate){
 						schedule.setMiddleday(true);
+						schedule.setRowNum(-1);
 						schedulesEachDay.add(schedule);
 					}
 					
@@ -70,11 +74,134 @@ public class CalendarServiceImpl implements CalendarService {
 				
 			}
 			
-			System.out.println(date);
-			System.out.println(schedulesEachDay);
-			
-			scheduleMap.put(date, schedulesEachDay);
-			
+			if(schedulesEachDay.size() != 0) {
+				
+				// set rowNum if td must be had blank set id -1 and it will be <span> at jsp
+				
+				List<Schedule> prevSchedules = null;
+				
+				if(i > 0) {
+					prevSchedules = scheduleMap.get(dates.get(i-1));
+				}
+				
+				if(i == 0) {
+					// firstDayinCalendar // sort 1. schedule_length 2. id // rowNum starts 0
+					for(int j=0; j<schedulesEachDay.size(); j++) {
+						
+						schedulesEachDay.get(j).setRowNum(j);
+						
+					}
+					scheduleMap.put(date, schedulesEachDay);
+					
+				} else if(prevSchedules.size() == 0) {
+					// lastDay has no schedule
+					for(int j=0; j<schedulesEachDay.size(); j++) {
+						
+						schedulesEachDay.get(j).setRowNum(j);
+						
+					}
+					scheduleMap.put(date, schedulesEachDay);
+					
+				} else {
+					// lastDay has schedule at least 1
+					List<Schedule> schedulesWithDays = new ArrayList<Schedule>();
+					
+					for(int j=0; j<prevSchedules.size(); j++) {
+						
+						Schedule schedule = prevSchedules.get(j);
+						if(schedule.getId() == -1) {
+							continue;
+						}
+						int startDate = Integer.parseInt(schedule.getStartDate().toLocalDate().toString().replace("-", ""));
+						int endDate = Integer.parseInt(schedule.getEndDate().toLocalDate().toString().replace("-", ""));
+						if(endDate - startDate > 0) {
+							schedulesWithDays.add(schedule);
+						}
+					}
+					
+					if(schedulesWithDays.size() == 0) {
+						// lastDay has no schedule over 1 day
+						for(int j=0; j<schedulesEachDay.size(); j++) {
+							schedulesEachDay.get(j).setRowNum(j);
+						}
+						scheduleMap.put(date, schedulesEachDay);
+						
+					} else {
+						
+						List<Schedule> matchedSchedules = new LinkedList<Schedule>();
+						
+						int maxRow = 0;
+						
+						for(int j=0; j<schedulesWithDays.size(); j++) {
+							Schedule lastSchedule = schedulesWithDays.get(j);
+							
+							for(int k=0; k<schedulesEachDay.size(); k++) {
+								
+								if(lastSchedule.getId() == schedulesEachDay.get(k).getId()) {
+									schedulesEachDay.get(k).setRowNum(lastSchedule.getRowNum());
+									
+									if(lastSchedule.getRowNum() > maxRow) {
+										maxRow = lastSchedule.getRowNum() + 1;
+									}
+									break;
+								}
+								
+							}
+							
+						} // copy rowNum to presentSchedules
+						
+//						System.out.println(date + "_00 maxRow : " + maxRow);
+						
+						if(schedulesEachDay.size() > maxRow) {
+							maxRow = schedulesEachDay.size();
+						}
+						
+//						System.out.println(date + "_11 matchedSchedules : " + matchedSchedules);
+//						System.out.println(date + "_11 schedulesEachDay : " + schedulesEachDay);
+//						System.out.println(date + "_11 maxRow : " + maxRow);
+						
+						int k = 0;
+						
+						for(int j=0; j<maxRow; j++) {
+							if(j == schedulesEachDay.get(k).getRowNum()) {
+								matchedSchedules.add(schedulesEachDay.get(k));
+//								System.out.println(date + "_22 : " + matchedSchedules);
+								k++;
+								
+							} else {
+								boolean spanFlag = true;
+								
+								for(int m = 0; m<schedulesEachDay.size(); m++) {
+									if(schedulesEachDay.get(m).getRowNum() == -1) {
+										schedulesEachDay.get(m).setRowNum(j);
+										matchedSchedules.add(schedulesEachDay.get(m));
+//										System.out.println(date + "_22 : " + matchedSchedules);
+										spanFlag = false;
+										break;
+									}
+								}
+								
+								if(spanFlag == true) {
+									Schedule span = new Schedule();
+									span.setId(-1);
+									span.setRowNum(j);
+									matchedSchedules.add(span);
+								}
+							}
+						}
+						
+//						System.out.println(date + "_33 : " + matchedSchedules);
+//						System.out.println("---------------------------------------------------");
+						
+						scheduleMap.put(date, matchedSchedules);
+					}
+					
+				}
+				
+			} else {
+				scheduleMap.put(date, schedulesEachDay);
+			}
+			// if schedulesEachDay.size() == 0 -> no need to sort
 		}
 		
 		return scheduleMap;
@@ -148,9 +275,15 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 	
 	@Override
-	public Schedule getSchedule(int id) {
+	public Schedule getSchedule(int scheduleId) {
 		
-		return calendarDao.getScheduleById(id);
+		return calendarDao.getScheduleById(scheduleId);
+	}
+	
+	@Override
+	public List<Schedule> getScheduleList(int yearmonth, int userId) {
+		
+		return calendarDao.getScheduleListByYearMonth(yearmonth, userId);
 	}
 	
 	@Override
@@ -169,6 +302,14 @@ public class CalendarServiceImpl implements CalendarService {
 		Schedule schedule = updateScheduleDto.toEntity();
 
 		int result = calendarDao.updateScheduleBySchedule(schedule, userId);
+		
+		return result;
+	}
+	
+	@Override
+	public int deleteSchedule(int scheduleId) {
+
+		int result = calendarDao.deleteScheduleById(scheduleId);
 		
 		return result;
 	}

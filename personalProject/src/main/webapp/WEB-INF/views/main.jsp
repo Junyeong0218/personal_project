@@ -85,8 +85,19 @@
 		                        <div class="date">
 		                            <button id="${intDates[dateIndex]}" class="dateBtn" type="button" onclick="showPopUp(event)">${fn:substring(strDates[dateIndex], 6, 8)}</button>
 		                            
-		                            <c:forEach var="schedule" items="${schedules[intDates[dateIndex]]}">
+		                            <c:if test="${fn:length(schedules[intDates[dateIndex]]) > 5}">
+		                            	<button id="${intDates[dateIndex]}-list" class="schedule-list-Btn" type="button" onclick="showPopUp(event)">
+		                            		<span>+${fn:length(schedules[intDates[dateIndex]]) - 5}</span>
+		                            	</button>
+		                            </c:if>
 		                            
+		                            <c:forEach var="schedule_index" begin="0" end="4">
+		                            
+		                            	<c:set var="schedule" value="${schedules[intDates[dateIndex]][schedule_index]}"/>
+		                            	
+		                            	<c:if test="${schedule.id == -1}">
+				                            <span></span>
+			                            </c:if>
 		                            	<c:if test="${schedule.oneday == true}">
 				                            <div id="${schedule.id}" class="schedule oneday">
 				                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
@@ -154,8 +165,25 @@
 							
 							<div class="btns">
 								<button id="to-update" type="button"><span>수정</span></button>
+								<button id="delete-schedule" type="button"><span>삭제</span></button>
 							</div>
 						</form>
+						
+					</div>
+	            </div>
+			</div>
+			
+			<div id="schedule-list" class="pop-up-bg">
+	            <div class="pop-up-win">
+	            	<div class="pop-up">
+	            	
+	            		<button id="listcloseBtn" type="button">
+	            			<span>X</span>
+	            		</button>
+	            		
+	            		<div>
+	            		
+	            		</div>
 						
 					</div>
 	            </div>

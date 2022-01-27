@@ -29,7 +29,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		String sql = "SELECT id, title, description, start_date, end_date FROM schedule "
 					+ "WHERE ((DATE(schedule.start_date) > DATE(?) AND DATE(schedule.start_date) < DATE(?)) "
 					+ "OR (DATE(schedule.end_date) > DATE(?) AND DATE(schedule.end_date) < DATE(?))) "
-					+ "and user_id = ? ORDER BY start_date asc, end_date desc, id asc";
+					+ "and user_id = ? and deleted = 0 ORDER BY start_date asc, end_date desc, id asc";
 		List<Schedule> schedules = new ArrayList<Schedule>();
 		
 		try {
@@ -63,13 +63,11 @@ public class CalendarDaoImpl implements CalendarDao {
 			e.printStackTrace();
 		}
 		
-		System.out.println(schedules);
-		
 		return schedules;
 	}
 	
 	@Override
-	public Schedule getScheduleById(int id) {
+	public Schedule getScheduleById(int scheduleId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -80,7 +78,7 @@ public class CalendarDaoImpl implements CalendarDao {
 			con = dataSource.getConnection();
 			pstmt = con.prepareStatement(sql);
 			
-			pstmt.setInt(1, id);
+			pstmt.setInt(1, scheduleId);
 			
 			rs = pstmt.executeQuery();
 			
@@ -105,10 +103,55 @@ public class CalendarDaoImpl implements CalendarDao {
 	}
 	
 	@Override
+	public List<Schedule> getScheduleListByYearMonth(int yearmonth, int userId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM `schedule` "
+					+ "WHERE ((date(start_date) = DATE(?)) OR "
+							+ "(date(end_date) = DATE(?)) OR "
+							+ "(date(start_date) < DATE(?) AND date(end_date) > DATE(?)) ) AND user_id = ? "
+					+ "ORDER BY start_date asc;";
+		List<Schedule> scheduleList = new ArrayList<Schedule>();
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, yearmonth);
+			pstmt.setInt(2, yearmonth);
+			pstmt.setInt(3, yearmonth);
+			pstmt.setInt(4, yearmonth);
+			pstmt.setInt(5, userId);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Schedule schedule = new Schedule();
+				schedule.setId(rs.getInt("id"));
+				schedule.setTitle(rs.getString("title"));
+				schedule.setStartDate(rs.getTimestamp("start_date").toLocalDateTime());
+				schedule.setEndDate(rs.getTimestamp("end_date").toLocalDateTime());
+				
+				scheduleList.add(schedule);
+			}
+			
+			rs.close();
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return scheduleList;
+	}
+	
+	@Override
 	public int insertScheduleBySchedule(Schedule schedule, int userId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String sql = "insert into schedule values(0, ?, ?, ?, ?, now(), now(), ?)";
+		String sql = "insert into schedule values(0, ?, ?, ?, ?, now(), now(), ?, 0)";
 		int result = 0;
 		
 		try {
@@ -150,6 +193,31 @@ public class CalendarDaoImpl implements CalendarDao {
 			pstmt.setString(4, schedule.getDescription());
 			pstmt.setInt(5, schedule.getId());
 			pstmt.setInt(6, userId);
+			
+			result = pstmt.executeUpdate();
+			
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int deleteScheduleById(int scheduleId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "update schedule set deleted = 1, update_date = now() where id = ?";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, scheduleId);
 			
 			result = pstmt.executeUpdate();
 			

@@ -12,8 +12,11 @@ public interface CalendarService {
 	public Map<Integer, List<Schedule>> selectSchedules(List<Integer> dates, int id);
 	public List<Integer> selectAllDates(int yearmonth);
 	
-	public Schedule getSchedule(int id);
+	public List<Schedule> getScheduleList(int yearmonth, int userId);
+	
+	public Schedule getSchedule(int scheduleId);
 	
 	public int insertSchedule(InsertScheduleDto insertScheduleDto, int userId);
 	public int updateSchedule(UpdateScheduleDto updateScheduleDto, int userId);
+	public int deleteSchedule(int scheduleId);
 }
