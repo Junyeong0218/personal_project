@@ -61,7 +61,7 @@ public class UserDaoImpl implements UserDao {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String sql = "insert into user_mst values(0, ?, ?, ?, ?, ?, NULL, now(), now())";
+		String sql = "insert into user_mst values(0, ?, ?, ?, ?, ?, NULL, now(), now(), 0)";
 		int result = 0;
 		
 		try {

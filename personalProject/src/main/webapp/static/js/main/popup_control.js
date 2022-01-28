@@ -23,13 +23,9 @@ function showPopUp(event) {
 }
 
 function showScheduleList(event) {
-	console.log(event);
 	
 	const listDiv = document.querySelector("#schedule-list > div > div > div");
 	const ym = event.target.parentElement.children[0].id;
-	
-	console.log(listDiv);
-	console.log(ym);
 	
 	$.ajax({
         type: "post",
@@ -39,8 +35,41 @@ function showScheduleList(event) {
         success: function (data) {
 			data = JSON.parse(data);
 			
-			const length = data.length;
+			const title_year = String(ym).substring(0, 4);
+			const title_month = String(ym).substring(4, 6);
+			const title_day = String(ym).substring(6, 8);
 			
+			listDiv.innerHTML = `<div>
+									<span>${title_year}-${title_month}-${title_day} 의 일정 목록</span>
+								 </div>`;
+								 
+			listDiv.id = ym;
+			
+			data.forEach(function(item) {
+				
+				let year = item.startDate.year;
+				let month = String(item.startDate.monthValue).padStart(2, "0");
+				let day = String(item.startDate.dayOfMonth).padStart(2, "0");
+				let hour = String(item.startDate.hour).padStart(2, "0");
+				let minute = String(item.startDate.minute).padStart(2, "0");
+				const startDate = `${year}-${month}-${day} ${hour}:${minute}`;
+				
+				year = item.endDate.year;
+				month = String(item.endDate.monthValue).padStart(2, "0");
+				day = String(item.endDate.dayOfMonth).padStart(2, "0");
+				hour = String(item.endDate.hour).padStart(2, "0");
+				minute = String(item.endDate.minute).padStart(2, "0");
+				const endDate = `${year}-${month}-${day} ${hour}:${minute}`;
+				
+				listDiv.innerHTML += 
+									`
+									<div>
+										<button type='button' id='${item.id}' onclick='listToEach(event)'>
+											<span>${item.title}</span>
+											<span>${startDate} ~ ${endDate}</span> 
+										</button>
+									</div>`;
+			});
 			
 	  	},
 	  	error: function (xhr, status, error) {
@@ -49,6 +78,25 @@ function showScheduleList(event) {
 			console.log(error);
 		}
 	});
+	
+	ScheduleList.className = "pop-up-bg show-pop";
+	listclsBtn.addEventListener("click", function() {
+		ScheduleList.className = "pop-up-bg hide-pop";
+		setTimeout(function() {
+			listDiv.textContent = "";
+		}, 550);
+	});
+}
+
+function listToEach(event) {
+	const listDiv = document.querySelector("#schedule-list > div > div > div");
+	
+	ScheduleList.className = "pop-up-bg hide-pop";
+	setTimeout(function() {
+		listDiv.textContent = "";
+	}, 550);
+	
+	showSchedulePopup(event.target.id);
 }
 
 function insertSchedule(event) {
@@ -128,7 +176,13 @@ function insertSchedule(event) {
 }
 
 function showSchedulePopup(event) {
-	const scheduleId = event.target.parentElement.id;
+	let scheduleId;
+	if(typeof event == 'string'){
+		scheduleId = event;
+	} else {
+		scheduleId = event.target.parentElement.id;
+	}
+	
 	let title;
 	let desc;
 	let startDate;
@@ -151,18 +205,22 @@ function showSchedulePopup(event) {
 			let day = String(data.startDate.dayOfMonth).padStart(2, "0");
 			let hour = String(data.startDate.hour).padStart(2, "0");
 			let minute = String(data.startDate.minute).padStart(2, "0");
-			startDate = `${year}-${month}-${day}T${hour}:${minute}`
+			startDate = `${year}-${month}-${day} ${hour}:${minute}`
 			
 			showSchedule.querySelector("#show-start-date").innerText = startDate;
+			
+			startDate = `${year}-${month}-${day}T${hour}:${minute}`
 			
 			year = data.endDate.year;
 			month = String(data.endDate.monthValue).padStart(2, "0");
 			day = String(data.endDate.dayOfMonth).padStart(2, "0");
 			hour = String(data.endDate.hour).padStart(2, "0");
 			minute = String(data.endDate.minute).padStart(2, "0");
-			endDate = `${year}-${month}-${day}T${hour}:${minute}`;
+			endDate = `${year}-${month}-${day} ${hour}:${minute}`;
 			
 			showSchedule.querySelector("#show-end-date").innerText = endDate;
+			
+			endDate = `${year}-${month}-${day}T${hour}:${minute}`;
 			
 	  	},
 	  	error: function (xhr, status, error) {

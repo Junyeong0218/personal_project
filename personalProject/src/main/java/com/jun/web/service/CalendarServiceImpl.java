@@ -160,34 +160,45 @@ public class CalendarServiceImpl implements CalendarService {
 //						System.out.println(date + "_11 schedulesEachDay : " + schedulesEachDay);
 //						System.out.println(date + "_11 maxRow : " + maxRow);
 						
-						int k = 0;
-						
 						for(int j=0; j<maxRow; j++) {
-							if(j == schedulesEachDay.get(k).getRowNum()) {
-								matchedSchedules.add(schedulesEachDay.get(k));
-//								System.out.println(date + "_22 : " + matchedSchedules);
-								k++;
-								
-							} else {
-								boolean spanFlag = true;
-								
-								for(int m = 0; m<schedulesEachDay.size(); m++) {
-									if(schedulesEachDay.get(m).getRowNum() == -1) {
-										schedulesEachDay.get(m).setRowNum(j);
-										matchedSchedules.add(schedulesEachDay.get(m));
-//										System.out.println(date + "_22 : " + matchedSchedules);
-										spanFlag = false;
-										break;
-									}
-								}
-								
-								if(spanFlag == true) {
-									Schedule span = new Schedule();
-									span.setId(-1);
-									span.setRowNum(j);
-									matchedSchedules.add(span);
+							boolean rowNumFound = false;
+
+							for(int m=0; m<schedulesEachDay.size(); m++) {
+								if(schedulesEachDay.get(m).getRowNum() == j) {
+									matchedSchedules.add(schedulesEachDay.get(m));
+									schedulesEachDay.remove(m);
+									rowNumFound = true;
+//									System.out.println(date + "_22 matchedSchedules : " + matchedSchedules);
+									break;
 								}
 							}
+
+							if(rowNumFound == true) {
+								continue;
+							}
+							
+							rowNumFound = false;
+							
+							for(int m=0; m<schedulesEachDay.size(); m++) {
+								if(schedulesEachDay.get(m).getRowNum() == -1) {
+									schedulesEachDay.get(m).setRowNum(j);
+									matchedSchedules.add(schedulesEachDay.get(m));
+									schedulesEachDay.remove(m);
+									rowNumFound = true;
+//									System.out.println(date + "_22 matchedSchedules : " + matchedSchedules);
+									break;
+								}
+							}
+							
+							if(rowNumFound == true) {
+								continue;
+							}
+							
+							Schedule span = new Schedule();
+							span.setId(-1);
+							span.setRowNum(j);
+							matchedSchedules.add(span);
+//							System.out.println(date + "_22 matchedSchedules : " + matchedSchedules);
 						}
 						
 //						System.out.println(date + "_33 : " + matchedSchedules);

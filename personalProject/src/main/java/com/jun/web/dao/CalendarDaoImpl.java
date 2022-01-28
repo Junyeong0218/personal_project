@@ -108,9 +108,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = "SELECT * FROM `schedule` "
-					+ "WHERE ((date(start_date) = DATE(?)) OR "
-							+ "(date(end_date) = DATE(?)) OR "
-							+ "(date(start_date) < DATE(?) AND date(end_date) > DATE(?)) ) AND user_id = ? "
+					+ "WHERE date(start_date) <= DATE(?) AND date(end_date) >= DATE(?) AND user_id = ? AND deleted = 0 "
 					+ "ORDER BY start_date asc;";
 		List<Schedule> scheduleList = new ArrayList<Schedule>();
 		
@@ -120,9 +118,7 @@ public class CalendarDaoImpl implements CalendarDao {
 			
 			pstmt.setInt(1, yearmonth);
 			pstmt.setInt(2, yearmonth);
-			pstmt.setInt(3, yearmonth);
-			pstmt.setInt(4, yearmonth);
-			pstmt.setInt(5, userId);
+			pstmt.setInt(3, userId);
 			
 			rs = pstmt.executeQuery();
 			

@@ -1,9 +1,21 @@
 const monthSelector = document.querySelector("#monthSelector");
+const calendar = document.querySelector("#calendar");
 
 window.onload = function () {
     controllView();
     setDefaultMonth();
 }
+
+calendar.addEventListener("wheel", function(event){
+	// wheel up = deltaY -100 // wheel down = deltaY 100
+	event.preventDefault();
+	
+	if(event.deltaY < 0) {
+		setNextMonth();
+	} else {
+		setPrevMonth();
+	}
+});
 
 function setDefaultMonth() {
     const date = new Date();

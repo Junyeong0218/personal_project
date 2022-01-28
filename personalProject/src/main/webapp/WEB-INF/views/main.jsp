@@ -64,75 +64,85 @@
 				</div>
 			</div>
 		</div>
+		
+		<aside>
+			
+		
+		</aside>
 
         <main>
             <!--캘린더 -->
-            <div id="month">
-            	<button type="button" onclick="setPrevMonth()">◀</button>
-            	<input type="month" id="monthSelector">
-            	<button type="button" onclick="setNextMonth()">▶</button>
-            </div>
-            <table>
             
-            	<c:set var="dateIndex" value="0"/>
-            	<c:forEach var="i" begin="0" end="5">
-                
-	                <tr>
+            <div id="calendar">
+            
+	            <div id="month">
+	            	<button type="button" onclick="setPrevMonth()">◀</button>
+	            	<input type="month" id="monthSelector">
+	            	<button type="button" onclick="setNextMonth()">▶</button>
+	            </div>
+	            
+	            <table>
+	            
+	            	<c:set var="dateIndex" value="0"/>
+	            	<c:forEach var="i" begin="0" end="5">
 	                
-	                	<c:forEach var="j" begin="0" end="6">
-	                	
-		                    <td>
-		                        <div class="date">
-		                            <button id="${intDates[dateIndex]}" class="dateBtn" type="button" onclick="showPopUp(event)">${fn:substring(strDates[dateIndex], 6, 8)}</button>
-		                            
-		                            <c:if test="${fn:length(schedules[intDates[dateIndex]]) > 5}">
-		                            	<button id="${intDates[dateIndex]}-list" class="schedule-list-Btn" type="button" onclick="showPopUp(event)">
-		                            		<span>+${fn:length(schedules[intDates[dateIndex]]) - 5}</span>
-		                            	</button>
-		                            </c:if>
-		                            
-		                            <c:forEach var="schedule_index" begin="0" end="4">
-		                            
-		                            	<c:set var="schedule" value="${schedules[intDates[dateIndex]][schedule_index]}"/>
-		                            	
-		                            	<c:if test="${schedule.id == -1}">
-				                            <span></span>
+		                <tr>
+		                
+		                	<c:forEach var="j" begin="0" end="6">
+		                	
+			                    <td>
+			                        <div class="date">
+			                            <button id="${intDates[dateIndex]}" class="dateBtn" type="button" onclick="showPopUp(event)">${fn:substring(strDates[dateIndex], 6, 8)}</button>
+			                            
+			                            <c:if test="${fn:length(schedules[intDates[dateIndex]]) > 5}">
+			                            	<button id="${intDates[dateIndex]}-list" class="schedule-list-Btn" type="button" onclick="showPopUp(event)">
+			                            		<span>+${fn:length(schedules[intDates[dateIndex]]) - 5}</span>
+			                            	</button>
 			                            </c:if>
-		                            	<c:if test="${schedule.oneday == true}">
-				                            <div id="${schedule.id}" class="schedule oneday">
-				                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
-				                            </div>
-			                            </c:if>
-			                            <c:if test="${schedule.firstday == true}">
-			                            	<div id="${schedule.id}" class="schedule firstday">
-				                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
-				                            </div>
-				                        </c:if>
-			                            <c:if test="${schedule.lastday == true}">
-				                            <div id="${schedule.id}" class="schedule lastday">
-				                                <button class="scheBtn" type="button" onclick="showPopUp(event)"></button>
-				                            </div>
-			                            </c:if>
-			                            <c:if test="${schedule.middleday == true}">
-				                            <div id="${schedule.id}" class="schedule middleday">
-				                                <button class="scheBtn" type="button" onclick="showPopUp(event)"></button>
-				                            </div>
-			                            </c:if>
-		                            
-		                            </c:forEach>
-		                            <c:set var="dateIndex" value="${dateIndex + 1}"/>
-									
-		                        </div>
+			                            
+			                            <c:forEach var="schedule_index" begin="0" end="4">
+			                            
+			                            	<c:set var="schedule" value="${schedules[intDates[dateIndex]][schedule_index]}"/>
+			                            	
+			                            	<c:if test="${schedule.id == -1}">
+					                            <span></span>
+				                            </c:if>
+			                            	<c:if test="${schedule.oneday == true}">
+					                            <div id="${schedule.id}" class="schedule oneday">
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
+					                            </div>
+				                            </c:if>
+				                            <c:if test="${schedule.firstday == true}">
+				                            	<div id="${schedule.id}" class="schedule firstday">
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
+					                            </div>
+					                        </c:if>
+				                            <c:if test="${schedule.lastday == true}">
+					                            <div id="${schedule.id}" class="schedule lastday">
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)"></button>
+					                            </div>
+				                            </c:if>
+				                            <c:if test="${schedule.middleday == true}">
+					                            <div id="${schedule.id}" class="schedule middleday">
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)"></button>
+					                            </div>
+				                            </c:if>
+			                            
+			                            </c:forEach>
+			                            <c:set var="dateIndex" value="${dateIndex + 1}"/>
+										
+			                        </div>
+			                    
+			                    </td>
 		                    
-		                    </td>
-	                    
-	                    </c:forEach>
+		                    </c:forEach>
+		                
+		                </tr>
 	                
-	                </tr>
-                
-                </c:forEach>
-                
-            </table>
+	                </c:forEach>
+	                
+	            </table>
+	       	</div>
             
             <div id="show-schedule" class="pop-up-bg">
 	            <div class="pop-up-win">
