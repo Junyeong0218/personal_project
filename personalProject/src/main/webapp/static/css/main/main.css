@@ -297,6 +297,10 @@ td:not(:last-child) {
 	height: 22px;
 }
 
+.notPreMonth {
+	background-color:rgb(170, 170, 170);
+}
+
 .schedule-list-Btn {
 	position: absolute;
 	top: 0;

@@ -91,7 +91,13 @@
 		                	<c:forEach var="j" begin="0" end="6">
 		                	
 			                    <td>
-			                        <div class="date">
+			                    	
+			                    	<c:set var="isPreMonth" value="" />
+	                            	<c:if test="${fn:substring(strDates[dateIndex], 0, 6) != selectedMonth}">
+	                            		<c:set var="isPreMonth" value="notPreMonth" />
+	                            	</c:if>
+			                    
+			                        <div class="date ${isPreMonth}">
 			                            <button id="${intDates[dateIndex]}" class="dateBtn" type="button" onclick="showPopUp(event)">${fn:substring(strDates[dateIndex], 6, 8)}</button>
 			                            
 			                            <c:if test="${fn:length(schedules[intDates[dateIndex]]) > 5}">

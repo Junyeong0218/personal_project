@@ -55,6 +55,7 @@ public class MainController {
 				strDates.add(Integer.toString(intDate));
 			}
 			
+			mav.addObject("selectedMonth", Integer.toString(ym));
 			mav.addObject("strDates", strDates);
 			mav.addObject("intDates", intDates);
 			mav.addObject("schedules", schedules);
