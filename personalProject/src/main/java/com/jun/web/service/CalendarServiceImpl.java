@@ -255,11 +255,12 @@ public class CalendarServiceImpl implements CalendarService {
 		
 		while(i < 42) {
 			
-			if(i < 7) {
+			if(i < 8) {
 				if(firstDayWeekday == 7) {
 					dates.add(preYear * 10_000 + preMonth * 100 + preDay);
 					preDay++;
-					firstDayWeekday = lastDayInLastMonth + 1;
+					firstDayWeekday++;
+					firstDayCalendar = lastDayInLastMonth + 1;
 					
 				} else if(firstDayCalendar < lastDayInLastMonth + 1){
 					dates.add(lastYear * 10_000 + lastMonth * 100 + firstDayCalendar);

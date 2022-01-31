@@ -30,7 +30,7 @@ header {
 
 nav {
     display: flex;
-    height: 45px;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
@@ -38,6 +38,7 @@ nav {
 .logo {
     display: flex;
     align-items: center;
+    height: 75px;
 }
 
 .logo > a {
@@ -47,22 +48,23 @@ nav {
 
 .user-info {
 	position: relative;
-	margin-right:10px;
+	margin-bottom: 10px;
     width: auto;
     height: 40px;
     display: flex;
     align-items: center;
 }
 
-.username, user-id, .create-date, .widget-btns {
+.username, user-id {
+	width: 100px;
     font: inherit;
     font-size: 25px;
     color: white !important;
-    margin-right: 10px;
+    margin-left: 10px;
 }
 
-.user-info > button {
-    border-radius: 20px;
+.user-info > div {
+    border-radius: 5px;
     border: 2px solid white;
     width: 40px;
     height: 40px;
@@ -70,12 +72,72 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    cursor: defauly;
 }
 
-.user-info > button > img {
+.user-info > div > img {
     width: 40px;
     height: 40px;
+}
+
+.menus, .menu {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 60%;
+}
+
+.menu {
+	width: 100%;
+}
+
+.menu > button, .menu > a {
+	margin: 0;
+	padding: 0;
+	width: 60%;
+	height: 50px;
+	margin-top: 10px;
+	border: none;
+	background: none;
+	font: inherit;
+	font-size: 30px;
+	text-decoration: none;
+	color: white;
+}
+
+.underbar {
+	margin-left: 15px;
+	width: 0px;
+	height: 6px;
+	border-radius: 3px;
+	background-color: white;
+	align-self: flex-start;
+}
+
+.to-open {
+	animation: open .5s forwards;
+    -webkit-animation: open .5s forwards;
+}
+
+.to-close {
+	animation: close .5s forwards;
+    -webkit-animation: close .5s forwards;
+}
+
+@-webkit-keyframes open {
+    from{
+        width: 0;
+    } to {
+        width: 80%;
+    }
+}
+
+@-webkit-keyframes close {
+    from{
+        width: 80%;
+    } to {
+        width: 0;
+    }
 }
 
 .hidden {
@@ -155,9 +217,9 @@ nav {
 main {
 	box-sizing: border-box;
 	position: relative;
-    padding: 62px 15px 15px;
+    padding: 15px;
     width: auto;
-    height: auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
     font: inherit;
@@ -197,19 +259,20 @@ input[type="month"]:focus {
 }
 
 aside {
-	margin: 47px 0px 0px 0px;
-	padding: 0;
+	margin: 0;
+	padding: 47px 0px 0px 0px;
 	display: flex;
 	flex-direction: column;
 	align-self: flex-start;
 	width: 400px;
 	min-width: 300px;
-	height: 890px;
+	height: 95%;
 	border-right: 2px solid rgba(255, 255, 255, 0.7);
 }
 
 #calendar {
 	align-self: flex-end;
+	height: 100%;
 }
 
 #month {
@@ -232,6 +295,7 @@ aside {
 
 table {
     width: 100%;
+    height: 94.5%;
     border-collapse: collapse;
     border-spacing: 0;
     border-radius: 10px;
@@ -240,9 +304,9 @@ table {
 }
 
 tr {
-	margin-bottom: 5px;
     padding: 0;
     min-height: 100px;
+    height: 16.67%;
 }
 
 tr:not(:last-child) {
@@ -254,7 +318,6 @@ td {
     padding: 0;
     width: 250px;
     min-width: 100px;
-    height: 100%;
 }
 
 td:not(:last-child) {
@@ -266,8 +329,7 @@ td:not(:last-child) {
     padding: 0;
     min-width: 100px;
     min-height: 100px;
-    max-height: 133px;
-    height: 135px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     font: inherit;
