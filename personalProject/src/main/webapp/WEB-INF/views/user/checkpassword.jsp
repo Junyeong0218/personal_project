@@ -89,5 +89,6 @@
 		<script src="/js/user/checkpassword/background_control.js"></script>
 		<script src="/js/user/checkpassword/popup_control.js"></script>
     	<script src="/js/widgetControl.js"></script>
+    	<script src="/js/menu_control.js"></script>
 	</body>
 </html>

@@ -295,7 +295,7 @@
     <script src="/js/main/monthSelector.js"></script>
     <script src="/js/widgetControl.js"></script>
     <script src="/js/main/popup_control.js"></script>
-    <script src="/js/main/menu_control.js"></script>
+    <script src="/js/menu_control.js"></script>
 </body>
 
 </html>
