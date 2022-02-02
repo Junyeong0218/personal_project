@@ -77,13 +77,23 @@
             <div id="calendar">
             
 	            <div id="month">
-	            	<button type="button" onclick="setPrevMonth()">◀</button>
+	            	<button type="button" onclick="setPrevMonth()"><span>◀</span></button>
 	            	<input type="month" id="monthSelector">
-	            	<button type="button" onclick="setNextMonth()">▶</button>
+	            	<button type="button" onclick="setNextMonth()"><span>▶</span></button>
 	            </div>
 	            
 	            <table>
-	            
+	            	
+	            	<tr>
+	            		<th>일</th>
+	            		<th>월</th>
+	            		<th>화</th>
+	            		<th>수</th>
+	            		<th>목</th>
+	            		<th>금</th>
+	            		<th>토</th>
+	            	</tr>
+	            	
 	            	<c:set var="dateIndex" value="0"/>
 	            	<c:forEach var="i" begin="0" end="5">
 	                
@@ -118,12 +128,12 @@
 				                            </c:if>
 			                            	<c:if test="${schedule.oneday == true}">
 					                            <div id="${schedule.id}" class="schedule oneday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)"><span>${schedule.title}</span></button>
 					                            </div>
 				                            </c:if>
 				                            <c:if test="${schedule.firstday == true}">
 				                            	<div id="${schedule.id}" class="schedule firstday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)">${schedule.title}</button>
+					                                <button class="scheBtn" type="button" onclick="showPopUp(event)"><span>${schedule.title}</span></button>
 					                            </div>
 					                        </c:if>
 				                            <c:if test="${schedule.lastday == true}">
@@ -163,7 +173,7 @@
 	            	
 						<form action="">
 							<div>
-								<span>세부일정</span>
+								<span class="popup-title">세부일정</span>
 							</div>
 							<div>
 								<span>제목</span>
@@ -218,7 +228,7 @@
 	            	
 						<form action="">
 							<div>
-								<span>일정등록</span>
+								<span class="popup-title">일정 등록</span>
 							</div>
 							<div>
 								<span>제목</span>
@@ -258,7 +268,7 @@
 	            	
 						<form action="">
 							<div>
-								<span>일정등록</span>
+								<span class="popup-title">일정 수정</span>
 							</div>
 							<div>
 								<span>제목</span>

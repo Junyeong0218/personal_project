@@ -13,7 +13,7 @@ main {
 	padding: 0;
 	position: fixed;
 	top: 150px;
-	width: 346px;
+	width: 500px;
 	height: auto;
 	display: flex;
 	justify-content: space-around;
@@ -22,7 +22,7 @@ main {
 #formSelector > button {
 	margin: 0;
 	padding: 0;
-	width: 100px;
+	width: 175px;
 	font: inherit;
 	font-size: 25px;
 	color: white;
@@ -33,15 +33,15 @@ main {
 #selectorBar {
 	position: absolute;
 	top: 36px;
-	left: 36.5px;
-	width: 100px;
+	left: 37.5px;
+	width: 175px;
 	height: 4px;
 	background: white;
 }
 
 form > div > label {
 	height: 50px;
-	font-size: 25px;
+	font-size: 20px;
 }
 
 form > div > label:first-child > span:nth-child(2) {
@@ -51,7 +51,7 @@ form > div > label:first-child > span:nth-child(2) {
 }
 
 label > button {
-	font-size: 25px;
+	font-size: 20px;
 }
 
 .wrong-input {
@@ -66,7 +66,7 @@ label > button {
 
 form > div > label > input {
 	height: 50px;
-	font-size: 25px;
+	font-size: 20px;
 }
 
 form > div > span {
@@ -85,7 +85,7 @@ form > div > span {
 
 .profile-image > span {
 	padding: 0px 10px;
-	font-size: 25px;
+	font-size: 20px;
 	color: white;
 }
 
@@ -126,6 +126,7 @@ form > div > span {
 
 .question > span {
 	margin: 0;
+	margin-top: 5px;
 }
 
 .question > select {
@@ -143,7 +144,7 @@ form > div > span {
 
 #modifyPw {
 	position: relative;
-	width: 346px;
+	width: 410px;
 }
 
 #modifyPw > div {
@@ -272,16 +273,16 @@ form > div > span {
 
 @-webkit-keyframes leftSlide {
 	from {
-		left: 209.5px;
+		left: 287.5px;
 	} to {
-		left: 36.5px;
+		left: 37.5px;
 	}
 }
 
 @-webkit-keyframes rightSlide {
 	from {
-		left: 36.5px;
+		left: 37.5px;
 	} to {
-		left: 209.5px;
+		left: 287.5px;
 	}
 }

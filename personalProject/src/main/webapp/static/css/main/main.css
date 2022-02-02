@@ -1,10 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap');
+@font-face {
+    font-family: 'LeferiPoint-WhiteObliqueA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Dongle', sans-serif;
+    font-family: 'LeferiPoint-WhiteObliqueA', sans-serif;
     background-image: url("/images/index_background1.jpg");
 }
 
@@ -58,7 +63,7 @@ nav {
 .username, user-id {
 	width: 100px;
     font: inherit;
-    font-size: 25px;
+    font-size: 20px;
     color: white !important;
     margin-left: 10px;
 }
@@ -94,15 +99,16 @@ nav {
 .menu > button, .menu > a {
 	margin: 0;
 	padding: 0;
-	width: 60%;
+	width: 100%;
 	height: 50px;
 	margin-top: 10px;
 	border: none;
 	background: none;
 	font: inherit;
-	font-size: 30px;
+	font-size: 25px;
 	text-decoration: none;
 	color: white;
+	cursor: pointer;
 }
 
 .underbar {
@@ -228,11 +234,13 @@ main {
 
 input[type="month"] {
     position: relative;
-    margin-bottom: 10px;
+    top: 2px;
     width: 200px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
     font: inherit;
-    font-size: 25px;
+    font-size: 17px;
     border: none;
     background: none;
     cursor: pointer;
@@ -276,21 +284,31 @@ aside {
 }
 
 #month {
+    margin-bottom: 20px;
 	display: flex;
 	justify-content: center;
 }
 
 #month > button {
 	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	border: none;
 	border-radius: 4px;
 	background-color: white;
 	width: 30px;
 	height: 30px;
 	font: inherit;
-	font-size: 25px;
-	align-items: center;
+	font-size: 17px;
 	cursor: pointer;
+}
+
+#month > button > span {
+	width: 18px;
+	height: 18px;
+	font: inherit;
+	font-size: 17px;
 }
 
 table {
@@ -345,7 +363,8 @@ td:not(:last-child) {
     background-color:inherit;
     cursor: pointer;
     font: inherit;
-    font-size: 25px;
+    font-size: 15px;
+    font-weight: 700;
     line-height: 24px;
     color: white;
 }
@@ -384,7 +403,7 @@ td:not(:last-child) {
 
 .schedule-list-Btn > span {
 	font: inherit;
-	font-size: 19px;
+	font-size: 12px;
 	font-weight: bold;
 	text-align: center;
 	line-height: 19px;
@@ -404,14 +423,14 @@ td:not(:last-child) {
 .schedule > button {
     font: inherit;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 13px;
     line-height: 20px;
 }
 
 .schedule > button > span {
     font: inherit;
-    font-size: 20px;
-    line-height: 20px;
+    font-size: 13px;
+    line-height: 25px;
 }
 
 .oneday > button, .lastday > button, 
@@ -496,6 +515,34 @@ tr > td:last-child > .date {
 
 tr > td:last-child > .date > button {
     background-color: inherit;
+}
+
+tr:first-child {
+	height: 30px;
+	line-height: 30px;
+	font: inherit;
+	font-size: 17px;
+	font-weight: 700;
+	color: black;
+}
+
+th {
+	line-height: 30px;
+	background-color: rgb(180, 180, 180);
+	text-align: center;
+	font: inherit;
+}
+
+th:first-child {
+	background-color: rgb(255, 180, 180);
+}
+
+th:last-child {
+	background-color: rgb(180, 180, 255);
+}
+
+th:not(:last-child) {
+	border-right: 2px solid black; 
 }
 
 tr:first-child > td:first-child > .date {

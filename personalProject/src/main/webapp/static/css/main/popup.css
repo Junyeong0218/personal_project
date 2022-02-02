@@ -75,20 +75,19 @@
 	justify-content: center;
 	align-items: center;
 	font: inherit;
-	font-size: 15px;
+	font-size: 10px;
 	color: white;
 	line-height: 20px;
 	cursor: pointer;
 }
 
-form {
-	width: 90%;
+.pop-up > button > span {
+	position: relative;
+	top: 2px;
 }
 
-form > div:first-child {
-	margin-top: 10px;
-	text-align: center;
-	font-size: 35px;
+form {
+	width: 90%;
 }
 
 form > div {
@@ -96,6 +95,7 @@ form > div {
 }
 
 form > div:not(:last-child) {
+	margin-bottom: 10px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -103,14 +103,28 @@ form > div:not(:last-child) {
 
 form > div > span {
 	font: inherit;
+	font-size: 20px;
+}
+
+form > div:not(:first-child) > span:last-child {
+	margin-top: 5px;
+	padding-left: 15px;
+	font: inherit;
+	font-size: 15px;
 	
+}
+
+.popup-title {
+	margin-top: 10px;
+	text-align: center;
+	font-size: 25px;
 }
 
 form > div > input, form > div > textarea {
 	height:30px;
 	line-height: 30px;
 	font: inherit;
-	font-size: 25px;
+	font-size: 17px;
 }
 
 form > div > textarea {
@@ -139,7 +153,7 @@ form > div > textarea {
 
 .btns > button > span {
 	font: inherit;
-	font-size: 25px;
+	font-size: 17px;
 }
 
 #schedule-list > div > div {
