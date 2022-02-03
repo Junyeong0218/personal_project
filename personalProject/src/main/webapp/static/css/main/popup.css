@@ -102,6 +102,7 @@ form > div:not(:last-child) {
 }
 
 form > div > span {
+	margin-bottom: 5px;
 	font: inherit;
 	font-size: 20px;
 }
@@ -118,6 +119,7 @@ form > div:not(:first-child) > span:last-child {
 	margin-top: 10px;
 	text-align: center;
 	font-size: 25px;
+	font-weight: 700;
 }
 
 form > div > input, form > div > textarea {
@@ -165,10 +167,12 @@ form > div > textarea {
 
 #schedule-list > div > div::-webkit-scrollbar,
 #schedule-list > div > div::-webkit-scrollbar-thumb {
-  width: 26px;
-  border-radius: 13px;
-  background-clip: padding-box;
-  border: 10px solid transparent;
+	padding-top: 50px;
+ 	width: 26px;
+ 	height: 350px;
+ 	border-radius: 13px;
+ 	background-clip: padding-box;
+ 	border: 10px solid transparent;
 }
 
 #schedule-list > div > div::-webkit-scrollbar-thumb {
@@ -191,15 +195,18 @@ form > div > textarea {
 
 #schedule-list > div > div > div > div {
 	width: 80%;
-	height: 40px;
+	height: 45px;
 	font: inherit;
-	font-size: 30px;
+	font-size: 20px;
 	display: flex;
 	justify-content: center;
 }
 
 #schedule-list > div > div > div > div:first-child {
+	margin-top: 8px;
 	color: white;
+	font-size: 25px;
+	font-weight: 700;
 }
 
 #schedule-list > div > div > div > div:not(:first-child) {
@@ -222,11 +229,19 @@ form > div > textarea {
 	cursor: pointer;
 	
 	font: inherit;
-	font-size: 22px;
+	font-size: 15px;
 }
 
 #schedule-list > div > div > div > div > button > span {
 	height: 15px;
-	line-height: 17px;
+	font: inherit;
+	font-weight: 700;
+	line-height: 20px;
 	pointer-events: none;
+}
+
+#schedule-list > div > div > div > div > button > span:last-child {
+	margin-top: 2px;
+	font-size: 12px;
+	font-weight: bold;
 }

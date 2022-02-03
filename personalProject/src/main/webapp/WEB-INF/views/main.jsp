@@ -78,20 +78,20 @@
             
 	            <div id="month">
 	            	<button type="button" onclick="setPrevMonth()"><span>◀</span></button>
-	            	<input type="month" id="monthSelector">
+	            	<input type="month" id="monthSelector" onchange="changeMonth(event)">
 	            	<button type="button" onclick="setNextMonth()"><span>▶</span></button>
 	            </div>
 	            
 	            <table>
 	            	
 	            	<tr>
-	            		<th>일</th>
-	            		<th>월</th>
-	            		<th>화</th>
-	            		<th>수</th>
-	            		<th>목</th>
-	            		<th>금</th>
-	            		<th>토</th>
+	            		<th><span>일</span></th>
+	            		<th><span>월</span></th>
+	            		<th><span>화</span></th>
+	            		<th><span>수</span></th>
+	            		<th><span>목</span></th>
+	            		<th><span>금</span></th>
+	            		<th><span>토</span></th>
 	            	</tr>
 	            	
 	            	<c:set var="dateIndex" value="0"/>
@@ -111,7 +111,16 @@
 			                    	
 			                    
 			                        <div class="date">
-			                            <button id="${intDates[dateIndex]}" class="dateBtn" type="button" onclick="showPopUp(event)">${fn:substring(strDates[dateIndex], 6, 8)}</button>
+			                        	<c:set var="dayNumber" value="${fn:substring(strDates[dateIndex], 6, 8)}"/>
+			                        	<c:if test="${fn:startsWith(dayNumber, '0')}">
+			                        		<c:set var="dayNumber" value="${fn:substring(strDates[dateIndex], 7, 8)}"/>
+			                        	</c:if>
+			                        
+			                            <button id="${intDates[dateIndex]}" class="dateBtn" type="button" onclick="showPopUp(event)">
+			                            	<div id="${fn:contains(today, strDates[dateIndex]) ? 'today' : ''}">
+			                            		<span>${dayNumber}</span>
+			                            	</div>
+			                            </button>
 			                            
 			                            <c:if test="${fn:length(schedules[intDates[dateIndex]]) > 5}">
 			                            	<button id="${intDates[dateIndex]}-list" class="schedule-list-Btn" type="button" onclick="showPopUp(event)">

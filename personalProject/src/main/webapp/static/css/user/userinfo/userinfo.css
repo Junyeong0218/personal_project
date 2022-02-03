@@ -39,7 +39,13 @@ main {
 	background: white;
 }
 
+form > div:first-child {
+	margin-bottom: 14px;
+}
+
 form > div > label {
+	position: relative;
+	top: 4px;
 	height: 50px;
 	font-size: 20px;
 }
@@ -48,6 +54,11 @@ form > div > label:first-child > span:nth-child(2) {
 	padding: 1px 7px 1px 5px;
 	width: 210px;
 	text-align: right;
+}
+
+label > span {
+	position: relative;
+	top: 4px;
 }
 
 label > button {
@@ -65,6 +76,7 @@ label > button {
 }
 
 form > div > label > input {
+	padding-top: 4px;
 	height: 50px;
 	font-size: 20px;
 }
@@ -74,6 +86,8 @@ form > div > span {
 }
 
 .profile-image {
+	position: relative;
+	top: 4px;
 	margin-bottom: 10px;
 	padding: 0;
 	display: flex;
@@ -84,6 +98,8 @@ form > div > span {
 }
 
 .profile-image > span {
+	position: relative;
+	top: 4px;
 	padding: 0px 10px;
 	font-size: 20px;
 	color: white;
@@ -99,6 +115,8 @@ form > div > span {
 }
 
 .profile-image > div > label {
+	position: relative;
+	top: 4px;
 	margin: 0;
 	padding: 1px 7px 1px 5px;
 	font: inherit;
@@ -126,7 +144,7 @@ form > div > span {
 
 .question > span {
 	margin: 0;
-	margin-top: 5px;
+	margin-top: 2px;
 }
 
 .question > select {
@@ -136,6 +154,12 @@ form > div > span {
 #submitBtn > button {
 	font-size: 25px;
 	line-height: 30px;
+}
+
+#submitBtn > button > span {
+	position: relative;
+	top: 2px;
+	font: inherit;
 }
 
 #modifyUserInfo {

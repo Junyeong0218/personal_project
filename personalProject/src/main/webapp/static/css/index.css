@@ -33,6 +33,12 @@ main > div {
     cursor: pointer;
 }
 
+.btn > button > span {
+	position: relative;
+	top: 2px;
+	font: inherit;
+}
+
 h1 {
     position: fixed;
     width: 200px;
@@ -80,6 +86,8 @@ label:not(:last-child) {
 }
 
 label > span {
+	position: relative;
+	top: 2px;
     padding: 0px 10px;
 }
 
@@ -95,6 +103,7 @@ label > input, label > button {
 }
 
 label > input {
+	padding-top: 4px;
     padding-left: 10px;
     border-left: 1px solid white;
 }
@@ -111,6 +120,12 @@ label > input:focus {
 #backtoBtn > button, #backtoBtn {
     justify-content: center;
     cursor: pointer;
+}
+
+#loginBtn > button > span, #backtoBtn > button > span {
+	position: relative;
+	top: 2px;
+	pointer-events: none;
 }
 
 .pop-up-bg {

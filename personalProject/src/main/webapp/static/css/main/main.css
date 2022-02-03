@@ -21,6 +21,7 @@ body {
     background-color: rgba(0 ,0, 0, 0.4);
     position: relative;
     font: inherit;
+    overflow: hidden;
 }
 
 header {
@@ -112,7 +113,7 @@ nav {
 }
 
 .underbar {
-	margin-left: 15px;
+	margin-left: 10px;
 	width: 0px;
 	height: 6px;
 	border-radius: 3px;
@@ -134,13 +135,13 @@ nav {
     from{
         width: 0;
     } to {
-        width: 80%;
+        width: 88%;
     }
 }
 
 @-webkit-keyframes close {
     from{
-        width: 80%;
+        width: 88%;
     } to {
         width: 0;
     }
@@ -230,6 +231,7 @@ main {
     flex-direction: column;
     font: inherit;
     align-items: center;
+    overflow: hidden;
 }
 
 input[type="month"] {
@@ -358,15 +360,46 @@ td:not(:last-child) {
     padding: 0;
     width: 100%;
     height: 16%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     border: none;
     background-color:inherit;
     cursor: pointer;
     font: inherit;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 700;
     line-height: 24px;
     color: white;
+}
+
+.date > button:first-child > div {
+	pointer-events: none;
+}
+
+.date > button:first-child > div > span {
+	position: relative;
+	top: 2px;
+	font: inherit;
+	pointer-events: none;
+}
+
+#today {
+	margin: 0;
+	border: 0;
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+	background-color: black;
+	border-radius: 50%;
+	font: inherit;
+	color: white;
+}
+
+#today > span {
+	top: 0px;
+	color: white;
 }
 
 .date > div {
@@ -431,6 +464,7 @@ td:not(:last-child) {
     font: inherit;
     font-size: 13px;
     line-height: 25px;
+    pointer-events: none;
 }
 
 .oneday > button, .lastday > button, 
@@ -530,6 +564,12 @@ th {
 	line-height: 30px;
 	background-color: rgb(180, 180, 180);
 	text-align: center;
+	font: inherit;
+}
+
+th > span {
+	position: relative;
+	top: 2px;
 	font: inherit;
 }
 

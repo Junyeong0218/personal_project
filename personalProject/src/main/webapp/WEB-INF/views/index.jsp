@@ -20,11 +20,11 @@
             <div id="btns" class="btns">
                 <div class="btn">
                     <button onclick="toSignin()">
-                        로그인
+                        <span>로그인</span>
                     </button>
                 </div>
                 <div class="btn">
-                    <button onclick="toSignup()">회원가입</button>
+                    <button onclick="toSignup()"><span>회원가입</span></button>
                 </div>
             </div>
 
@@ -40,10 +40,10 @@
                             <input type="password" name="password" id="password">
                         </label>
                         <label id="loginBtn">
-                            <button type="submit">로그인</button>
+                            <button type="submit"><span>로그인</span></button>
                         </label>
                         <label id="backtoBtn">
-                            <button type="button" onclick="goToSelect()">뒤로가기</button>
+                            <button type="button" onclick="goToSelect()"><span>뒤로가기</span></button>
                         </label>
                     </div>
                 </form>

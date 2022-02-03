@@ -53,10 +53,10 @@
                     </div>
                     <div id=btns>
                         <label id="submitBtn">
-                            <button type="submit" disabled>가입하기</button>
+                            <button type="submit" disabled><span>가입하기</span></button>
                         </label>
                         <label id="backtoBtn">
-                            <button type="button" onclick="showToHide()">뒤로가기</button>
+                            <button type="button" onclick="showToHide()"><span>뒤로가기</span></button>
                         </label>
                     </div>
                 </form>

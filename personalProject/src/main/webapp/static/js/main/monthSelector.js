@@ -6,6 +6,12 @@ window.onload = function () {
     setDefaultMonth();
 }
 
+function changeMonth(event) {
+	const date = event.target.value.replace("-", "");
+	
+	location.href = `/main?ym=${date}`;
+}
+
 function setDefaultMonth() {
     const date = new Date();
     

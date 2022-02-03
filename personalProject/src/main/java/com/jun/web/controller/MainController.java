@@ -1,6 +1,7 @@
 package com.jun.web.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,9 @@ public class MainController {
 				strDates.add(Integer.toString(intDate));
 			}
 			
+			String today = LocalDate.now().toString().replaceAll("-", "");
+			
+			mav.addObject("today", today);
 			mav.addObject("selectedMonth", Integer.toString(ym));
 			mav.addObject("strDates", strDates);
 			mav.addObject("intDates", intDates);

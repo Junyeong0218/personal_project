@@ -71,6 +71,10 @@ function showScheduleList(event) {
 									</div>`;
 			});
 			
+			if(data.length > 6) {
+				listclsBtn.style.right = '0px';
+			}
+			
 	  	},
 	  	error: function (xhr, status, error) {
 			console.log(xhr);

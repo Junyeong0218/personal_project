@@ -154,7 +154,7 @@
 					
 					<div id="btns">
 				        <label id="submitBtn">
-				            <button type="button" disabled>회원정보 수정</button>
+				            <button type="button" disabled><span>회원정보 수정</span></button>
 				        </label>
 				    </div>
 				    
