@@ -1,0 +1,602 @@
+@font-face {
+    font-family: 'LeferiPoint-WhiteObliqueA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'LeferiPoint-WhiteObliqueA', sans-serif;
+    background-image: url("/images/index_background1.jpg");
+}
+
+#container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background-color: rgba(0 ,0, 0, 0.4);
+    position: relative;
+    font: inherit;
+    overflow: hidden;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    min-height: 45px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+    z-index: 1;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    height: 75px;
+}
+
+.logo > a {
+    width: auto;
+    height: 31px;
+}
+
+.user-info {
+	position: relative;
+	margin-bottom: 10px;
+    width: auto;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.username, user-id {
+	width: 100px;
+    font: inherit;
+    font-size: 20px;
+    color: white !important;
+    margin-left: 10px;
+}
+
+.user-info > div {
+    border-radius: 5px;
+    border: 2px solid white;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: defauly;
+}
+
+.user-info > div > img {
+    width: 40px;
+    height: 40px;
+}
+
+.menus, .menu {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 60%;
+}
+
+.menu {
+	width: 100%;
+}
+
+.menu > button, .menu > a {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 50px;
+	margin-top: 10px;
+	border: none;
+	background: none;
+	font: inherit;
+	font-size: 25px;
+	text-decoration: none;
+	color: white;
+	cursor: pointer;
+}
+
+.underbar {
+	margin-left: 10px;
+	width: 0px;
+	height: 6px;
+	border-radius: 3px;
+	background-color: white;
+	align-self: flex-start;
+}
+
+.to-open {
+	animation: open .5s forwards;
+    -webkit-animation: open .5s forwards;
+}
+
+.to-close {
+	animation: close .5s forwards;
+    -webkit-animation: close .5s forwards;
+}
+
+@-webkit-keyframes open {
+    from{
+        width: 0;
+    } to {
+        width: 88%;
+    }
+}
+
+@-webkit-keyframes close {
+    from{
+        width: 88%;
+    } to {
+        width: 0;
+    }
+}
+
+.hidden {
+	opacity: 0;
+	z-index: -1;
+}
+
+.user-widget {
+	position: fixed;
+	width: 200px;
+	height: auto;
+	top: 55px;
+	right: 10px;
+	border: 1px solid white;
+	border-radius: 6px;
+	background-color: rgba(0, 0, 0, 0.9);
+	z-index: 1000;
+	font: inherit;
+	
+	z-index: -1;
+	opacity: 0;
+}
+
+.hide {
+	opacity: 0;
+	z-index: -1;
+	transition: all .5s;
+}
+
+.show {
+	opacity: 1;
+	z-index: 1000;
+	transition: all .5s;
+}
+
+.user-desc {
+	font: inherit;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.user-desc > span {
+	margin: 0;
+	height: 30px;
+	font-size: 25px;
+	color: white;
+}
+
+.user-desc > span:nth-child(4) {
+	margin-bottom: 10px;
+}
+
+.user-desc > div:not(:last-child) {
+	margin: 0;
+	height: 15px;
+	font: inherit;
+	font-size: 20px;
+	color: white;
+}
+
+.widget-btns {
+	display: flex;
+	justify-content: space-around;
+}
+
+.widget-btns > button {
+	border: 2px solid white;
+	background: none;
+	border-radius: 4px;
+	font: inherit;
+	font-size: 25px;
+	color: white;
+	cursor: pointer;
+}
+
+main {
+	box-sizing: border-box;
+	position: relative;
+    padding: 15px;
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font: inherit;
+    align-items: center;
+    overflow: hidden;
+}
+
+input[type="month"] {
+    position: relative;
+    top: 2px;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font: inherit;
+    font-size: 17px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+input[type="month"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+}
+
+input[type="month"]:focus {
+    outline: none;
+}
+
+aside {
+	margin: 0;
+	padding: 47px 0px 0px 0px;
+	display: flex;
+	flex-direction: column;
+	align-self: flex-start;
+	width: 400px;
+	min-width: 300px;
+	height: 95%;
+	border-right: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+#calendar {
+	align-self: flex-end;
+	height: 100%;
+}
+
+#month {
+    margin-bottom: 20px;
+	display: flex;
+	justify-content: center;
+}
+
+#month > button {
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	border-radius: 4px;
+	background-color: white;
+	width: 30px;
+	height: 30px;
+	font: inherit;
+	font-size: 17px;
+	cursor: pointer;
+}
+
+#month > button > span {
+	width: 18px;
+	height: 18px;
+	font: inherit;
+	font-size: 17px;
+}
+
+table {
+    width: 100%;
+    height: 94.5%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+}
+
+tr {
+    padding: 0;
+    min-height: 100px;
+    height: 16.67%;
+}
+
+tr:not(:last-child) {
+	border-bottom: 2px solid black;
+}
+
+td {
+	box-sizing: border-box;
+    padding: 0;
+    width: 250px;
+    min-width: 100px;
+}
+
+td:not(:last-child) {
+	border-right: 2px solid black;
+}
+
+.date {
+	position: relative;
+    padding: 0;
+    min-width: 100px;
+    min-height: 100px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font: inherit;
+    background-color:rgb(126, 126, 126);
+}
+
+.date > button:first-child {
+    padding: 0;
+    width: 100%;
+    height: 16%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: none;
+    background-color:inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 24px;
+    color: white;
+}
+
+.date > button:first-child > div {
+	pointer-events: none;
+}
+
+.date > button:first-child > div > span {
+	position: relative;
+	top: 2px;
+	font: inherit;
+	pointer-events: none;
+}
+
+#today {
+	margin: 0;
+	border: 0;
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+	background-color: black;
+	border-radius: 50%;
+	font: inherit;
+	color: white;
+}
+
+#today > span {
+	top: 0px;
+	color: white;
+}
+
+.date > div {
+	background-color:inherit;
+}
+
+.date > span {
+	width: 100%;
+	height: 22px;
+}
+
+.schedule-list-Btn {
+	position: absolute;
+	top: 0;
+	left: 20px;
+	margin: 0;
+	padding: 0;
+	width: 19px;
+	height: 19px;
+	justify-content: center;
+	z-index: 1;
+	cursor: pointer;
+	
+	font: inherit;
+	font-size: 19px;
+	text-align: center;
+	line-height: 19px;
+	
+	border: none;
+	background: none;
+	background-image: url("/images/scheduleListBtn.png");
+	background-size: contain;
+}
+
+.schedule-list-Btn > span {
+	font: inherit;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 19px;
+	
+	pointer-events: none;
+}
+
+.schedule {
+    padding: 0;
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    font: inherit;
+}
+
+.schedule > button {
+    font: inherit;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.schedule > button > span {
+    font: inherit;
+    font-size: 13px;
+    line-height: 25px;
+    pointer-events: none;
+}
+
+.oneday > button, .lastday > button, 
+.firstday > button, .middleday > button {
+    padding: 0;
+    width: 100%;
+    height: 20px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+}
+
+.oneday {
+    width: auto;
+    padding: 1px 3px;
+}
+
+.oneday > button {
+    border-radius: 10px;
+}
+
+.firstday {
+    width: auto;
+    padding: 1px 0px 1px 3px;
+}
+
+.firstday > button {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.middleday {
+    width: auto;
+    padding: 1px 0px;
+}
+
+.lastday {
+    width: auto;
+    padding: 1px 3px 1px 0px;
+}
+
+.lastday > button {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+tr > .notPreMonth:first-child > .date {
+	background-color: rgb(255, 180, 180);
+}
+
+tr > .notPreMonth > .date {
+	background-color: rgb(180, 180, 180);
+}
+
+tr > .notPreMonth:last-child > .date {
+	background-color: rgb(180, 180, 255);
+}
+
+tr > .notPreMonth:first-child > .date > button {
+	color: black;
+}
+
+tr > .notPreMonth > .date > button {
+	color: black;
+}
+
+tr > .notPreMonth:last-child > .date > button {
+	color: black;
+}
+
+tr > td:first-child > .date {
+    background-color: rgb(255, 97, 97);
+}
+
+tr > td:first-child > .date > button {
+    background-color: inherit;
+}
+
+tr > td:last-child > .date {
+    background-color: rgb(97, 97, 255);
+}
+
+tr > td:last-child > .date > button {
+    background-color: inherit;
+}
+
+tr:first-child {
+	height: 30px;
+	line-height: 30px;
+	font: inherit;
+	font-size: 17px;
+	font-weight: 700;
+	color: black;
+}
+
+th {
+	line-height: 30px;
+	background-color: rgb(180, 180, 180);
+	text-align: center;
+	font: inherit;
+}
+
+th > span {
+	position: relative;
+	top: 2px;
+	font: inherit;
+}
+
+th:first-child {
+	background-color: rgb(255, 180, 180);
+}
+
+th:last-child {
+	background-color: rgb(180, 180, 255);
+}
+
+th:not(:last-child) {
+	border-right: 2px solid black; 
+}
+
+tr:first-child > td:first-child > .date {
+    border-top-left-radius: 10px;
+}
+
+tr:first-child > td:last-child > .date {
+    border-top-right-radius: 10px;
+}
+
+tr:last-child > td:first-child > .date {
+    border-bottom-left-radius: 10px;
+}
+
+tr:last-child > td:last-child > .date {
+    border-bottom-right-radius: 10px;
+}

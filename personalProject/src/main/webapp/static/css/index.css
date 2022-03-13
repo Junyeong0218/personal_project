@@ -1,0 +1,259 @@
+main {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    width: 300px;
+}
+
+main > div {
+	width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.btn {
+    width: 300px;
+    height: 35px;
+    margin-bottom: 10px;
+}
+
+.btn > button {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: 3px solid white;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 100;
+    cursor: pointer;
+}
+
+.btn > button > span {
+	position: relative;
+	top: 2px;
+	font: inherit;
+}
+
+h1 {
+    position: fixed;
+    width: 200px;
+    text-align: center;
+    color: white;
+    z-index: 500;
+}
+
+.first-position {
+	top: 325px;
+}
+
+.btns {
+	position: relative;
+}
+
+.login-form {
+	opacity: 0;
+	display: none;
+}
+
+form {
+	width: 100%;	
+}
+
+form > div{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+label {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 3px solid white;
+    border-radius: 10px;
+}
+
+label:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+label > span {
+	position: relative;
+	top: 2px;
+    padding: 0px 10px;
+}
+
+label > input, label > button {
+    width: 195px;
+    height: 30px;
+    border: none;
+    background: none;
+    color: white;
+    font: inherit;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+label > input {
+	padding-top: 4px;
+    padding-left: 10px;
+    border-left: 1px solid white;
+}
+
+label > input:focus {
+    outline: none;
+}
+
+#loginBtn > button, #loginBtn {
+    justify-content: center;
+    cursor: pointer;
+}
+
+#backtoBtn > button, #backtoBtn {
+    justify-content: center;
+    cursor: pointer;
+}
+
+#loginBtn > button > span, #backtoBtn > button > span {
+	position: relative;
+	top: 2px;
+	pointer-events: none;
+}
+
+.pop-up-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 1000;
+	
+	z-index: -1;
+	opacity: 0;
+}
+
+.pop-up-win {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.show-pop {
+	opacity: 1;
+	z-index: 1000;
+	transition: all .5s;
+}
+
+.hide-pop {
+	opacity: 0;
+	z-index: -1;
+	transition: all .5s;
+}
+
+.pop-up {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	border-radius: 10px;
+	background: black;
+	font: inherit;
+	color: white;
+	
+	width: 300px;
+	height: 100px;
+}
+
+.show-pop .pop-up {
+	transform: translate(-50%, -50%);
+	transition: all .5s;
+}
+
+.hide-pop .pop-up {
+	transform: translate(50%, 50%);
+	transition: all .5s;
+}
+
+.pop-up > button {
+	margin-top: 15px;
+	width: 70px;
+	height: 25px;
+	position: relative;
+	border: 2px solid white;
+	border-radius: 4px;
+	background: rgba(0, 0, 0, 0.7);
+	font: inherit;
+	color: white;
+	text-align: center;
+}
+
+.to-hidden {
+    animation: fadeOut .5s forwards;
+    -webkit-animation: fadeOut .5s forwards;
+}
+
+.to-show {
+    animation: fadeIn .5s forwards;
+    -webkit-animation: fadeIn .5s forwards;
+}
+
+.go-up {
+    animation: goUp .5s forwards;
+    -webkit-animation: goUp .5s forwards;
+}
+
+.go-down {
+    animation: goDown .5s forwards;
+    -webkit-animation: goDown .5s forwards;
+}
+
+@-webkit-keyframes goUp {
+    from{
+        top: 325px;
+    } to {
+        top: 300px;
+    }
+}
+
+@-webkit-keyframes goDown {
+    from{
+        top: 300px;
+    } to {
+        top: 325px;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    from{
+        opacity: 0;
+        z-index: 0;
+    } to {
+        opacity: 1;
+        z-index: 50;
+    }
+}
+
+@-webkit-keyframes fadeOut {
+    from{
+        opacity: 1;
+        z-index: 50;
+    } to {
+        opacity: 0;
+        z-index: 0;
+    }
+}
