@@ -1,0 +1,13 @@
+package com.JPlanner.web;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class JPlannerApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
