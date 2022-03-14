@@ -7,6 +7,8 @@
 		<title>map test</title>
 		<script type="text/javascript"
 			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=879223fdb605bce94d0094de10b34048&libraries=services"></script>
+			<script src="/js/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript" src="/js/maps/kakao.js"></script>
     <link href="/css/maps/maps.css" rel="stylesheet" type="text/css">
 	</head>
 
@@ -16,7 +18,7 @@
 			<main>
 				<div id="search-bar">
 					<div id="input-keyword">
-						<input type="text" id="searcher" placeholder="목적지를 입력해 주세요" onchange="searchKeyword()">
+						<input type="text" id="searcher" placeholder="목적지를 입력해 주세요" onkeypress="searchKeyword()">
 						<ul id="searched-places"></ul>
 					</div>
 					<button type="button" id="search-btn">
@@ -40,13 +42,13 @@
 							<span>시작 지점</span>
 							<span class="place-name"></span>
 						</div>
-						<button class="Addwaypoint" type="button"></button>
+						<button class="Deletewaypoint" type="button"></button>
 					</div>
 				</div>
 			</aside>
 
 		</div>
-		<script src="/js/jquery-3.6.0.min.js"></script>
+		
 		<script src="/js/maps/maps.js"></script>
 	</body>
 
