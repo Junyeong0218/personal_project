@@ -1,7 +1,9 @@
 const mapContainer = document.querySelector("#maps");
 const searcher = document.querySelector("#searcher");
 const searchedPlaces = document.querySelector("#searched-places");
+const scheduler = document.querySelector("#scheduler");
 const startPlace = document.querySelector("#start-place");
+let priority = document.querySelector(".wayToSort input[checked]").id;
 
 let lat = 0;
 let lon = 0;
@@ -11,6 +13,10 @@ let map;
 let marker;
 let geocoder;
 let customOverlay;
+let polyline;
+let paths = [];
+let markers = [];
+let placeIndex = 0;
 let wayPointCnt = 1;
 
 const colorSet = ["#5F6366", "#4D6D9A", "#86B3D1", "#99CED3", "#EDB5BF"];
@@ -19,20 +25,51 @@ const colorSet = ["#5F6366", "#4D6D9A", "#86B3D1", "#99CED3", "#EDB5BF"];
 // 매개변수 map = 주어진 map 기준으로 검색
 // setMap(map); 으로도 설정 가능
 
-startPlace.querySelector(".Deletewaypoint").addEventListener("click", function() {
+function remainPlaceFrame(place) {
 	const span = document.createElement("span");
-	span.innerText = "시작 지점";
+	span.innerText = place.id == "start-place" ? "시작 지점" :
+					 place.id == "end-place" ? "도착지" : "";
 	const placeName = document.createElement("span");
 	placeName.className = "place-name";
 	
-	const placeTexts = startPlace.querySelector(".place-texts");
+	const placeTexts = place.querySelector(".place-texts");
 	placeTexts.textContent = "";
 	placeTexts.appendChild(span);
 	placeTexts.appendChild(placeName);
-});
+	
+	AddChangePositionEvent(place);
+}
 
 window.onload = function() {
 	navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
+	let startPlace = document.createElement("div");
+	startPlace.id = "start-place";
+	startPlace.innerHTML = `<div class="place-texts">
+								<span>시작 지점</span>
+								<span id="" class="place-name"></span>
+							</div>
+							<div class="waypointBtns">
+								<button class="Deletewaypoint" type="button"></button>
+								<div id="${placeIndex++}">
+									<div class="upIndex">
+										<span></span>
+									</div>
+									<div class="downIndex">
+										<span></span>
+									</div>
+								</div>
+							</div>`
+	scheduler.appendChild(startPlace);
+	startPlace.querySelector(".Deletewaypoint").addEventListener("click", function() {
+		remainPlaceFrame(startPlace);
+	});
+	const sorting = document.querySelector(".wayToSort").children;
+	for(let i=1; i<sorting.length; i++) {
+		sorting[i].addEventListener("click", function() {
+			priority = sorting[i].querySelector("input").id;
+			loadNavi();
+		});
+	}
 };
 
 function onGeoOk(position) {
@@ -70,6 +107,7 @@ function onGeoError() {
 }
 
 function moveCenter(latLng) {
+	marker.setMap(map);
 	marker.setPosition(latLng);
 	map.panTo(latLng, 100);
 }
@@ -140,7 +178,7 @@ function createOverlay(latLng, documents, placeName, address) {
 			   					<span>경유지로 추가</span>
 			   				</button>
 			   				<button class="overlay-btn" type="button">
-			   					<span>도착지로 추가</span>
+			   					<span>도착지로 설정</span>
 			   				</button>
 			   			</div>
 			   		</div>
@@ -155,82 +193,222 @@ function createOverlay(latLng, documents, placeName, address) {
 	
 	customOverlay.setMap(map);
 	
-	setOverlayEvent(place, documents);
-}
-
-function setOverlayEvent(place, documents) {
 	const overlayCloser = document.querySelector("#overlay-closer");
 	overlayCloser.addEventListener("click", function() {
 		customOverlay.setMap(null);
 	});
 	
+	const startPlace = document.querySelector("#start-place");
+	
 	let btns = document.querySelectorAll(".overlay-btns")[0].children;
 	
 	btns[0].addEventListener("click", function(event) {
 		event.preventDefault();
-		startPlace.querySelector(".place-name").innerText = place == null ? documents[0].place_name : place.place_name;
+		const placeNameTag = startPlace.querySelector(".place-name");
+		placeNameTag.innerText = place == null ? documents[0].place_name : place.place_name;
+		placeNameTag.id = place == null ? documents[0].id : place.id;
 		
-		const placeTexts = startPlace.querySelector(".place-texts");
+		addAdressTag(startPlace, address);
+		addPlaceCoordTag(startPlace, documents, place);
+		AddChangePositionEvent(startPlace);
 		
-		let span = document.createElement("span");
-		span.className = "hidden";
-		span.innerText = place == null ? documents[0].x : place.x;
-		placeTexts.appendChild(span);
-		
-		span = document.createElement("span");
-		span.className = "hidden";
-		span.innerText = place == null ? documents[0].y : place.y;
-		placeTexts.appendChild(span);
 		loadNavi();
 	});
 	
 	btns[1].addEventListener("click", function(event) {
 		event.preventDefault();
-		const scheduler = document.querySelector("#scheduler");
-		const tags = document.createElement("div");
-		tags.className = "middle-place";
-		tags.innerHTML = `<div class="place-texts">
-							  <span>경유지${wayPointCnt++}</span>
-							  <span class="place-name">${place == null ? documents[0].place_name : place.place_name}</span>
-							  <span class="hidden">${place == null ? documents[0].x : place.x}</span>
-							  <span class="hidden">${place == null ? documents[0].y : place.y}</span>
-						  </div>
-						  <div class="waypointBtns">
-						  	<button class="Addwaypoint" type="button"></button>
-						  	<button class="Deletewaypoint" type="button"></button>
-						  </div>`;
-		scheduler.appendChild(tags);
+		const endPlace = scheduler.querySelector("#end-place");
+		let waypoint = document.createElement("div");
+		waypoint.className = "middle-place";
+		waypoint.innerHTML = `<div class="place-texts">
+								  <span>경유지${wayPointCnt++}</span>
+								  <span id="${place == null ? documents[0].id : place.id}" class="place-name">
+								  		${place == null ? documents[0].place_name : place.place_name}
+								  </span>
+							  </div>
+							  <div class="waypointBtns">
+								  <button class="Deletewaypoint" type="button"></button>
+								  <div id="${placeIndex++}">
+									  <div class="upIndex">
+										  <span></span>
+									  </div>
+									  <div class="downIndex">
+										  <span></span>
+									  </div>
+								  </div>
+							  </div>`;
+		if(endPlace != null) {
+			scheduler.insertBefore(waypoint, endPlace);
+		} else {
+			scheduler.appendChild(waypoint);
+		}
+		
+		addAdressTag(waypoint, address);
+		addPlaceCoordTag(waypoint, documents, place);
+		AddDeleteWayPointEvent(waypoint);
+		AddChangePositionEvent(waypoint);
 		
 		loadNavi();
+		
+		//<button class="Addwaypoint" type="button"></button>
 	});
 	
 	btns[2].addEventListener("click", function(event) {
 		event.preventDefault();
-		const scheduler = document.querySelector("#scheduler");
-		const tags = document.createElement("div");
-		tags.id = "end-place";
-		tags.innerHTML = `<div class="place-texts">
-							  <span>도착지</span>
-							  <span class="place-name">${place == null ? documents[0].place_name : place.place_name}</span>
-							  <span class="hidden">${place == null ? documents[0].x : place.x}</span>
-							  <span class="hidden">${place == null ? documents[0].y : place.y}</span>
-						  </div>
-						  <div class="waypointBtns">
-						  	<button class="Deletewaypoint" type="button"></button>
-						  </div>`;
-		scheduler.appendChild(tags);
+		let endPlace = scheduler.querySelector("#end-place");
+		if(endPlace != null) {
+			remainPlaceFrame(endPlace);
+			
+			const endPlaceTag = endPlace.querySelector(".place-name");
+			endPlaceTag.innerText = place == null ? documents[0].place_name : place.place_name;
+			endPlaceTag.id = place == null ? documents[0].id : place.id;
+		} else {
+			endPlace = document.createElement("div");
+			endPlace.id = "end-place";
+			endPlace.innerHTML = `<div class="place-texts">
+								  <span>도착지</span>
+								  <span id="${place == null ? documents[0].id : place.id}" class="place-name">
+								  		${place == null ? documents[0].place_name : place.place_name}
+								  </span>
+							  </div>
+							  <div class="waypointBtns">
+							  	  <button class="Deletewaypoint" type="button"></button>
+							  	  <div id="${placeIndex++}">
+									  <div class="upIndex">
+										  <span></span>
+									  </div>
+									  <div class="downIndex">
+										  <span></span>
+									  </div>
+								  </div>
+							  </div>`;
+			scheduler.appendChild(endPlace);
+		}
+		
+		addAdressTag(endPlace, address);
+		addPlaceCoordTag(endPlace, documents, place);
+		AddDeleteWayPointEvent(endPlace);
+		AddChangePositionEvent(endPlace);
+		
 		loadNavi();
 	});
+}
+
+function addAdressTag(eachPlace, address) {
+	const placeTexts = eachPlace.querySelector(".place-texts");
+	
+	const span = document.createElement("span");
+	span.id = "address";
+	span.className = "hidden";
+	span.innerText = address;
+	
+	placeTexts.appendChild(span);
+}
+
+function addPlaceCoordTag(eachPlace, documents, place) {
+	const placeTexts = eachPlace.querySelector(".place-texts");
+		
+	let span = document.createElement("span");
+	span.id = "x";
+	span.className = "hidden";
+	span.innerText = place == null ? documents[0].x : place.x;
+	placeTexts.appendChild(span);
+	
+	span = document.createElement("span");
+	span.id = "y";
+	span.className = "hidden";
+	span.innerText = place == null ? documents[0].y : place.y;
+	placeTexts.appendChild(span);
+}
+
+function AddDeleteWayPointEvent(eachPlace) {
+	const deleteBtn = eachPlace.querySelector(".Deletewaypoint");
+	deleteBtn.addEventListener("click", function() {
+		if(eachPlace.id == "") {
+			placeIndex--;
+		}
+		eachPlace.remove();
+		adjustWayPointCnt();
+		loadNavi();
+	});
+}
+
+function AddChangePositionEvent(eachPlace) {
+	const upBtn = eachPlace.querySelector(".upIndex");
+	const downBtn = eachPlace.querySelector(".downIndex");
+	
+	upBtn.addEventListener("click", function() {
+		if(eachPlace.id != "start-place") {
+			const beforeElement = eachPlace.previousElementSibling;
+			
+			scheduler.insertBefore(eachPlace, beforeElement);
+			renameIdAndClass();
+			loadNavi();
+		}
+	});
+	
+	downBtn.addEventListener("click", function() {
+		if(eachPlace.id != "end-place") {
+			const nextElement = eachPlace.nextElementSibling;
+			
+			scheduler.insertBefore(nextElement, eachPlace);
+				
+			renameIdAndClass();
+			loadNavi();
+		}
+	});
+}
+
+function renameIdAndClass() {
+	placeIndex = 0;
+	wayPointCnt = 1;
+	const children = scheduler.children;
+
+	for(let i=1; i<children.length; i++) {
+		const child = children[i];
+		if(i == 1) {
+			child.id = "start-place";
+			child.className = "";
+			child.querySelector(".place-texts > span").innerText = "시작 지점";
+			child.querySelector(".waypointBtns > div").id = placeIndex++;
+		} else if(i == children.length-1) {
+			child.id = "end-place";
+			child.className = "";
+			child.querySelector(".place-texts > span").innerText = "도착지";
+			child.querySelector(".waypointBtns > div").id = placeIndex++;
+		} else {
+			child.id = "";
+			child.className = "middle-place";
+			child.querySelector(".place-texts > span").innerText = `경유지${wayPointCnt++}`;
+			child.querySelector(".waypointBtns > div").id = placeIndex++;
+		}
+	}
+}
+
+function adjustWayPointCnt() {
+	const wayPoints = document.querySelectorAll(".middle-place");
+	let index = 0;
+	for(let i=0; i<wayPoints.length; i++) {
+		const titleTag = wayPoints[i].querySelector(".place-texts").firstChild.nextSibling;
+		const number = titleTag.innerText.substring(3, titleTag.innerText.length);
+		
+		if(number == `${i+1}`) {
+			index = number * 1;
+		} else {
+			titleTag.innerText = `경유지${index + 1}`;
+			index++;
+		}
+	}
 }
 
 function searchKeyword() {
 	searchedPlaces.textContent = "";
 	const keyword = searcher.value;
-	const latLng = map.getCenter();
-	
+	// const latLng = map.getCenter();
+	// y=${latLng.getLat()}&x=${latLng.getLng()}&
 	$.ajax({
    		type: "get",
-    	url: `https://dapi.kakao.com/v2/local/search/keyword.json?y=${latLng.getLat()}&x=${latLng.getLng()}&sort=accuracy&query=${keyword}`,
+    	url: `https://dapi.kakao.com/v2/local/search/keyword.json?sort=accuracy&query=${keyword}`,
     	headers: { "Authorization": "KakaoAK abd8abba6430208eec39d8f882753415" },
     	success: function (data) {
 			const documents = data.documents;
@@ -254,35 +432,32 @@ function addSearchResult(documents) {
 							<a href="${documents[i].place_url}" target="_blank">${documents[i].place_name}</a>
 							<span>${documents[i].address_name}</span>
 						</div>`;
+						
+		const latLng = new kakao.maps.LatLng(documents[i].y, documents[i].x);
+						
 		li.addEventListener("mouseover", function() {
-			const AddrToCoords = function(result, status) {
-				if(status === kakao.maps.services.Status.OK) {
-					moveCenter(new kakao.maps.LatLng(result[0].y, result[0].x));
-				}
-			}
-			geocoder.addressSearch(documents[i].address_name, AddrToCoords);
+			moveCenter(latLng);
 		});
 		li.addEventListener("click", function() {
-			const AddrToCoords = function(result, status) {
-				if(status === kakao.maps.services.Status.OK) {
-					showPlaceInfo(new kakao.maps.LatLng(result[0].y, result[0].x), documents[i].place_name);
-					
-					searchedPlaces.textContent = "";
-				}
-			}
-			geocoder.addressSearch(documents[i].address_name, AddrToCoords);
+			showPlaceInfo(latLng, documents[i].place_name);
+			
+			searchedPlaces.textContent = "";
 		});
 		searchedPlaces.appendChild(li);
 	}
 }
 
 function loadNavi() {
+	const startPlace = document.querySelector("#start-place");
 	const endPlace = document.querySelector("#end-place");
 	const middlePlaces = document.querySelectorAll(".middle-place");
 	
 	if(startPlace == null || endPlace == null || middlePlaces == null) {
 		return;
 	}
+	
+	erasePolyline();
+	eraseMarkers();
 	
 	const startPlaceName = startPlace.querySelector(".place-name").innerText;
 	const endPlaceName = endPlace.querySelector(".place-name").innerText;
@@ -305,6 +480,21 @@ function loadNavi() {
 	});
 	placeNames.push(endPlaceName);
 	
+	data = wayPoints.length == 0 ? {
+		"origin": origin,
+		"destination": destination,
+		"priority": priority,
+		"car_type": 1,
+		"car_fuel": "GASOLINE"
+	} : {
+		"origin": origin,
+		"destination": destination,
+		"waypoints": wayPoints,
+		"priority": priority,
+		"car_type": 1,
+		"car_fuel": "GASOLINE"
+	};
+	
 	const url = "https://apis-navi.kakaomobility.com/v1/waypoints/directions";
 	
 	$.ajax({
@@ -312,13 +502,7 @@ function loadNavi() {
     	url: url,
     	headers: { "Authorization": "KakaoAK abd8abba6430208eec39d8f882753415",
     			   "Content-Type": "application/json; charset=UTF-8"},
-    	data: JSON.stringify({ "origin": origin,
-			"destination": destination,
-			"waypoints": wayPoints,
-			"priority": "RECOMMEND",
-			"car_type": 1,
-			"car_fuel": "GASOLINE"
-	    }),
+    	data: JSON.stringify(data),
     	success: function (data) {
 			marker.setMap(null);
 			customOverlay.setMap(null);
@@ -348,65 +532,50 @@ function showSections(sections, placeNames) {
 			min_y = bound.min_y;
 			max_x = bound.max_x;
 			max_y = bound.max_y;
-		} else {
-			const bound = e.bound;
-			if(bound.min_x < min_x) min_x = bound.min_x;
-			if(bound.min_y < min_y) min_y = bound.min_y;
-			if(bound.max_x > max_x) max_x = bound.max_x;
-			if(bound.max_y > max_y) max_y = bound.max_y;
 		}
 		
 		/*const firstGuide = e.guides[0];*/
 		const startPosition = new kakao.maps.LatLng(e.guides[0].y, e.guides[0].x);
-		const startMarker = new kakao.maps.Marker({
-			map: map,
-			position: startPosition
-		});
-		startMarker.setMap(map);
-
 		const startMarkerIndex = i;
-		kakao.maps.event.addListener(startMarker, "click", function() {
-			showPlaceInfo(startPosition, placeNames[startMarkerIndex]);
-		});
+		
+		addMarkers(startPosition, placeNames[startMarkerIndex]);
 		i++;
 		
 		if(sections[sections.length-1] == e) {
 			const endPosition = new kakao.maps.LatLng(e.guides[e.guides.length-1].y, e.guides[e.guides.length-1].x);
-			const endMarker = new kakao.maps.Marker({
-				map: map,
-				position: endPosition
-			});
-			endMarker.setMap(map);
 			const endMarkerIndex = i;
-			kakao.maps.event.addListener(endMarker, "click", function() {
-				showPlaceInfo(endPosition, placeNames[endMarkerIndex]);
-			});
+			
+			addMarkers(endPosition, placeNames[endMarkerIndex]);
 		}
-		/*const colorIndex = Math.floor(Math.random() * 5);
-		console.log(colorIndex);
-		console.log(colorSet[colorIndex]);*/
-		/* 원색 (주황색, 살색, 초록색 제외)*/
 		
 		e.roads.forEach(ie =>{
-			let paths = [];
 			const vertexes = ie.vertexes;
 			
 			for(let i=0; i<vertexes.length; i++) {
-				paths.push(new kakao.maps.LatLng(vertexes[i+1], vertexes[i++]));
+				paths.push(new kakao.maps.LatLng(vertexes[i+1], vertexes[i]));
+				if(vertexes[i] < min_x) min_x = vertexes[i];
+				if(vertexes[i] > max_x) max_x = vertexes[i];
+				if(vertexes[i+1] < min_y) min_y = vertexes[i+1];
+				if(vertexes[i+1] > max_y) max_y = vertexes[i+1];
+				i++;
 			}
-			
-			const polyline = new kakao.maps.Polyline({
-				map: map,
-				path: paths,
-				strokeWeight: 5,
-				strokeColor: "#0000ff",
-				strokeOpacity: 0.8
-			});
-			
-			polyline.setMap(map);
 		}); // end road forEach
 		
 	}); // end section forEach
+	/*const colorIndex = Math.floor(Math.random() * 5);
+	console.log(colorIndex);
+	console.log(colorSet[colorIndex]);*/
+	/* 원색 (주황색, 살색, 초록색 제외) "#0000ff"*/
+	
+	polyline = new kakao.maps.Polyline({
+		map: map,
+		path: paths,
+		strokeWeight: 5,
+		strokeColor: "#0000ff",
+		strokeOpacity: 0.8
+	});
+	
+	polyline.setMap(map);
 	
 	const bounds = new kakao.maps.LatLngBounds();
 	bounds.extend(new kakao.maps.LatLng(min_y, min_x));
@@ -417,5 +586,32 @@ function showSections(sections, placeNames) {
 	
 } // end function
 
+function addMarkers(latLng, placeName) {
+	const marker = new kakao.maps.Marker({
+		position: latLng
+	});
+	marker.setMap(map);
+	
+	kakao.maps.event.addListener(marker, "click", function() {
+		showPlaceInfo(latLng, placeName);
+	});
+	
+	markers.push(marker);
+}
 
+function eraseMarkers() {
+	if(markers != null) {
+		markers.forEach(e => {
+			e.setMap(null);
+		});
+		markers = [];
+	}
+}
 
+function erasePolyline() {
+	if(polyline != null) {
+		polyline.setMap(null);
+		poltline = null;
+		paths = [];
+	}
+}

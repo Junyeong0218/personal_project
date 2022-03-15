@@ -15,6 +15,12 @@
 	font-size: 14px;
 }
 
+aside {
+	margin-left: 5px;
+	height: 852px;
+	border: 1px solid black;
+}
+
 .hidden {
 	display: none;
 }
@@ -119,10 +125,9 @@
 
 #scheduler {
 	box-sizing:border-box;
-	margin-left: 5px;
 	width: 300px;
-	height: 852px;
-	border: 1px solid black;
+	height: 552px;
+	border-bottom: 1px solid #238cfa;
 	overflow: auto;
 }
 
@@ -143,6 +148,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	border-top: 1px solid #238cfa;
 	border-bottom: 1px solid #238cfa;
 }
 
@@ -170,6 +176,7 @@
 
 .waypointBtns {
 	display: flex;
+	align-items: center;
 }
 
 .Addwaypoint, .Deletewaypoint {
@@ -189,6 +196,77 @@
 
 .Deletewaypoint {
 	background-image: url("/images/Deletewaypoint.png");
+}
+
+.upIndex, .downIndex {
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25px;
+	height: 25px;
+	background-color: #238cfa;
+	cursor: pointer;
+}
+
+.upIndex > span {
+	background-image: url("/images/upIndex.png");
+}
+
+.downIndex > span {
+	background-image: url("/images/downIndex.png");
+}
+
+.upIndex > span, .downIndex > span {
+	width: 17px;
+	height: 17px;
+	background-size: contain;
+	pointer-events: none;
+}
+
+.wayToSort {
+	box-sizing: border-box;
+	margin-top: 10px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: space-between;
+	font-weight: 700;
+	border-bottom: 1px solid #238cfa;
+}
+
+.wayToSort > label {
+	padding-left: 12px;
+}
+
+.scheduler-btns {
+	position: relative;
+	top: 150px;
+	height: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.saveBtn, .clearBtn {
+	width: 120px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #238cfa;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.saveBtn > span, .clearBtn > span {
+	position: relative;
+	top: 2px;
+	font-weight: 700;
+	pointer-events: none;
 }
 
 .placeOverlay {
