@@ -224,7 +224,7 @@ aside {
 	pointer-events: none;
 }
 
-.wayToSort {
+.wayToSort, .days {
 	box-sizing: border-box;
 	margin-top: 10px;
 	padding-left: 10px;
@@ -238,13 +238,17 @@ aside {
 	border-bottom: 1px solid #238cfa;
 }
 
+.days {
+	height: 130px;
+	overflow: auto;
+}
+
 .wayToSort > label {
 	padding-left: 12px;
 }
 
 .scheduler-btns {
-	position: relative;
-	top: 150px;
+	margin-top: 10px;
 	height: 30px;
 	display: flex;
 	flex-direction: row;

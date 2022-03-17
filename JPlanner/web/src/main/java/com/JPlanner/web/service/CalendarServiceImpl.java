@@ -26,17 +26,14 @@ public class CalendarServiceImpl implements CalendarService {
 	public Map<Integer, List<Schedule>> selectSchedules(List<Integer> dates, int id) {
 		
 		List<Schedule> schedules = calendarDao.selectSchedulesByDates(dates, id);
-		
 		Map<Integer, List<Schedule>> scheduleMap = new HashMap<Integer, List<Schedule>>();
 		
 		for(int i=0; i<dates.size(); i++) {
 			
 			int date = dates.get(i);
-
 			List<Schedule> schedulesEachDay = new LinkedList<Schedule>();
 			
 			for(int j=0; j<schedules.size(); j++) {
-				
 				Schedule schedule = new Schedule();
 				schedule.setId(schedules.get(j).getId());
 				schedule.setTitle(schedules.get(j).getTitle());
@@ -51,170 +48,129 @@ public class CalendarServiceImpl implements CalendarService {
 					
 					if(endDate - startDate == 0) {
 						schedule.setOneday(true);
-						schedule.setRowNum(-1);
-						schedulesEachDay.add(schedule);
 						
 					} else if(date == startDate) {
 						schedule.setFirstday(true);
-						schedule.setRowNum(-1);
-						schedulesEachDay.add(schedule);
 						
 					} else if(date == endDate) {
 						schedule.setLastday(true);
-						schedule.setRowNum(-1);
-						schedulesEachDay.add(schedule);
 						
 					} else if(date > startDate && date < endDate){
 						schedule.setMiddleday(true);
-						schedule.setRowNum(-1);
-						schedulesEachDay.add(schedule);
 					}
-					
+					schedule.setRowNum(-1);
+					schedulesEachDay.add(schedule);
 				}
-				
 			}
 			
 			if(schedulesEachDay.size() != 0) {
-				
 				// set rowNum if td must be had blank set id -1 and it will be <span> at jsp
-				
 				List<Schedule> prevSchedules = null;
-				
-				if(i > 0) {
-					prevSchedules = scheduleMap.get(dates.get(i-1));
-				}
 				
 				if(i == 0) {
 					// firstDayinCalendar // sort 1. schedule_length 2. id // rowNum starts 0
 					for(int j=0; j<schedulesEachDay.size(); j++) {
-						
 						schedulesEachDay.get(j).setRowNum(j);
-						
 					}
 					scheduleMap.put(date, schedulesEachDay);
-					
-				} else if(prevSchedules.size() == 0) {
-					// lastDay has no schedule
-					for(int j=0; j<schedulesEachDay.size(); j++) {
-						
-						schedulesEachDay.get(j).setRowNum(j);
-						
-					}
-					scheduleMap.put(date, schedulesEachDay);
-					
 				} else {
-					// lastDay has schedule at least 1
-					List<Schedule> schedulesWithDays = new ArrayList<Schedule>();
+					prevSchedules = scheduleMap.get(dates.get(i-1));
 					
-					for(int j=0; j<prevSchedules.size(); j++) {
-						
-						Schedule schedule = prevSchedules.get(j);
-						if(schedule.getId() == -1) {
-							continue;
-						}
-						int startDate = Integer.parseInt(schedule.getStartDate().toLocalDate().toString().replace("-", ""));
-						int endDate = Integer.parseInt(schedule.getEndDate().toLocalDate().toString().replace("-", ""));
-						if(endDate - startDate > 0) {
-							schedulesWithDays.add(schedule);
-						}
-					}
-					
-					if(schedulesWithDays.size() == 0) {
-						// lastDay has no schedule over 1 day
+					if(prevSchedules.size() == 0) {
+						// lastDay has no schedule
 						for(int j=0; j<schedulesEachDay.size(); j++) {
 							schedulesEachDay.get(j).setRowNum(j);
 						}
 						scheduleMap.put(date, schedulesEachDay);
 						
 					} else {
+						// lastDay has schedule at least 1
+						List<Schedule> schedulesWithDays = new ArrayList<Schedule>();
 						
-						List<Schedule> matchedSchedules = new LinkedList<Schedule>();
-						
-						int maxRow = 0;
-						
-						for(int j=0; j<schedulesWithDays.size(); j++) {
-							Schedule lastSchedule = schedulesWithDays.get(j);
+						for(int j=0; j<prevSchedules.size(); j++) {
 							
-							for(int k=0; k<schedulesEachDay.size(); k++) {
+							Schedule prevSchedule = prevSchedules.get(j);
+							if(prevSchedule.getId() == -1) {
+								continue; // 당일 일정
+							}
+							int startDate = Integer.parseInt(prevSchedule.getStartDate().toLocalDate().toString().replace("-", ""));
+							int endDate = Integer.parseInt(prevSchedule.getEndDate().toLocalDate().toString().replace("-", ""));
+							if(endDate - startDate > 0) {
+								schedulesWithDays.add(prevSchedule);
+							}
+						}
+						if(schedulesWithDays.size() == 0) {
+							// lastDay has no schedule over 1 day
+							for(int j=0; j<schedulesEachDay.size(); j++) {
+								schedulesEachDay.get(j).setRowNum(j);
+							}
+							scheduleMap.put(date, schedulesEachDay);
+						} else {
+							
+							List<Schedule> matchedSchedules = new ArrayList<Schedule>();
+							int maxRow = 0;
+							
+							for(int j=0; j<schedulesWithDays.size(); j++) {
+								Schedule lastSchedule = schedulesWithDays.get(j);
 								
-								if(lastSchedule.getId() == schedulesEachDay.get(k).getId()) {
-									schedulesEachDay.get(k).setRowNum(lastSchedule.getRowNum());
+								for(int k=0; k<schedulesEachDay.size(); k++) {
 									
-									if(lastSchedule.getRowNum() > maxRow) {
-										maxRow = lastSchedule.getRowNum() + 1;
+									if(lastSchedule.getId() == schedulesEachDay.get(k).getId()) {
+										schedulesEachDay.get(k).setRowNum(lastSchedule.getRowNum());
+										
+										if(lastSchedule.getRowNum() >= maxRow) {
+											maxRow = lastSchedule.getRowNum() + 1;
+										}
+										break;
 									}
-									break;
 								}
+							} // copy rowNum to presentSchedules
+							
+							if(schedulesEachDay.size() > maxRow) {
+								maxRow = schedulesEachDay.size();
+							}
+							
+							for(int j=0; j<maxRow; j++) {
+								boolean rowNumFound = false;
+
+								for(int m=0; m<schedulesEachDay.size(); m++) {
+									if(schedulesEachDay.get(m).getRowNum() == j) {
+										matchedSchedules.add(schedulesEachDay.get(m));
+										schedulesEachDay.remove(m);
+										rowNumFound = true;
+										break;
+									}
+								}
+								if(rowNumFound == true) {
+									continue;
+								}
+								rowNumFound = false;
 								
-							}
-							
-						} // copy rowNum to presentSchedules
-						
-//						System.out.println(date + "_00 maxRow : " + maxRow);
-						
-						if(schedulesEachDay.size() > maxRow) {
-							maxRow = schedulesEachDay.size();
-						}
-						
-//						System.out.println(date + "_11 matchedSchedules : " + matchedSchedules);
-//						System.out.println(date + "_11 schedulesEachDay : " + schedulesEachDay);
-//						System.out.println(date + "_11 maxRow : " + maxRow);
-						
-						for(int j=0; j<maxRow; j++) {
-							boolean rowNumFound = false;
-
-							for(int m=0; m<schedulesEachDay.size(); m++) {
-								if(schedulesEachDay.get(m).getRowNum() == j) {
-									matchedSchedules.add(schedulesEachDay.get(m));
-									schedulesEachDay.remove(m);
-									rowNumFound = true;
-//									System.out.println(date + "_22 matchedSchedules : " + matchedSchedules);
-									break;
+								for(int m=0; m<schedulesEachDay.size(); m++) {
+									if(schedulesEachDay.get(m).getRowNum() == -1) {
+										schedulesEachDay.get(m).setRowNum(j);
+										matchedSchedules.add(schedulesEachDay.get(m));
+										schedulesEachDay.remove(m);
+										rowNumFound = true;
+										break;
+									}
 								}
-							}
-
-							if(rowNumFound == true) {
-								continue;
-							}
-							
-							rowNumFound = false;
-							
-							for(int m=0; m<schedulesEachDay.size(); m++) {
-								if(schedulesEachDay.get(m).getRowNum() == -1) {
-									schedulesEachDay.get(m).setRowNum(j);
-									matchedSchedules.add(schedulesEachDay.get(m));
-									schedulesEachDay.remove(m);
-									rowNumFound = true;
-//									System.out.println(date + "_22 matchedSchedules : " + matchedSchedules);
-									break;
+								if(rowNumFound == true) {
+									continue;
 								}
+								Schedule span = new Schedule();
+								span.setId(-1);
+								span.setRowNum(j);
+								matchedSchedules.add(span);
 							}
-							
-							if(rowNumFound == true) {
-								continue;
-							}
-							
-							Schedule span = new Schedule();
-							span.setId(-1);
-							span.setRowNum(j);
-							matchedSchedules.add(span);
-//							System.out.println(date + "_22 matchedSchedules : " + matchedSchedules);
+							scheduleMap.put(date, matchedSchedules);
 						}
-						
-//						System.out.println(date + "_33 : " + matchedSchedules);
-//						System.out.println("---------------------------------------------------");
-						
-						scheduleMap.put(date, matchedSchedules);
 					}
-					
 				}
-				
 			} else {
 				scheduleMap.put(date, schedulesEachDay);
 			}
-			// if schedulesEachDay.size() == 0 -> no need to sort
 		}
-		
 		return scheduleMap;
 	}
 	
@@ -299,7 +255,7 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 	
 	@Override
-	public int insertSchedule(InsertScheduleDto insertScheduleDto, int userId) {
+	public int insertCommonSchedule(InsertScheduleDto insertScheduleDto, int userId) {
 		
 		Schedule schedule = insertScheduleDto.toEntity();
 
@@ -309,13 +265,46 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 	
 	@Override
-	public int updateSchedule(UpdateScheduleDto updateScheduleDto, int userId) {
+	public Schedule insertTourSchedule(InsertScheduleDto insertScheduleDto, int userId) {
+		
+		Schedule schedule = insertScheduleDto.toEntity();
+
+		int result = calendarDao.insertScheduleBySchedule(schedule, userId);
+		
+		if(result == 1) {
+			Schedule insertedSchedule = calendarDao.getScheduleBySchedule(schedule, userId);
+			System.out.println(insertedSchedule);
+			
+			return insertedSchedule;
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public int updateCommonSchedule(UpdateScheduleDto updateScheduleDto, int userId) {
 
 		Schedule schedule = updateScheduleDto.toEntity();
 
 		int result = calendarDao.updateScheduleBySchedule(schedule, userId);
 		
 		return result;
+	}
+	
+	@Override
+	public Schedule updateTourSchedule(UpdateScheduleDto updateScheduleDto, int userId) {
+
+		Schedule schedule = updateScheduleDto.toEntity();
+
+		int result = calendarDao.updateScheduleBySchedule(schedule, userId);
+		
+		if(result == 1) {
+			Schedule updatedSchedule = calendarDao.getScheduleById(schedule.getId());
+			
+			return updatedSchedule;
+		}
+		
+		return null;
 	}
 	
 	@Override

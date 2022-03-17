@@ -94,80 +94,7 @@
 	            		<th><span>토</span></th>
 	            	</tr>
 	            	
-	            	<c:set var="dateIndex" value="0"/>
-	            	<c:forEach var="i" begin="0" end="5">
-	                
-		                <tr>
-		                
-		                	<c:forEach var="j" begin="0" end="6">
-		                	
-		                		<c:set var="isPreMonth" value="" />
-                            	<c:if test="${fn:substring(strDates[dateIndex], 0, 6) != selectedMonth}">
-                            		<c:set var="isPreMonth" value="notPreMonth" />
-                            	</c:if>
-		                	
-			                    <td class="${isPreMonth}">
-			                    	
-			                    	
-			                    
-			                        <div class="date">
-			                        	<c:set var="dayNumber" value="${fn:substring(strDates[dateIndex], 6, 8)}"/>
-			                        	<c:if test="${fn:startsWith(dayNumber, '0')}">
-			                        		<c:set var="dayNumber" value="${fn:substring(strDates[dateIndex], 7, 8)}"/>
-			                        	</c:if>
-			                        
-			                            <button id="${intDates[dateIndex]}" class="dateBtn" type="button" onclick="showPopUp(event)">
-			                            	<div id="${fn:contains(today, strDates[dateIndex]) ? 'today' : ''}">
-			                            		<span>${dayNumber}</span>
-			                            	</div>
-			                            </button>
-			                            
-			                            <c:if test="${fn:length(schedules[intDates[dateIndex]]) > 5}">
-			                            	<button id="${intDates[dateIndex]}-list" class="schedule-list-Btn" type="button" onclick="showPopUp(event)">
-			                            		<span>+${fn:length(schedules[intDates[dateIndex]]) - 5}</span>
-			                            	</button>
-			                            </c:if>
-			                            
-			                            <c:forEach var="schedule_index" begin="0" end="4">
-			                            
-			                            	<c:set var="schedule" value="${schedules[intDates[dateIndex]][schedule_index]}"/>
-			                            	
-			                            	<c:if test="${schedule.id == -1}">
-					                            <span></span>
-				                            </c:if>
-			                            	<c:if test="${schedule.oneday == true}">
-					                            <div id="${schedule.id}" class="schedule oneday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)"><span>${schedule.title}</span></button>
-					                            </div>
-				                            </c:if>
-				                            <c:if test="${schedule.firstday == true}">
-				                            	<div id="${schedule.id}" class="schedule firstday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)"><span>${schedule.title}</span></button>
-					                            </div>
-					                        </c:if>
-				                            <c:if test="${schedule.lastday == true}">
-					                            <div id="${schedule.id}" class="schedule lastday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)"></button>
-					                            </div>
-				                            </c:if>
-				                            <c:if test="${schedule.middleday == true}">
-					                            <div id="${schedule.id}" class="schedule middleday">
-					                                <button class="scheBtn" type="button" onclick="showPopUp(event)"></button>
-					                            </div>
-				                            </c:if>
-			                            
-			                            </c:forEach>
-			                            <c:set var="dateIndex" value="${dateIndex + 1}"/>
-										
-			                        </div>
-			                    
-			                    </td>
-		                    
-		                    </c:forEach>
-		                
-		                </tr>
-	                
-	                </c:forEach>
+	            	
 	                
 	            </table>
 	       	</div>
@@ -187,6 +114,12 @@
 							<div>
 								<span>제목</span>
 								<span id="show-title"></span>
+							</div>
+							<div>
+								<span>일정 타입</span>
+								<div class="show-schedule-type">
+									<span></span>
+								</div>
 							</div>
 							<div>
 								<span>시작일자</span>
@@ -245,6 +178,13 @@
 								<span id="inst-wrong-title"></span>
 							</div>
 							<div>
+								<span>일정 타입</span>
+								<div class="schedule-type">
+									<label for="common"><input type="radio" name="scheduleType" id="common" value="0" checked> 일반 일정</label>
+									<label for="tour"><input type="radio" name="scheduleType" id="tour" value="1"> 여행 일정</label>
+								</div>
+							</div>
+							<div>
 								<span>시작일자</span>
 								<input type="datetime-local" id="inst-start-date" name="inst-start-date">							
 							</div>
@@ -267,6 +207,36 @@
 	            </div>
 			</div>
 			
+			<div id="question-to-map" class="pop-up-bg">
+	            <div class="pop-up-win">
+	            	<div class="pop-up">
+	            		<div class="messages">
+	            			<span>여행 경로를 작성하러 가시겠어요?</span>
+	            			<span>나중에 세부 일정에서도 작성할 수 있어요.</span>
+	            			<div class="btns">
+	            				<button type="button" id="goToMap"><span>작성하러 가기</span></button>
+	            				<button type="button" id="later"><span>나중에 하기</span></button>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+			</div>
+			
+			<div id="question-to-common" class="pop-up-bg">
+	            <div class="pop-up-win">
+	            	<div class="pop-up">
+	            		<div class="messages">
+	            			<span>일반 일정으로 변경하면 기존에 작성된 여행계획이 지워집니다.</span>
+	            			<span>그래도 변경하시겠어요?</span>
+	            			<div class="btns">
+	            				<button type="button" id="confirm">변경하기</button>
+	            				<button type="button" id="not-confirm">변경하지 않기</button>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+			</div>
+			
 			<div id="update-schedule" class="pop-up-bg">
 	            <div class="pop-up-win">
 	            	<div class="pop-up">
@@ -282,6 +252,13 @@
 							<div>
 								<span>제목</span>
 								<input type="text" id="upd-title" name="updTitle">							
+							</div>
+							<div>
+								<span>일정 타입</span>
+								<div class="schedule-type">
+									<label for="common"><input type="radio" name="scheduleType" id="common" value="0"> 일반 일정</label>
+									<label for="tour"><input type="radio" name="scheduleType" id="tour" value="1"> 여행 일정</label>
+								</div>
 							</div>
 							<div>
 								<span>시작일자</span>
@@ -312,6 +289,7 @@
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/main/background_control.js"></script>
     <script src="/js/main/monthSelector.js"></script>
+    <script src="/js/main/calendarControl.js"></script>
     <script src="/js/widgetControl.js"></script>
     <script src="/js/main/popup_control.js"></script>
     <script src="/js/menu_control.js"></script>

@@ -16,7 +16,9 @@ public interface CalendarService {
 	
 	public Schedule getSchedule(int scheduleId);
 	
-	public int insertSchedule(InsertScheduleDto insertScheduleDto, int userId);
-	public int updateSchedule(UpdateScheduleDto updateScheduleDto, int userId);
+	public int insertCommonSchedule(InsertScheduleDto insertScheduleDto, int userId);
+	public Schedule insertTourSchedule(InsertScheduleDto insertScheduleDto, int userId);
+	public int updateCommonSchedule(UpdateScheduleDto updateScheduleDto, int userId);
+	public Schedule updateTourSchedule(UpdateScheduleDto updateScheduleDto, int userId);
 	public int deleteSchedule(int scheduleId);
 }

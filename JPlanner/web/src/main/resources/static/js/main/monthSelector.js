@@ -17,19 +17,23 @@ function setDefaultMonth() {
     
     const url = String(location.href).replace("http://localhost:8080/main", "");
     
+    let year;
+    let month;
+    
     if(url == null || url == "") {
-		const year = String(date.getFullYear());
-	    const month = String(date.getMonth() + 1).padStart(2, "0");
+		year = String(date.getFullYear());
+	    month = String(date.getMonth() + 1).padStart(2, "0");
 	    
 	    monthSelector.value = `${year}-${month}`;
 	} else {
 		let ym = url.replace("?ym=", "");
-		const year = ym.substring(0, 4);
-		const month = ym.substring(4, 6);
+		year = ym.substring(0, 4);
+		month = ym.substring(4, 6);
 		
 		monthSelector.value = `${year}-${month}`;
 	}
-
+	
+	printCalendar(`${year}${month}`);
 }
 
 function setNextMonth() {

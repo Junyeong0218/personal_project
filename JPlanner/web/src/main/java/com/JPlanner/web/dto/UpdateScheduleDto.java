@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class UpdateScheduleDto {
 
 	private int id;
+	private int type;
 	private String title;
 	private String startDate;
 	private String endDate;
@@ -22,6 +23,7 @@ public class UpdateScheduleDto {
 	public Schedule toEntity() {
 		return Schedule.builder()
 				.id(id)
+				.type(type)
 				.title(title)
 				.startDate(LocalDateTime.parse(startDate))
 				.endDate(LocalDateTime.parse(endDate))

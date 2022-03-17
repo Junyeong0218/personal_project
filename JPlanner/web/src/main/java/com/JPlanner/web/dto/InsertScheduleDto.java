@@ -17,6 +17,7 @@ public class InsertScheduleDto {
 	private String startDate;
 	private String endDate;
 	private String description;
+	private int type;
 	
 	public Schedule toEntity() {
 		return Schedule.builder()
@@ -24,6 +25,7 @@ public class InsertScheduleDto {
 				.startDate(LocalDateTime.parse(startDate))
 				.endDate(LocalDateTime.parse(endDate))
 				.description(description)
+				.type(type)
 				.build();
 	}
 	

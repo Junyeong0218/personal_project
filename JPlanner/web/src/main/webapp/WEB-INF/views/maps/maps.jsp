@@ -35,9 +35,7 @@
 			
 			<aside>
 				<div id="scheduler">
-					<div id="schedule-header">
-						<span>Tour Schedule</span>
-					</div>
+					
 					
 				</div>
 				<div class="wayToSort">
@@ -51,6 +49,9 @@
 					<label for="DISTANCE">
 						<input type="radio" id="DISTANCE" name="priority" value="DISTANCE">  최단 경로
 					</label>
+				</div>
+				<div class="days">
+				
 				</div>
 				<div class="scheduler-btns">
 					<div class="saveBtn">

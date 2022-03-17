@@ -3,6 +3,8 @@ const searcher = document.querySelector("#searcher");
 const searchedPlaces = document.querySelector("#searched-places");
 const scheduler = document.querySelector("#scheduler");
 const startPlace = document.querySelector("#start-place");
+const clearBtn = document.querySelector(".clearBtn");
+const saveBtn = document.querySelector(".saveBtn");
 let priority = document.querySelector(".wayToSort input[checked]").id;
 
 let lat = 0;
@@ -25,6 +27,10 @@ const colorSet = ["#5F6366", "#4D6D9A", "#86B3D1", "#99CED3", "#EDB5BF"];
 // 매개변수 map = 주어진 map 기준으로 검색
 // setMap(map); 으로도 설정 가능
 
+clearBtn.addEventListener("click", function() {
+	clearSchedule();
+});
+
 function remainPlaceFrame(place) {
 	const span = document.createElement("span");
 	span.innerText = place.id == "start-place" ? "시작 지점" :
@@ -40,9 +46,21 @@ function remainPlaceFrame(place) {
 	AddChangePositionEvent(place);
 }
 
-window.onload = function() {
-	navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
-	let startPlace = document.createElement("div");
+function saveSchedule() {
+	
+}
+
+function clearSchedule() {
+	scheduler.textContent = "";
+	
+	const header = document.createElement("div");
+	header.id = "schedule-header";
+	const span = document.createElement("span");
+	span.innerText = "Tour Schedule";
+	
+	header.appendChild(span);
+	
+	const startPlace = document.createElement("div");
 	startPlace.id = "start-place";
 	startPlace.innerHTML = `<div class="place-texts">
 								<span>시작 지점</span>
@@ -59,10 +77,35 @@ window.onload = function() {
 									</div>
 								</div>
 							</div>`
+	scheduler.appendChild(header);
 	scheduler.appendChild(startPlace);
 	startPlace.querySelector(".Deletewaypoint").addEventListener("click", function() {
 		remainPlaceFrame(startPlace);
 	});
+}
+
+function loadTourSchedule(id) {
+	$.ajax({
+   		type: "get",
+    	url: `/tour/getTourSchedules`,
+    	data: { "id": id },
+        dataType: "json",
+    	success: function (data) {
+			
+  		},
+  		error: function (xhr, status, error) {
+			console.log(xhr);
+			console.log(status);
+			console.log(error);
+		}
+	});
+}
+
+window.onload = function() {
+	navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
+	
+	clearSchedule();
+	
 	const sorting = document.querySelector(".wayToSort").children;
 	for(let i=1; i<sorting.length; i++) {
 		sorting[i].addEventListener("click", function() {
@@ -326,6 +369,7 @@ function AddDeleteWayPointEvent(eachPlace) {
 	deleteBtn.addEventListener("click", function() {
 		if(eachPlace.id == "") {
 			placeIndex--;
+			wayPointCnt--;
 		}
 		eachPlace.remove();
 		adjustWayPointCnt();
@@ -463,17 +507,17 @@ function loadNavi() {
 	const endPlaceName = endPlace.querySelector(".place-name").innerText;
 	let placeNames = [startPlaceName];
 	
-	const origin = {"x": startPlace.querySelectorAll(".hidden")[0].innerText,
-					"y": startPlace.querySelectorAll(".hidden")[1].innerText }
-	const destination = {"x": endPlace.querySelectorAll(".hidden")[0].innerText,
-						 "y": endPlace.querySelectorAll(".hidden")[1].innerText }
+	const origin = {"x": startPlace.querySelectorAll(".hidden")[1].innerText,
+					"y": startPlace.querySelectorAll(".hidden")[2].innerText }
+	const destination = {"x": endPlace.querySelectorAll(".hidden")[1].innerText,
+						 "y": endPlace.querySelectorAll(".hidden")[2].innerText }
 	const wayPoints = [];
 	
 	middlePlaces.forEach(e => {
 		const wayPoint = {
 			"name": e.querySelector(".place-name").innerText,
-			"x": e.querySelectorAll(".hidden")[0].innerText,
-			"y": e.querySelectorAll(".hidden")[1].innerText
+			"x": e.querySelectorAll(".hidden")[1].innerText,
+			"y": e.querySelectorAll(".hidden")[2].innerText
 		}
 		placeNames.push(e.querySelector(".place-name").innerText);
 		wayPoints.push(wayPoint);

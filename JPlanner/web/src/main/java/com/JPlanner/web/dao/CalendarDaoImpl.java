@@ -87,6 +87,7 @@ public class CalendarDaoImpl implements CalendarDao {
 			while(rs.next()) {
 				schedule = new Schedule();
 				schedule.setId(rs.getInt("id"));
+				schedule.setType(rs.getInt("schedule_type"));
 				schedule.setTitle(rs.getString("title"));
 				schedule.setDescription(rs.getString("description"));
 				schedule.setStartDate(rs.getTimestamp("start_date").toLocalDateTime());
@@ -102,6 +103,44 @@ public class CalendarDaoImpl implements CalendarDao {
 		}
 		
 		return schedule;
+	}
+	
+	@Override
+	public Schedule getScheduleBySchedule(Schedule schedule, int userId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM schedule WHERE title = ? AND user_id = ? AND deleted = 0 ORDER BY reg_date DESC limit 1";
+		Schedule insertedSchedule = null;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, schedule.getTitle());
+			pstmt.setInt(2, userId);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				insertedSchedule = new Schedule();
+				insertedSchedule.setId(rs.getInt("id"));
+				insertedSchedule.setType(rs.getInt("schedule_type"));
+				insertedSchedule.setTitle(rs.getString("title"));
+				insertedSchedule.setDescription(rs.getString("description"));
+				insertedSchedule.setStartDate(rs.getTimestamp("start_date").toLocalDateTime());
+				insertedSchedule.setEndDate(rs.getTimestamp("end_date").toLocalDateTime());
+			}
+			
+			rs.close();
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return insertedSchedule;
 	}
 	
 	@Override
@@ -149,18 +188,19 @@ public class CalendarDaoImpl implements CalendarDao {
 	public int insertScheduleBySchedule(Schedule schedule, int userId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String sql = "insert into schedule values(0, ?, ?, ?, ?, now(), now(), ?, 0)";
+		String sql = "insert into schedule values(0, ?, ?, ?, ?, ?, now(), now(), ?, 0)";
 		int result = 0;
 		
 		try {
 			con = dataSource.getConnection();
 			pstmt = con.prepareStatement(sql);
 			
-			pstmt.setString(1, schedule.getTitle());
-			pstmt.setString(2, schedule.getDescription());
-			pstmt.setTimestamp(3, Timestamp.valueOf(schedule.getStartDate()));
-			pstmt.setTimestamp(4, Timestamp.valueOf(schedule.getEndDate()));
-			pstmt.setInt(5, userId);
+			pstmt.setInt(1, schedule.getType());
+			pstmt.setString(2, schedule.getTitle());
+			pstmt.setString(3, schedule.getDescription());
+			pstmt.setTimestamp(4, Timestamp.valueOf(schedule.getStartDate()));
+			pstmt.setTimestamp(5, Timestamp.valueOf(schedule.getEndDate()));
+			pstmt.setInt(6, userId);
 			
 			result = pstmt.executeUpdate();
 			
