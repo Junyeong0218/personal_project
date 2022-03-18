@@ -34,10 +34,7 @@
 			</main>
 			
 			<aside>
-				<div id="scheduler">
-					
-					
-				</div>
+				
 				<div class="wayToSort">
 					<span>경로 탐색 우선순위</span>
 					<label for="RECOMMEND">
@@ -51,7 +48,7 @@
 					</label>
 				</div>
 				<div class="days">
-				
+					
 				</div>
 				<div class="scheduler-btns">
 					<div class="saveBtn">
@@ -67,6 +64,27 @@
 	 alt + 위아래 방향키 = 줄이동 -->
 		</div>
 		
+		<div id="time-picker" class="pop-up hidden">
+			<div id="time-control">
+				<div id="hour-control">
+					<button type="button" class="time-up"></button>
+					<span class="hour">0</span>
+					<button type="button" class="time-down"></button>
+				</div>
+				<div><span>:</span></div>
+				<div id="minute-control">
+					<button type="button" class="time-up"></button>
+					<span class="minute">0</span>
+					<button type="button" class="time-down"></button>
+				</div>
+			</div>
+			<div class="time-picker-btns">
+				<button type="button"><span>적용하기</span></button>
+				<button type="button"><span>취소</span></button>
+			</div>
+			
+		</div>
+		<script src="/js/maps/timePicker.js"></script>
 		<script src="/js/maps/maps.js"></script>
 	</body>
 

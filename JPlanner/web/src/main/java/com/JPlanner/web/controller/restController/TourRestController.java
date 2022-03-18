@@ -21,10 +21,12 @@ public class TourRestController {
 	private TourService tourService;
 	
 	@PostMapping("getTourSchedules")
-	public void getTourSchedules(int scheduleId, HttpServletRequest request) {
+	public List<Tour> getTourSchedules(int scheduleId, HttpServletRequest request) {
 		
 		User user = (User) request.getSession().getAttribute("user");
 		
-		List<Tour> tours = tourService.getTourSchedulesByScheduleId(scheduleId, user.getId());		
+		List<Tour> tours = tourService.getTourSchedulesByScheduleId(scheduleId, user.getId());
+		
+		return tours;
 	}
 }

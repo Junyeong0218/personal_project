@@ -123,10 +123,10 @@ aside {
 	pointer-events: none;
 }
 
-#scheduler {
+.scheduler {
 	box-sizing:border-box;
 	width: 300px;
-	height: 552px;
+	height: 500px;
 	border-bottom: 1px solid #238cfa;
 	overflow: auto;
 }
@@ -144,7 +144,7 @@ aside {
 
 #start-place, .middle-place, #end-place {
 	width: auto;
-	height: auto;
+	height: 120px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -174,9 +174,39 @@ aside {
 	font-size: 12px;
 }
 
+.times {
+	margin-top: 5px;
+	padding-left: 10px;
+	display: flex;
+	flex-direction: column;
+	font: inherit;
+	font-weight: 700;
+}
+
+.times > label:first-child {
+	margin-bottom: 10px;
+}
+
+.times > label:last-child > input {
+	padding: 4px 0 0 5px;
+	width: 101px;
+	height: 18px;
+	font: inherit;
+	font-size: 12px;
+}
+
+.time-title {
+	position: relative;
+	top: 1px;
+}
+
 .waypointBtns {
 	display: flex;
 	align-items: center;
+}
+
+.waypointBtns > div {
+	height: 120px;
 }
 
 .Addwaypoint, .Deletewaypoint {
@@ -204,7 +234,7 @@ aside {
 	justify-content: center;
 	align-items: center;
 	width: 25px;
-	height: 25px;
+	height: 60px;
 	background-color: #238cfa;
 	cursor: pointer;
 }
@@ -224,7 +254,7 @@ aside {
 	pointer-events: none;
 }
 
-.wayToSort, .days {
+.wayToSort{
 	box-sizing: border-box;
 	margin-top: 10px;
 	padding-left: 10px;
@@ -239,8 +269,60 @@ aside {
 }
 
 .days {
-	height: 130px;
+	width: 100%;
+	height: 194px;
 	overflow: auto;
+}
+
+.days > button {
+	width: 100%;
+	height: 60px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	border: none;
+	border-bottom: 1px solid white;
+	background-color: #238cfa;
+	font: inherit;
+	font-size: 11px;
+	font-weight: 700;
+	cursor: pointer;
+	color: white;
+}
+
+.days > button > div:first-child {
+	font-size: 13px;
+}
+
+.day-title {
+	margin-bottom: 5px;
+}
+
+.day-title > span, .day-tour-time > span, .day-priority> span {
+	position: relative;
+	top: 3px;
+}
+
+.day-tour-time > span, .day-priority> span {
+	padding-left: 10px;
+}
+
+.days::-webkit-scrollbar,
+.days::-webkit-scrollbar-thumb {
+	padding-top: 50px;
+ 	width: 13px;
+ 	border-radius: 12px;
+ 	background-clip: padding-box;
+ 	border: 4px solid #238cfa;
+}
+
+.days::-webkit-scrollbar-track {
+	background-color: #238cfa;
+}
+
+.days::-webkit-scrollbar-thumb {
+	box-shadow: inset 10px 0 white;
 }
 
 .wayToSort > label {
@@ -354,3 +436,97 @@ aside {
 	position: relative;
 	top: 2px;
 }
+
+#time-picker {
+	position: absolute;
+	width: 250px;
+	height: 170px;
+	z-index: 2;
+	
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 4px;
+	font-family: 'LeferiPoint-WhiteObliqueA';
+}
+
+#time-control {
+	height: 130px;
+}
+
+#hour-control, #minute-control, #time-control > div:nth-child(2) {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font: inherit;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+#hour-control {
+	margin-left: 40px;
+}
+
+#minute-control {
+	margin-right: 40px;
+}
+
+#hour-control span, #minute-control span ,
+#time-control > div:nth-child(2) span, .time-picker-btns > button > span {
+	position: relative;
+	top: 3px;
+	
+}
+
+#hour-control span, #minute-control span ,
+#time-control > div:nth-child(2) span{
+	margin: 10px 0;
+}
+
+.time-up, .time-down {
+	margin: 0;
+	padding: 0;
+	width: 25px;
+	height: 25px;
+	border:none;
+	background: none;
+	cursor: pointer;
+}
+
+.time-up {
+	background-image: url("/images/time-up.png");
+	background-size: contain;
+}
+
+.time-down {
+	background-image: url("/images/time-down.png");
+	background-size: contain;
+}
+
+.time-picker-btns, #time-control {
+	display: flex;
+	justify-content: space-around;
+}
+
+.time-picker-btns {
+	height: 40px;
+	font: inherit;
+}
+
+.time-picker-btns > button {
+	margin-top: 5px;
+	width: 100px;
+	height: 30px;
+	border: 1px solid black;
+	border-radius: 4px;
+	background-color: white;
+	font: inherit;
+	font-size: 13px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.time-picker-btns > button > span {
+	pointer-events: none;
+}
+

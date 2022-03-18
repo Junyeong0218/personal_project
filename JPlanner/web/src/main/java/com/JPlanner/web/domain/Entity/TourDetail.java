@@ -18,7 +18,8 @@ public class TourDetail {
 	private String description;
 	private String searchPriority;
 	private LocalDateTime tourStartDateTime;
-	private LocalDateTime arriveDateTime;
+	private LocalDateTime tourArriveDateTime;
+	private int place_tourId;
 	private int placeIndicator;
 	private int placeId;
 	private String placeName;

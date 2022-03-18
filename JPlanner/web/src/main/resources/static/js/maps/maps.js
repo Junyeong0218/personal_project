@@ -1,7 +1,7 @@
 const mapContainer = document.querySelector("#maps");
 const searcher = document.querySelector("#searcher");
 const searchedPlaces = document.querySelector("#searched-places");
-const scheduler = document.querySelector("#scheduler");
+/*const scheduler = document.querySelector(".scheduler");*/
 const startPlace = document.querySelector("#start-place");
 const clearBtn = document.querySelector(".clearBtn");
 const saveBtn = document.querySelector(".saveBtn");
@@ -42,7 +42,7 @@ function remainPlaceFrame(place) {
 	placeTexts.textContent = "";
 	placeTexts.appendChild(span);
 	placeTexts.appendChild(placeName);
-	
+		
 	AddChangePositionEvent(place);
 }
 
@@ -51,20 +51,28 @@ function saveSchedule() {
 }
 
 function clearSchedule() {
+	const scheduler = getCurrentScheduler();
 	scheduler.textContent = "";
 	
 	const header = document.createElement("div");
 	header.id = "schedule-header";
-	const span = document.createElement("span");
-	span.innerText = "Tour Schedule";
-	
-	header.appendChild(span);
+	header.innerHTML = `<span>Tour Schedule</span>`;
 	
 	const startPlace = document.createElement("div");
 	startPlace.id = "start-place";
 	startPlace.innerHTML = `<div class="place-texts">
 								<span>시작 지점</span>
 								<span id="" class="place-name"></span>
+								<div class="times">
+								 	<label for="start-time">
+								 		<span class="time-title">출발 시간 : </span>
+								 		<input type="time" name="start-time" id="start-time" value="00:00">
+								 	</label>
+								 	<label for="stay-time">
+								 		<span class="time-title">체류 시간 : </span>
+								 		<input type="text" name="stay-time" id="stay-time" readOnly value="00:00">
+								 	</label>
+								 </div>
 							</div>
 							<div class="waypointBtns">
 								<button class="Deletewaypoint" type="button"></button>
@@ -76,7 +84,8 @@ function clearSchedule() {
 										<span></span>
 									</div>
 								</div>
-							</div>`
+							</div>`;
+							
 	scheduler.appendChild(header);
 	scheduler.appendChild(startPlace);
 	startPlace.querySelector(".Deletewaypoint").addEventListener("click", function() {
@@ -84,14 +93,164 @@ function clearSchedule() {
 	});
 }
 
-function loadTourSchedule(id) {
+function addHTMLForTourList(tourList) {
+	console.log(tourList);
+	const dailyTourList = document.querySelector(".days");
+	const aside = document.querySelector("aside");
+	const wayToSort = document.querySelector(".wayToSort");
+	
+	for(let i=0; i<tourList.length; i++) {
+		const tour = tourList[i];
+		const startDate = new Date(tour.startDateTime);
+		const arriveDate = new Date(tour.arriveDateTime);
+		const year = startDate.getFullYear();
+		const month = String(startDate.getMonth() + 1).padStart(2, "0");
+		const day = String(startDate.getDate()).padStart(2, "0");
+		const startTime = `${String(startDate.getHours()).padStart(2, "0")}:${String(startDate.getMinutes()).padStart(2, "0")}:${String(startDate.getSeconds()).padStart(2, "0")}`
+		const endTime = `${String(arriveDate.getHours()).padStart(2, "0")}:${String(arriveDate.getMinutes()).padStart(2, "0")}:${String(arriveDate.getSeconds()).padStart(2, "0")}`
+		const tourContainer = document.createElement("button");
+		tourContainer.id = tour.id;
+		tourContainer.type = "button";
+		tourContainer.innerHTML = `<div class="day-title">
+									   <span>${tour.title}</span>
+									   <span> (${year}-${month}-${day}) </span>
+								   </div>
+								   <div class="day-tour-time">
+									   <span>${startTime} ~ ${endTime}</span>
+								   </div>
+								   <div class="day-priority">
+									   <span>${tour.searchPriority}</span>
+								   </div>`;
+		dailyTourList.appendChild(tourContainer);
+		
+		const scheduler = document.createElement("div");
+		if(i == 0) {
+			scheduler.className = "scheduler";
+		} else {
+			scheduler.className = "scheduler hidden";
+		}
+		
+		const header = document.createElement("div");
+		header.id = "schedule-header";
+		header.innerHTML = `<span>Tour Schedule</span>`;
+		scheduler.appendChild(header);
+		
+		const places = tour.places;
+		for(let j=0; j<places.length; j++) {
+			const place = places[j];
+			const placeContainer = document.createElement("div");
+			const placeTexts = document.createElement("div");
+			placeTexts.className = "place-texts";
+			if(j == 0) {
+				placeContainer.id = "start-place";
+				placeTexts.innerHTML = `<span>시작 지점</span>`;
+			} else if(j == places.length - 1) {
+				placeContainer.id = "end-place";
+				placeTexts.innerHTML = `<span>도착지</span>`;
+			} else {
+				placeContainer.className = "middle-place";
+				placeTexts.innerHTML = `<span>경유지${wayPointCnt++}</span>`;
+			}
+			const startDateTime = new Date(place.startDateTime);
+			let hour = String(startDateTime.getHours()).padStart(2, "0");
+			let minute = String(startDateTime.getMinutes()).padStart(2, "0");
+			
+			placeTexts.innerHTML += `<span id="${place.id}" class="place-name">${place.placeName}</span>
+									 <div class="times">
+									 	<label for="start-time">
+									 		<span class="time-title">출발 시간 : </span>
+									 		<input type="time" name="start-time" id="start-time" value="${hour}:${minute}">
+									 	</label>
+									 	<label for="stay-time">
+									 		<span class="time-title">체류 시간 : </span>
+									 		<input type="text" name="stay-time" id="stay-time" readOnly value="${place.stayTime}">
+									 	</label>
+									 </div>
+									 <span class="hidden">${place.placeAddress}</span>
+									 <span id="x" class="hidden">${place.coordX}</span>
+									 <span id="y" class="hidden">${place.coordY}</span>`;
+			placeContainer.appendChild(placeTexts);
+			placeContainer.innerHTML += `<div class="waypointBtns">
+											<button class="Deletewaypoint" type="button"></button>
+											<div id="${place.index}">
+												<div class="upIndex">
+													<span></span>
+												</div>
+												<div class="downIndex">
+													<span></span>
+												</div>
+											</div>
+										</div>`;
+			scheduler.appendChild(placeContainer);
+			
+			const stayTime = String(place.stayTime).split(":");
+			hour = stayTime[0];
+			minute = stayTime[1];
+			if(hour == "00") {
+				if(minute == "00") {
+					placeContainer.querySelector("#stay-time").value = "0시간 0분";
+				} else {
+					placeContainer.querySelector("#stay-time").value = `${minute}분`;
+				}
+			} else {
+				if(minute == "00") {
+					placeContainer.querySelector("#stay-time").value = `${hour}시간`;
+				} else {
+					placeContainer.querySelector("#stay-time").value = `${hour}시간 ${minute}분`;
+				}
+			}
+			
+			placeContainer.querySelector("#stay-time").addEventListener("click", showTimePicker);
+		}
+		aside.insertBefore(scheduler, wayToSort);
+	}
+}
+
+function addEventShowEachDay() {
+	const schedulers = document.querySelectorAll(".scheduler");
+	const controlButtons = document.querySelector(".days").children;
+	const wayToSort = document.querySelector(".wayToSort");
+	
+	for(let i=0; i<controlButtons.length; i++) {
+		const btn = controlButtons[i];
+		
+		btn.addEventListener("click", function() {
+			for(let j=0; j<schedulers.length; j++) {
+				if(i == j) {
+					schedulers[j].className = "scheduler";
+					const prior = btn.querySelector(".day-priority > span").innerText;
+					wayToSort.querySelector(`input[id="${prior}"]`).checked = true;
+					priority = prior;
+					loadNavi(schedulers[j]);
+				} else {
+					schedulers[j].className = "scheduler hidden";
+				}
+			}
+		});
+	}
+}
+
+function loadTourSchedule(scheduleId) {
 	$.ajax({
-   		type: "get",
-    	url: `/tour/getTourSchedules`,
-    	data: { "id": id },
+   		type: "post",
+    	url: "/tour/getTourSchedules",
+    	data: { "scheduleId": scheduleId },
         dataType: "json",
     	success: function (data) {
-			
+			if(data.length == 0) {
+				clearSchedule();
+				const sorting = document.querySelector(".wayToSort").children;
+				for(let i=1; i<sorting.length; i++) {
+					sorting[i].addEventListener("click", function() {
+						priority = sorting[i].querySelector("input").id;
+						loadNavi(document.querySelectorAll(".scheduler")[0]);
+					});
+				}
+			} else {
+				addHTMLForTourList(data);
+				addEventShowEachDay();
+				loadNavi(document.querySelectorAll(".scheduler")[0]);
+			}
   		},
   		error: function (xhr, status, error) {
 			console.log(xhr);
@@ -101,18 +260,26 @@ function loadTourSchedule(id) {
 	});
 }
 
+function getQueryStringObj() {
+	const url = window.location.search.substr(1).split('&');
+	if(url == "") return {};
+	let obj = {};
+	for(let i=0; i<url.length; ++i) {
+		const temp = url[i].split('=', 2);
+		if(temp.length == 1) {
+			obj[temp[0]] = "";
+		} else {
+			obj[temp[0]] = decodeURIComponent(temp[1].replace(/\+/g, " "));
+		}
+	}
+	return obj;
+}
+
 window.onload = function() {
 	navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
 	
-	clearSchedule();
-	
-	const sorting = document.querySelector(".wayToSort").children;
-	for(let i=1; i<sorting.length; i++) {
-		sorting[i].addEventListener("click", function() {
-			priority = sorting[i].querySelector("input").id;
-			loadNavi();
-		});
-	}
+	const queryString = getQueryStringObj();
+	loadTourSchedule(queryString.id);
 };
 
 function onGeoOk(position) {
@@ -147,6 +314,17 @@ function onGeoOk(position) {
 
 function onGeoError() {
     alert("Can't find you. No map for you.");
+}
+
+function getCurrentScheduler() {
+	const schedulers = document.querySelectorAll(".scheduler");
+	for(let i=0; i<schedulers.length; i++) {
+		console.log(schedulers[i].classList.length);
+		const classCnt = schedulers[i].classList.length;
+		if(classCnt == 1) {
+			return schedulers[i];
+		}
+	}
 }
 
 function moveCenter(latLng) {
@@ -241,7 +419,8 @@ function createOverlay(latLng, documents, placeName, address) {
 		customOverlay.setMap(null);
 	});
 	
-	const startPlace = document.querySelector("#start-place");
+	let scheduler = getCurrentScheduler();
+	const startPlace = scheduler.querySelector("#start-place");
 	
 	let btns = document.querySelectorAll(".overlay-btns")[0].children;
 	
@@ -268,6 +447,16 @@ function createOverlay(latLng, documents, placeName, address) {
 								  <span id="${place == null ? documents[0].id : place.id}" class="place-name">
 								  		${place == null ? documents[0].place_name : place.place_name}
 								  </span>
+								  <div class="times">
+									  <label for="start-time">
+										  <span class="time-title">출발 시간 : </span>
+										  <input type="time" name="start-time" id="start-time">
+									  </label>
+									  <label for="stay-time">
+										  <span class="time-title">체류 시간 : </span>
+										  <input type="time" name="stay-time" id="stay-time">
+									  </label>
+								  </div>
 							  </div>
 							  <div class="waypointBtns">
 								  <button class="Deletewaypoint" type="button"></button>
@@ -291,7 +480,7 @@ function createOverlay(latLng, documents, placeName, address) {
 		AddDeleteWayPointEvent(waypoint);
 		AddChangePositionEvent(waypoint);
 		
-		loadNavi();
+		loadNavi(scheduler);
 		
 		//<button class="Addwaypoint" type="button"></button>
 	});
@@ -313,6 +502,16 @@ function createOverlay(latLng, documents, placeName, address) {
 								  <span id="${place == null ? documents[0].id : place.id}" class="place-name">
 								  		${place == null ? documents[0].place_name : place.place_name}
 								  </span>
+								  <div class="times">
+								 	  <label for="start-time">
+								 		  <span class="time-title">출발 시간 : </span>
+								 		  <input type="time" name="start-time" id="start-time">
+								 	  </label>
+								 	  <label for="stay-time">
+								 		  <span class="time-title">체류 시간 : </span>
+								 		  <input type="time" name="stay-time" id="stay-time">
+								 	  </label>
+								  </div>
 							  </div>
 							  <div class="waypointBtns">
 							  	  <button class="Deletewaypoint" type="button"></button>
@@ -333,7 +532,7 @@ function createOverlay(latLng, documents, placeName, address) {
 		AddDeleteWayPointEvent(endPlace);
 		AddChangePositionEvent(endPlace);
 		
-		loadNavi();
+		loadNavi(scheduler);
 	});
 }
 
@@ -373,11 +572,14 @@ function AddDeleteWayPointEvent(eachPlace) {
 		}
 		eachPlace.remove();
 		adjustWayPointCnt();
-		loadNavi();
+		
+		const scheduler = getCurrentScheduler();
+		loadNavi(scheduler);
 	});
 }
 
 function AddChangePositionEvent(eachPlace) {
+	const scheduler = getCurrentScheduler();
 	const upBtn = eachPlace.querySelector(".upIndex");
 	const downBtn = eachPlace.querySelector(".downIndex");
 	
@@ -387,7 +589,7 @@ function AddChangePositionEvent(eachPlace) {
 			
 			scheduler.insertBefore(eachPlace, beforeElement);
 			renameIdAndClass();
-			loadNavi();
+			loadNavi(scheduler);
 		}
 	});
 	
@@ -398,12 +600,13 @@ function AddChangePositionEvent(eachPlace) {
 			scheduler.insertBefore(nextElement, eachPlace);
 				
 			renameIdAndClass();
-			loadNavi();
+			loadNavi(scheduler);
 		}
 	});
 }
 
 function renameIdAndClass() {
+	const scheduler = getCurrentScheduler();
 	placeIndex = 0;
 	wayPointCnt = 1;
 	const children = scheduler.children;
@@ -430,7 +633,8 @@ function renameIdAndClass() {
 }
 
 function adjustWayPointCnt() {
-	const wayPoints = document.querySelectorAll(".middle-place");
+	const scheduler = getCurrentScheduler();
+	const wayPoints = scheduler.querySelectorAll(".middle-place");
 	let index = 0;
 	for(let i=0; i<wayPoints.length; i++) {
 		const titleTag = wayPoints[i].querySelector(".place-texts").firstChild.nextSibling;
@@ -491,10 +695,10 @@ function addSearchResult(documents) {
 	}
 }
 
-function loadNavi() {
-	const startPlace = document.querySelector("#start-place");
-	const endPlace = document.querySelector("#end-place");
-	const middlePlaces = document.querySelectorAll(".middle-place");
+function loadNavi(scheduler) {
+	const startPlace = scheduler.querySelector("#start-place");
+	const endPlace = scheduler.querySelector("#end-place");
+	const middlePlaces = scheduler.querySelectorAll(".middle-place");
 	
 	if(startPlace == null || endPlace == null || middlePlaces == null) {
 		return;
@@ -507,17 +711,17 @@ function loadNavi() {
 	const endPlaceName = endPlace.querySelector(".place-name").innerText;
 	let placeNames = [startPlaceName];
 	
-	const origin = {"x": startPlace.querySelectorAll(".hidden")[1].innerText,
-					"y": startPlace.querySelectorAll(".hidden")[2].innerText }
-	const destination = {"x": endPlace.querySelectorAll(".hidden")[1].innerText,
-						 "y": endPlace.querySelectorAll(".hidden")[2].innerText }
+	const origin = {"x": startPlace.querySelector("#x").innerText,
+					"y": startPlace.querySelector("#y").innerText }
+	const destination = {"x": endPlace.querySelector("#x").innerText,
+						 "y": endPlace.querySelector("#y").innerText }
 	const wayPoints = [];
 	
 	middlePlaces.forEach(e => {
 		const wayPoint = {
 			"name": e.querySelector(".place-name").innerText,
-			"x": e.querySelectorAll(".hidden")[1].innerText,
-			"y": e.querySelectorAll(".hidden")[2].innerText
+			"x": e.querySelector("#x").innerText,
+			"y": e.querySelector("#y").innerText
 		}
 		placeNames.push(e.querySelector(".place-name").innerText);
 		wayPoints.push(wayPoint);
@@ -548,8 +752,12 @@ function loadNavi() {
     			   "Content-Type": "application/json; charset=UTF-8"},
     	data: JSON.stringify(data),
     	success: function (data) {
-			marker.setMap(null);
-			customOverlay.setMap(null);
+			if(marker != null) {
+				marker.setMap(null);
+			}
+			if(customOverlay != null) {
+				customOverlay.setMap(null);
+			}
 			
 			const sections = data.routes[0].sections;
 			
