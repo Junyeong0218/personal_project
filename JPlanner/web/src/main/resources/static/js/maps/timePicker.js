@@ -14,6 +14,7 @@ function showTimePicker(event) {
 	let origin_time;
 	let origin_hour;
 	let origin_minute;
+	console.log(event);
 	if(String(event.target.value).indexOf(":") > 0) {
 		origin_time = String(event.target.value).split(":");
 		origin_hour = origin_time[0] * 1;
@@ -27,17 +28,21 @@ function showTimePicker(event) {
 		if(index == -1) {
 			origin_hour = 0;
 		} else {
-			origin_hour = origin_time.substring(0, index);
+			origin_hour = origin_time.substring(0, index) * 1;
 		}
 		origin_minute = origin_time.substring(index + 2, origin_time.length) == "" ?
-					0 : origin_time.substring(index + 2, origin_time.length);
-		console.log(origin_time.substring(index + 2, origin_time.length));
+					0 : origin_time.substring(index + 2, origin_time.length) * 1;
 	}
 	
 	console.log(origin_time);
+	console.log(origin_hour);
+	console.log(origin_minute);
 	
 	picker_hour.innerText = origin_hour;
 	picker_minute.innerText = origin_minute;
+	
+	console.log(picker_hour);
+	console.log(picker_minute);
 
 	const x = event.target.offsetLeft;
 	const y = event.target.offsetTop + event.target.offsetHeight + 5;
@@ -65,6 +70,8 @@ function showTimePicker(event) {
 		}
 		
 		timePicker.className = "pop-up hidden";
+		const scheduler = getCurrentScheduler();
+		loadNavi(scheduler);
 	});
 	
 	cancelBtn.addEventListener("click", function() {
