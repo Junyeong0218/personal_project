@@ -22,12 +22,17 @@ let wayPointCnt = [];
 let schedulers = [];
 let takenTime = [];
 let originData;
+let tourData = [];
 
 const colorSet = ["#5F6366", "#4D6D9A", "#86B3D1", "#99CED3", "#EDB5BF"];
 
 // const places = new kakao.maps.services.Places();
 // 매개변수 map = 주어진 map 기준으로 검색
 // setMap(map); 으로도 설정 가능
+
+saveBtn.addEventListener("click", function() {
+	saveSchedule();
+});
 
 clearBtn.addEventListener("click", function() {
 	clearSchedule();
@@ -66,8 +71,106 @@ function remainPlaceFrame(place) {
 	AddChangePositionEvent(place);
 }
 
+function collectTourData() {
+	tourData = [];
+	const queryStringObj = getQueryStringObj();
+	for(let i=0; i<schedulers.length; i++) {
+		// 각 일자별로 반복 / 카드 date 받기
+		const days = document.querySelector(".days").children;
+		
+		const tourTime = days[i].querySelector(".day-tour-time > span").innerText;
+		let startDate = new Date(days[i].querySelector(".day-title").children[1].innerText.trim().substring(1, 11));
+		let year = startDate.getFullYear();
+		let month = String(startDate.getMonth() + 1).padStart(2, "0");
+		let day = String(startDate.getDate()).padStart(2, "0");
+		const tourStartDateTime = `${year}-${month}-${day}T${tourTime.substring(0, 8)}`;
+		
+		const endTime = tourTime.substring(11, 19);
+		const endDay = endTime.substring(0, 2) * 1 < 6 ? String(day + 1).padStart(2, "0") : day;
+		let tourArriveDateTime = `${year}-${month}-${endDay}T${endTime}`;
+		const tour = {
+			"id": days[i].id,
+			"scheduleId": queryStringObj.id,
+			"title": days[i].querySelector(".day-title").children[0].innerText,
+			"description": days[i].querySelector(".day-title").children[0].innerText,
+			"searchPriority": days[i].querySelector(".day-priority > span").innerText,
+			"startDateTime": tourStartDateTime,
+			"arriveDateTime": tourArriveDateTime,
+			"places": []
+		};
+		const scheduler = schedulers[i];
+		for(let j=0; j<scheduler.length; j++) {
+			// schedulerHeader & taken-time 제외하고 collect
+			const place = scheduler[j];
+			if(place.id == "schedule-header" || place.className == "taken-time") {
+				continue;
+			}
+			
+			const placeTexts = place.querySelector(".place-texts");
+			const place_id = placeTexts.querySelector(".place-name").id;
+			const place_name = placeTexts.querySelector(".place-name").innerText;
+			let startTime;
+			if(place.id != "end-place") {
+				startTime = `${placeTexts.querySelector(".start-time").value}:00`;
+			} else {
+				startTime = `${placeTexts.querySelector(".end-time").value}:00`;
+			}
+			const place_startTime = `${year}-${month}-${day}T${startTime}`;
+			let place_stayTime = "00:00:00";
+			if(place.id != "end-place") {
+				const stayTime = placeTexts.querySelector(".stay-time").value;
+				let hour = stayTime.indexOf("시간") == -1 ? "00" : stayTime.substring(0, stayTime.indexOf("시간")).padStart(2, "0");
+				let minute = stayTime.indexOf("시간") == -1 ? stayTime.substring(0, stayTime.indexOf("분")).padStart(2, "0")
+							: stayTime.indexOf("분") == -1 ? "00" : stayTime.substring(stayTime.indexOf("시간") + 3, stayTime.indexOf("분")).padStart(2, "0");
+				place_stayTime = `${hour}:${minute}:00`;
+			}
+			const place_coordX = place.querySelector("#x").innerText;
+			const place_coordY = place.querySelector("#y").innerText;
+			const place_address = place.querySelector("#x").previousElementSibling.innerText;
+			const place_index = place.querySelector(".waypointBtns > div").id;
+			const eachPlace = {
+				"coordX": place_coordX,
+				"coordY": place_coordY,
+				"index": place_index,
+				"placeAddress": place_address,
+				"placeId": place_id,
+				"placeName": place_name,
+				"startDateTime": place_startTime,
+				"stayTime": place_stayTime,
+				"tourId": days[i].id
+			};
+			tour.places.push(eachPlace);
+		}
+		tourData.push(tour);
+	}
+}
+
 function saveSchedule() {
-	
+	collectTourData();
+	console.log(tourData);
+	const data = {
+		"originTour": originData,
+		"changedTour": tourData
+	};
+	if(originData.length == 0) {
+		/* insert */
+	} else {
+		/* update & delete */
+		$.ajax({
+	   		type: "post",
+	    	url: "/tour/updateTourSchedules",
+	    	data: JSON.stringify(data),
+	        contentType: "application/json",
+	    	success: function (data) {
+				console.log(data);
+			},
+			error: function (xhr, status, error) {
+				console.log(xhr);
+				console.log(status);
+				console.log(error);
+			}
+		});
+	}
 }
 
 function clearSchedule() {
@@ -178,23 +281,23 @@ function addHTMLForTourList(tourList) {
 			let hour = String(startDateTime.getHours()).padStart(2, "0");
 			let minute = String(startDateTime.getMinutes()).padStart(2, "0");
 			
-			placeTexts.innerHTML += `<span id="${place.id}" class="place-name">${place.placeName}</span>`;
+			placeTexts.innerHTML += `<span id="${place.placeId}" class="place-name">${place.placeName}</span>`;
 			if(placeContainer.id == "end-place") {
 				placeTexts.innerHTML += `<div class="times">
 											 <label for="end-time">
 										 		 <span class="time-title">도착 시간 : </span>
-										 		 <input type="time" name="end-time" id="end-time" value="${hour}:${minute}">
+										 		 <input type="time" name="end-time" class="end-time" value="${hour}:${minute}">
 										 	 </label>
 									 	 </div>`;
 			} else {
 				placeTexts.innerHTML += `<div class="times">
 											 <label for="start-time">
 										 		 <span class="time-title">출발 시간 : </span>
-										 		 <input type="time" name="start-time" id="start-time" value="${hour}:${minute}">
+										 		 <input type="time" name="start-time" class="start-time" value="${hour}:${minute}">
 										 	 </label>
 										 	 <label for="stay-time">
 										 		 <span class="time-title">체류 시간 : </span>
-										 		 <input type="text" name="stay-time" id="stay-time" readOnly value="${place.stayTime}">
+										 		 <input type="text" name="stay-time" class="stay-time" readOnly value="">
 										 	 </label>
 									 	 </div>`;
 			}
@@ -223,35 +326,56 @@ function addHTMLForTourList(tourList) {
 			}
 			
 			if(placeContainer.id != "end-place") {
+				const stayTimeTag = placeContainer.querySelector(".stay-time");
 				const stayTime = String(place.stayTime).split(":");
-				hour = stayTime[0];
-				minute = stayTime[1];
+				hour = stayTime[0] * 1;
+				minute = stayTime[1] * 1;
 				if(hour == "00") {
 					if(minute == "00") {
-						console.log(placeContainer);
-						placeContainer.querySelector("#stay-time").value = "0시간 0분";
+						stayTimeTag.value = "0시간 0분";
 					} else {
-						placeContainer.querySelector("#stay-time").value = `${minute}분`;
+						stayTimeTag.value = `${minute}분`;
 					}
 				} else {
 					if(minute == "00") {
-						placeContainer.querySelector("#stay-time").value = `${hour}시간`;
+						stayTimeTag.value = `${hour}시간`;
 					} else {
-						placeContainer.querySelector("#stay-time").value = `${hour}시간 ${minute}분`;
+						stayTimeTag.value = `${hour}시간 ${minute}분`;
 					}
 				}
-				
-				placeContainer.querySelector("#stay-time").addEventListener("click", showTimePicker);
+				addShowTimePickerEvent(stayTimeTag)
 			}
 		}
 		aside.insertBefore(scheduler, wayToSort);
 		
 		schedulers.push(scheduler.children);
 		for(let j=1; j<schedulers[i].length; j++) {
-			AddChangePositionEvent(schedulers[i][j]);
-			AddDeleteWayPointEvent(schedulers[i][j]);
+			addChangePositionEvent(schedulers[i][j]);
+			addDeleteWayPointEvent(schedulers[i][j]);
+			addStartTimeChangeEvent(schedulers[i][j]);
 		}
 	}
+}
+
+function addStartTimeChangeEvent(place) {
+	if(place.id != "end-place") {
+		const startTime = place.querySelector(".start-time");
+		startTime.addEventListener("change", function() {
+			const schedulerIndex = getCurrentSchedulerIndex();
+			console.log(schedulerIndex);
+			const days = document.querySelectorAll(".days")[0].children;
+			console.log(days);
+			const dayTourTime = days[schedulerIndex].querySelector(".day-tour-time > span");
+			const endTime = dayTourTime.innerText.substring(8, dayTourTime.innerText.length);
+			dayTourTime.innerText = `${startTime.value}:00${endTime}`;
+		});
+	}
+}
+
+function addShowTimePickerEvent(stayTimeTag) {
+	stayTimeTag.addEventListener("click", function() {
+		showTimePicker(stayTimeTag);
+	});
 }
 
 function addEventShowEachDay() {
@@ -339,6 +463,7 @@ window.onload = function() {
 	
 	const queryString = getQueryStringObj();
 	loadTourSchedule(queryString.id);
+	console.log(schedulers);
 };
 
 function onGeoOk(position) {
@@ -500,9 +625,9 @@ function createOverlay(latLng, documents, placeName, address) {
 		
 		addAdressTag(startPlace, address);
 		addPlaceCoordTag(startPlace, documents, place);
-		AddChangePositionEvent(startPlace);
+		addChangePositionEvent(startPlace);
 		
-		loadNavi();
+		loadNavi(scheduler);
 	});
 	
 	btns[1].addEventListener("click", function(event) {
@@ -520,11 +645,11 @@ function createOverlay(latLng, documents, placeName, address) {
 								  <div class="times">
 									  <label for="start-time">
 										  <span class="time-title">출발 시간 : </span>
-										  <input type="time" name="start-time" id="start-time">
+										  <input type="time" name="start-time" class="start-time">
 									  </label>
 									  <label for="stay-time">
 										  <span class="time-title">체류 시간 : </span>
-										  <input type="time" name="stay-time" id="stay-time">
+										  <input type="time" name="stay-time" class="stay-time">
 									  </label>
 								  </div>
 							  </div>
@@ -547,12 +672,10 @@ function createOverlay(latLng, documents, placeName, address) {
 		
 		addAdressTag(waypoint, address);
 		addPlaceCoordTag(waypoint, documents, place);
-		AddDeleteWayPointEvent(waypoint);
-		AddChangePositionEvent(waypoint);
+		addDeleteWayPointEvent(waypoint);
+		addChangePositionEvent(waypoint);
 		
 		loadNavi(scheduler);
-		
-		//<button class="Addwaypoint" type="button"></button>
 	});
 	
 	btns[2].addEventListener("click", function(event) {
@@ -577,11 +700,11 @@ function createOverlay(latLng, documents, placeName, address) {
 								  <div class="times">
 								 	  <label for="start-time">
 								 		  <span class="time-title">출발 시간 : </span>
-								 		  <input type="time" name="start-time" id="start-time">
+								 		  <input type="time" name="start-time" class="start-time">
 								 	  </label>
 								 	  <label for="stay-time">
 								 		  <span class="time-title">체류 시간 : </span>
-								 		  <input type="time" name="stay-time" id="stay-time">
+								 		  <input type="time" name="stay-time" class="stay-time">
 								 	  </label>
 								  </div>
 							  </div>
@@ -601,8 +724,8 @@ function createOverlay(latLng, documents, placeName, address) {
 		
 		addAdressTag(endPlace, address);
 		addPlaceCoordTag(endPlace, documents, place);
-		AddDeleteWayPointEvent(endPlace);
-		AddChangePositionEvent(endPlace);
+		addDeleteWayPointEvent(endPlace);
+		addChangePositionEvent(endPlace);
 		
 		loadNavi(scheduler);
 	});
@@ -635,7 +758,7 @@ function addPlaceCoordTag(eachPlace, documents, place) {
 	placeTexts.appendChild(span);
 }
 
-function AddDeleteWayPointEvent(eachPlace) {
+function addDeleteWayPointEvent(eachPlace) {
 	const deleteBtn = eachPlace.querySelector(".Deletewaypoint");
 	let schedulerIndex = getCurrentSchedulerIndex();
 	if(eachPlace.id == "start-place" || eachPlace.id =="end-place") {
@@ -657,7 +780,7 @@ function AddDeleteWayPointEvent(eachPlace) {
 	}
 }
 
-function AddChangePositionEvent(eachPlace) {
+function addChangePositionEvent(eachPlace) {
 	const scheduler = eachPlace.parentElement;
 	const upBtn = eachPlace.querySelector(".upIndex");
 	const downBtn = eachPlace.querySelector(".downIndex");
@@ -673,33 +796,33 @@ function AddChangePositionEvent(eachPlace) {
 				const beforeTimeTitle = beforeElement.querySelector(".time-title");
 				beforeTimeTitle.innerText = "도착 시간 : ";
 				
-				const beforeStartTime = beforeElement.querySelector("#start-time");
+				const beforeStartTime = beforeElement.querySelector(".start-time");
 				beforeStartTime.name = "end-time";
 				beforeStartTime.id = "end-time";
 				
 				const beforeStartTimeLabel = beforeStartTime.parentElement;
 				beforeStartTimeLabel.for = "end-time";
 				
-				const beforeStayTimeLabel = beforeElement.querySelector("#stay-time").parentElement;
+				const beforeStayTimeLabel = beforeElement.querySelector(".stay-time").parentElement;
 				
 				const endTimeTitle = eachPlace.querySelector(".time-title");
 				endTimeTitle.innerText = "출발 시간 : ";
 				
-				const endTime = eachPlace.querySelector("#end-time");
+				const endTime = eachPlace.querySelector(".end-time");
 				endTime.name = "start-time";
 				endTime.id = "start-time";
 				
 				const endTimeLabel = endTime.parentElement;
 				endTimeLabel.for = "start-time";
 				
-				eachPlace.querySelector("#start-time").value = beforeStartTime.value;
+				eachPlace.querySelector(".start-time").value = beforeStartTime.value;
 				eachPlace.querySelector(".times").appendChild(beforeStayTimeLabel);
 				
 				scheduler.insertBefore(eachPlace, beforeElement);
 			} else if(eachPlace.id != "end-place") {
 				/* start or way <- way */
-				const beforeStartTime = beforeElement.querySelector("#start-time").value;
-				eachPlace.querySelector("#start-time").value = beforeStartTime;
+				const beforeStartTime = beforeElement.querySelector(".start-time").value;
+				eachPlace.querySelector(".start-time").value = beforeStartTime;
 				
 				scheduler.insertBefore(eachPlace, beforeElement);
 			}
@@ -720,7 +843,7 @@ function AddChangePositionEvent(eachPlace) {
 				const endTimeTitle = nextElement.querySelector(".time-title");
 				endTimeTitle.innerText = "출발 시간 : ";
 				
-				const endTime = nextElement.querySelector("#end-time");
+				const endTime = nextElement.querySelector(".end-time");
 				endTime.name = "start-time";
 				endTime.id = "start-time";
 				
@@ -730,23 +853,23 @@ function AddChangePositionEvent(eachPlace) {
 				const currentTimeTitle = eachPlace.querySelector(".time-title");
 				currentTimeTitle.innerText = "도착 시간 : ";
 				
-				const startTime = eachPlace.querySelector("#start-time");
+				const startTime = eachPlace.querySelector(".start-time");
 				startTime.name = "end-time";
 				startTime.id = "end-time";
 				
 				const startTimeLabel = startTime.parentElement;
 				startTimeLabel.for = "end-time";
 				
-				const currentStayTimeLabel = eachPlace.querySelector("#stay-time").parentElement;
+				const currentStayTimeLabel = eachPlace.querySelector(".stay-time").parentElement;
 				
-				nextElement.querySelector("#start-time").value = startTime.value;
+				nextElement.querySelector(".start-time").value = startTime.value;
 				nextElement.querySelector(".times").appendChild(currentStayTimeLabel);
 				
 				scheduler.insertBefore(nextElement, eachPlace);
 			} else {
 				/* start or way -> way */
-				const currentStartTime = eachPlace.querySelector("#start-time").value;
-				nextElement.querySelector("#start-time").value = currentStartTime;
+				const currentStartTime = eachPlace.querySelector(".start-time").value;
+				nextElement.querySelector(".start-time").value = currentStartTime;
 				
 				scheduler.insertBefore(nextElement, eachPlace);
 			}
@@ -895,8 +1018,8 @@ function setTimesWithTakenTimes() {
 	let driveTime;
 	for(let i=1; i<schedulerChildren.length; i++) {
 		if(i == 1){
-			beforeStartTime = schedulerChildren[i].querySelector("#start-time").value.split(":");
-			beforeStayTime = schedulerChildren[i].querySelector("#stay-time").value;
+			beforeStartTime = schedulerChildren[i].querySelector(".start-time").value.split(":");
+			beforeStayTime = schedulerChildren[i].querySelector(".stay-time").value;
 		} else if(i % 2 == 0) {
 			driveTime = schedulerChildren[i].querySelector(".duration").id * 1;
 		} else {
@@ -938,7 +1061,7 @@ function setTimesWithTakenTimes() {
 			const formattedMinute = String(minute).padStart(2, "0");
 			
 			if(schedulerChildren[i].id == "end-place") {
-				const endTime = schedulerChildren[i].querySelector("#end-time");
+				const endTime = schedulerChildren[i].querySelector(".end-time");
 				endTime.value = `${formattedHour}:${formattedMinute}`;
 				
 				const schedulerIndex = getCurrentSchedulerIndex();
@@ -947,10 +1070,10 @@ function setTimesWithTakenTimes() {
 				const startTourTime = dayTourTime.innerText.substring(0, 11);
 				dayTourTime.innerText = `${startTourTime}${formattedHour}:${formattedMinute}:00`;
 			} else {
-				const startTime = schedulerChildren[i].querySelector("#start-time");
+				const startTime = schedulerChildren[i].querySelector(".start-time");
 				startTime.value = `${formattedHour}:${formattedMinute}`;
 				beforeStartTime = startTime.value.split(":");
-				beforeStayTime = schedulerChildren[i].querySelector("#stay-time").value;
+				beforeStayTime = schedulerChildren[i].querySelector(".stay-time").value;
 			}
 		}
 	}

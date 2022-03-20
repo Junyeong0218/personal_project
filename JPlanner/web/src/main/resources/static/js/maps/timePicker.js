@@ -9,18 +9,19 @@ const acceptBtn = timePicker.querySelector(".time-picker-btns").children[0];
 const cancelBtn = timePicker.querySelector(".time-picker-btns").children[1];
 const picker_hour = timePicker.querySelector(".hour");
 const picker_minute = timePicker.querySelector(".minute");
+let currentTag;
 
-function showTimePicker(event) {
+function showTimePicker(stayTimeTag) {
+	currentTag = stayTimeTag;
 	let origin_time;
 	let origin_hour;
 	let origin_minute;
-	console.log(event);
-	if(String(event.target.value).indexOf(":") > 0) {
-		origin_time = String(event.target.value).split(":");
+	if(String(stayTimeTag.value).indexOf(":") > -1) {
+		origin_time = String(stayTimeTag.value).split(":");
 		origin_hour = origin_time[0] * 1;
 		origin_minute = origin_time[1] * 1;
 	} else {
-		origin_time = String(event.target.value);
+		origin_time = String(stayTimeTag.value);
 		if(origin_time.charAt(origin_time.length - 1) == "분") {
 			origin_time = origin_time.replace("분", "");
 		}
@@ -34,52 +35,46 @@ function showTimePicker(event) {
 					0 : origin_time.substring(index + 2, origin_time.length) * 1;
 	}
 	
-	console.log(origin_time);
-	console.log(origin_hour);
-	console.log(origin_minute);
-	
 	picker_hour.innerText = origin_hour;
 	picker_minute.innerText = origin_minute;
-	
-	console.log(picker_hour);
-	console.log(picker_minute);
 
-	const x = event.target.offsetLeft;
-	const y = event.target.offsetTop + event.target.offsetHeight + 5;
+	const x = stayTimeTag.offsetLeft;
+	const y = stayTimeTag.offsetTop + stayTimeTag.offsetHeight + 5;
 	timePicker.style.top = y + 'px';
 	timePicker.style.left = x + 'px';
 	
 	timePicker.className = "pop-up";
+}	
+
+acceptBtn.addEventListener("click", function() {
+	const hour = picker_hour.innerText * 1;
+	const minute = picker_minute.innerText * 1;
 	
-	acceptBtn.addEventListener("click", function() {
-		const hour = String(picker_hour.innerText);
-		const minute = String(picker_minute.innerText).padStart(2, "0");
-		
-		if(hour == "00" || hour == "0") {
-			if(minute == "00" || minute == "0") {
-				event.target.value = `0시간 0분`;
-			} else {
-				event.target.value = `${minute}분`;
-			}
+	if(hour == "00" || hour == "0") {
+		if(minute == "00" || minute == "0") {
+			currentTag.value = `0시간 0분`;
 		} else {
-			if(minute == "00" || minute == "0") {
-				event.target.value = `${hour}시간`;
-			} else {
-				event.target.value = `${hour}시간 ${minute}분`;
-			}
+			currentTag.value = `${minute}분`;
 		}
-		
-		timePicker.className = "pop-up hidden";
-		const scheduler = getCurrentScheduler();
-		loadNavi(scheduler);
-	});
+	} else {
+		if(minute == "00" || minute == "0") {
+			currentTag.value = `${hour}시간`;
+		} else {
+			currentTag.value = `${hour}시간 ${minute}분`;
+		}
+	}
 	
-	cancelBtn.addEventListener("click", function() {
-		picker_hour.innerText = 0;
-		picker_minute.innerText = 0;
-		timePicker.className = "pop-up hidden";
-	});
-}
+	timePicker.className = "pop-up hidden";
+	const scheduler = getCurrentScheduler();
+	loadNavi(scheduler);
+});
+
+cancelBtn.addEventListener("click", function() {
+	picker_hour.innerText = 0;
+	picker_minute.innerText = 0;
+	timePicker.className = "pop-up hidden";
+});
+
 
 hourUp.addEventListener("click", function() {
 	const hour = picker_hour.innerText * 1 + 1;

@@ -210,13 +210,7 @@ function insertSchedule(event) {
 						questionToMap.className = "pop-up-bg show-pop";
 						
 						questionToMap.querySelector("#goToMap").addEventListener("click", function() {
-							const startDateObject = new Date(data.startDate);
-							const endDateObject = new Date(data.endDate);
-							const days = endDateObject.getDate() - startDateObject.getDate() + 1;
-							const startDateTimeStamp = startDateObject.getTime();
-							const endDateTimeStamp = endDateObject.getTime();
-							
-							const link = `/maps?start=${startDateTimeStamp}&end=${endDateTimeStamp}&days=${days}&${data.id}`;
+							const link = `/maps?id=${data.id}`;
 							
 							window.open(link, "_blank");
 							
@@ -306,13 +300,7 @@ function showSchedulePopup(event) {
 				showSchedule.querySelector(".show-schedule-type").appendChild(goToMapButton);
 				
 				goToMapButton.addEventListener("click", function() {
-					const startDateObject = new Date(startDate);
-					const endDateObject = new Date(endDate);
-					const days = endDateObject.getDate() - startDateObject.getDate() + 1;
-					const startDateTimeStamp = startDateObject.getTime();
-					const endDateTimeStamp = endDateObject.getTime();
-					
-					const link = `/maps?start=${startDateTimeStamp}&end=${endDateTimeStamp}&days=${days}&id=${data.id}`;
+					const link = `/maps?id=${data.id}`;
 					
 					window.open(link, "_blank");
 				});
@@ -474,13 +462,7 @@ function showSchedulePopup(event) {
 							questionToMap.className = "pop-up-bg show-pop";
 							
 							questionToMap.querySelector("#goToMap").addEventListener("click", function() {
-								const startDateObject = new Date(data.startDate);
-								const endDateObject = new Date(data.endDate);
-								const days = endDateObject.getDate() - startDateObject.getDate() + 1;
-								const startDateTimeStamp = startDateObject.getTime();
-								const endDateTimeStamp = endDateObject.getTime();
-								
-								const link = `/maps?start=${startDateTimeStamp}&end=${endDateTimeStamp}&days=${days}&${data.id}`;
+								const link = `/maps?${data.id}`;
 								
 								window.open(link, "_blank");
 								

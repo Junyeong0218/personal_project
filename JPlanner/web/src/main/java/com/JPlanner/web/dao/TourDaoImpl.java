@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.JPlanner.web.domain.Entity.TourDetail;
+import com.JPlanner.web.domain.Tour.Place;
+import com.JPlanner.web.domain.Tour.Tour;
 
 @Repository
 public class TourDaoImpl implements TourDao {
@@ -99,5 +103,140 @@ public class TourDaoImpl implements TourDao {
 		}
 		
 		return tourDetails;
+	}
+	
+	@Override
+	public int updateTourByTour(Tour tour) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE "
+					   + "daily_tour_mst "
+				   + "SET "
+				   	   + "search_priority = ?, "
+				   	   + "start_datetime = ?, "
+				   	   + "arrive_datetime = ?, "
+				   	   + "update_date = now() "
+				   + "WHERE "
+				       + "id = ? ";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, tour.getSearchPriority());
+			pstmt.setTimestamp(2, Timestamp.valueOf(tour.getStartDateTime()));
+			pstmt.setTimestamp(3, Timestamp.valueOf(tour.getArriveDateTime()));
+			pstmt.setInt(4, tour.getId());
+			
+			result = pstmt.executeUpdate();
+			
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int updatePlaceByPlace(Place place) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE "
+					   + "daily_tour_detail "
+				   + "SET "
+				   	   + "index = ?, "
+				   	   + "start_datetime = ?, "
+				   	   + "stay_time = ?, "
+				   	   + "update_date = now() "
+				   + "WHERE "
+				       + "id = ? ";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, place.getIndex());
+			pstmt.setTimestamp(2, Timestamp.valueOf(place.getStartDateTime()));
+			pstmt.setTime(3, Time.valueOf(place.getStayTime()));
+			pstmt.setInt(4, place.getId());
+			
+			result = pstmt.executeUpdate();
+			
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int insertPlaceByPlace(Place place) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "INSERT INTO daily_tour_detail VALUES{0, ?, ?, ?, ?, ?, ?, ?, ? , ? , NOW(), NOW())";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, place.getTourId());
+			pstmt.setString(2, Integer.toString(place.getPlaceId()));
+			pstmt.setString(3, place.getPlaceName());
+			pstmt.setString(4, place.getPlaceAddress());
+			pstmt.setString(5, Double.toString(place.getCoordX()));
+			pstmt.setString(6, Double.toString(place.getCoordY()));
+			pstmt.setInt(7, place.getIndex());
+			pstmt.setTimestamp(8, Timestamp.valueOf(place.getStartDateTime()));
+			pstmt.setString(9, place.getStayTime().toString());
+			
+			result = pstmt.executeUpdate();
+			
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int deletePlaceByPlaceId(int placeId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE "
+					   + "daily_tour_detail "
+				   + "SET "
+				   	   + "deleted = 1 "
+				   + "WHERE "
+				       + "id = ? ";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, placeId);
+			
+			result = pstmt.executeUpdate();
+			
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }
