@@ -21,7 +21,7 @@ public class Place {
 	private double coordY;
 	private int index;
 	private LocalDateTime startDateTime;
-	private LocalTime stayTime;
+	private String stayTime;
 	private LocalDateTime regDate;
 	private LocalDateTime updateDate;
 }

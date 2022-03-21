@@ -43,6 +43,30 @@ public class ViewController {
 		}
 	}
 	
+	@GetMapping("user/checkpw")
+	public String checkPassWord(HttpServletRequest request) {
+		
+		User user = (User) request.getSession().getAttribute("user");
+		
+		if(user == null) {
+			return INDEX;
+		} else {
+			return "user/checkpassword";
+		}
+	}
+	
+	@GetMapping("user/userinfo")
+	public String userinfo(HttpServletRequest request) {
+		
+		User user = (User) request.getSession().getAttribute("user");
+		
+		if(user == null) {
+			return INDEX;
+		} else {
+			return "user/userinfo";
+		}
+	}
+	
 	@GetMapping("logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		

@@ -218,19 +218,20 @@ public class CalendarDaoImpl implements CalendarDao {
 	public int updateScheduleBySchedule(Schedule schedule, int userId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String sql = "update schedule set title = ?, start_date = ?, end_date = ?, description = ?, update_date = now() where id = ? and user_id = ?";
+		String sql = "update schedule set schedule_type = ?, title = ?, start_date = ?, end_date = ?, description = ?, update_date = now() where id = ? and user_id = ?";
 		int result = 0;
 		
 		try {
 			con = dataSource.getConnection();
 			pstmt = con.prepareStatement(sql);
 			
-			pstmt.setString(1, schedule.getTitle());
-			pstmt.setTimestamp(2, Timestamp.valueOf(schedule.getStartDate()));
-			pstmt.setTimestamp(3, Timestamp.valueOf(schedule.getEndDate()));
-			pstmt.setString(4, schedule.getDescription());
-			pstmt.setInt(5, schedule.getId());
-			pstmt.setInt(6, userId);
+			pstmt.setInt(1, schedule.getType());
+			pstmt.setString(2, schedule.getTitle());
+			pstmt.setTimestamp(3, Timestamp.valueOf(schedule.getStartDate()));
+			pstmt.setTimestamp(4, Timestamp.valueOf(schedule.getEndDate()));
+			pstmt.setString(5, schedule.getDescription());
+			pstmt.setInt(6, schedule.getId());
+			pstmt.setInt(7, userId);
 			
 			result = pstmt.executeUpdate();
 			

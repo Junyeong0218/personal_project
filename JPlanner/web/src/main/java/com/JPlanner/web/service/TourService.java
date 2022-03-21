@@ -12,5 +12,6 @@ public interface TourService {
 
 	public List<Tour> getTourSchedulesByScheduleId(int scheduleId, int userId);
 	
-	public int updateTourSchedulesByReqDto(UpdateTourReqDto updateTourReqDto, int userId);
+	public int insertTourSchedulesByReqDto(UpdateTourReqDto updateTourReqDto);
+	public int updateTourSchedulesByReqDto(UpdateTourReqDto updateTourReqDto);
 }

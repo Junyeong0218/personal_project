@@ -210,7 +210,10 @@ function insertSchedule(event) {
 						questionToMap.className = "pop-up-bg show-pop";
 						
 						questionToMap.querySelector("#goToMap").addEventListener("click", function() {
-							const link = `/maps?id=${data.id}`;
+							const startDay = new Date(startDate).getDate();
+							const endDay = new Date(endDate).getDate();
+							const days = endDay - startDay + 1;
+							const link = `/maps?days=${days}id=${data.id}`;
 							
 							window.open(link, "_blank");
 							
@@ -245,6 +248,7 @@ function showSchedulePopup(event) {
 	} else {
 		scheduleId = event.target.parentElement.id;
 	}
+	console.log(scheduleId);
 	
 	let title;
 	let desc;
@@ -299,8 +303,12 @@ function showSchedulePopup(event) {
 				goToMapButton.innerHTML = `<span>여행 경로 작성하러 가기</span>`;
 				showSchedule.querySelector(".show-schedule-type").appendChild(goToMapButton);
 				
+				const startDay = new Date(startDate).getDate();
+				const endDay = new Date(endDate).getDate();
+				const days = endDay - startDay + 1;
+				
 				goToMapButton.addEventListener("click", function() {
-					const link = `/maps?id=${data.id}`;
+					const link = `/maps?days=${days}&id=${data.id}`;
 					
 					window.open(link, "_blank");
 				});
@@ -317,6 +325,10 @@ function showSchedulePopup(event) {
 	showSchedule.className = "pop-up-bg show-pop";
 	showclsBtn.addEventListener("click", function() {
 		showSchedule.className = "pop-up-bg hide-pop";
+		const goToMap = showSchedule.querySelector("#goToMap");
+		if(goToMap != null) { 
+			goToMap.remove();
+		}
 	});
 	
 	showSchedule.querySelector("#delete-schedule").addEventListener("click", function() {
@@ -412,6 +424,8 @@ function showSchedulePopup(event) {
 			} else {
 				upTypeValue = 1;
 			}
+			console.log(scheduleId);
+			console.log(upTypeValue);
 			
 			if(upTypeValue == 0) {
 				$.ajax({
@@ -462,7 +476,10 @@ function showSchedulePopup(event) {
 							questionToMap.className = "pop-up-bg show-pop";
 							
 							questionToMap.querySelector("#goToMap").addEventListener("click", function() {
-								const link = `/maps?${data.id}`;
+								const startDay = new Date(startDate).getDate();
+								const endDay = new Date(endDate).getDate();
+								const days = endDay - startDay + 1;
+								const link = `/maps?days=${days}&id=${data.id}`;
 								
 								window.open(link, "_blank");
 								

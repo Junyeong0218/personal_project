@@ -1,6 +1,5 @@
 package com.JPlanner.web.controller.restController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,21 +33,17 @@ public class TourRestController {
 	}
 	
 	@PostMapping("insertTourSchedules")
-	public int insertTourSchedules(ArrayList<Tour> tours, HttpServletRequest request) {
+	public int insertTourSchedules(@RequestBody UpdateTourReqDto updateTourReqDto) {
 		
-		User user = (User) request.getSession().getAttribute("user");
+		int result = tourService.insertTourSchedulesByReqDto(updateTourReqDto);
 		
-		System.out.println(tours);
-		
-		return 1;
+		return result;
 	}
 	
 	@PostMapping("updateTourSchedules")
-	public int updateTourSchedules(@RequestBody UpdateTourReqDto updateTourReqDto, HttpServletRequest request) {
+	public int updateTourSchedules(@RequestBody UpdateTourReqDto updateTourReqDto) {
 		
-		User user = (User) request.getSession().getAttribute("user");
-		
-		int result = tourService.updateTourSchedulesByReqDto(updateTourReqDto, user.getId());
+		int result = tourService.updateTourSchedulesByReqDto(updateTourReqDto);
 		
 		return result;
 	}

@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,10 +53,10 @@ public class TourDaoImpl implements TourDao {
 					+ "	LEFT OUTER JOIN daily_tour_mst tm ON(tm.schedule_id = schedule.id)"
 					+ "	LEFT OUTER JOIN daily_tour_detail td ON(tm.id = td.daily_tour_id) "
 				+ "WHERE "
-					+ "schedule.id = ? AND schedule.user_id = ? "
+					+ "schedule.id = ? AND schedule.user_id = ? AND td.deleted = 0 "
 				+ "ORDER BY "
 					+ " tourId ASC, "
-					+ "	td.start_datetime ASC";
+					+ " td.`index` ASC ";
 		List<TourDetail> tourDetails = null;
 		
 		try {
@@ -75,21 +73,21 @@ public class TourDaoImpl implements TourDao {
 				TourDetail tourDetail = new TourDetail();
 				tourDetail.setScheduleId(rs.getInt("scheduleId"));
 				tourDetail.setTourId(rs.getInt("tourId"));
-				tourDetail.setTitle(rs.getString("title"));
-				tourDetail.setDescription(rs.getString("description"));
-				tourDetail.setSearchPriority(rs.getString("search_priority"));
+				tourDetail.setTitle(rs.getString("title") == null ? "" : rs.getString("title"));
+				tourDetail.setDescription(rs.getString("description") == null ? "" : rs.getString("description"));
+				tourDetail.setSearchPriority(rs.getString("search_priority") == null ? "RECOMMEND" : rs.getString("search_priority"));
 				tourDetail.setTourStartDateTime(rs.getTimestamp("tourStartDateTime").toLocalDateTime());
 				tourDetail.setTourArriveDateTime(rs.getTimestamp("tourArriveDateTime").toLocalDateTime());
 				tourDetail.setPlace_tourId(rs.getInt("place_tourId"));
 				tourDetail.setPlaceIndicator(rs.getInt("placeIndicator"));
 				tourDetail.setPlaceId(rs.getInt("place_id"));
-				tourDetail.setPlaceName(rs.getString("place_name"));
-				tourDetail.setPlaceAddress(rs.getString("place_address"));
+				tourDetail.setPlaceName(rs.getString("place_name") == null ? "" : rs.getString("place_name"));
+				tourDetail.setPlaceAddress(rs.getString("place_address") == null ? "" : rs.getString("place_address"));
 				tourDetail.setCoordX(rs.getString("coord_x") == null ? 0 : Double.parseDouble(rs.getString("coord_x")));
 				tourDetail.setCoordY(rs.getString("coord_y") == null ? 0 : Double.parseDouble(rs.getString("coord_y")));
 				tourDetail.setIndex(rs.getInt("index"));
 				tourDetail.setPlaceStartDateTime(rs.getTimestamp("placeStartDateTime") == null ? LocalDateTime.MIN : rs.getTimestamp("placeStartDateTime").toLocalDateTime());
-				tourDetail.setStayTime(rs.getTime("stay_time") == null ? LocalTime.MIN : rs.getTime("stay_time").toLocalTime());
+				tourDetail.setStayTime(rs.getString("stay_time") == null ? "00:00:00" : rs.getString("stay_time"));
 				
 				tourDetails.add(tourDetail);
 			}
@@ -103,6 +101,74 @@ public class TourDaoImpl implements TourDao {
 		}
 		
 		return tourDetails;
+	}
+	
+	@Override
+	public int insertTourByTour(Tour tour) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "INSERT INTO daily_tour_mst VALUES(0, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0, null)";
+		int result = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, tour.getScheduleId());
+			pstmt.setString(2, tour.getTitle());
+			pstmt.setString(3, tour.getDescription());
+			pstmt.setString(4, tour.getSearchPriority());
+			pstmt.setTimestamp(5, Timestamp.valueOf(tour.getStartDateTime()));
+			pstmt.setTimestamp(6, Timestamp.valueOf(tour.getArriveDateTime()));
+			
+			result = pstmt.executeUpdate();
+			
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int selectTourIdByTour(Tour tour) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT "
+						+ " id "
+					+ "FROM "
+						+ " daily_tour_mst "
+					+ "WHERE "
+						+ "schedule_id = ? AND deleted = 0 "
+					+ "ORDER BY "
+						+ " reg_date DESC ";
+		int tourId = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, tour.getScheduleId());
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				tourId = rs.getInt("id");
+			}
+			
+			rs.close();
+			pstmt.close();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return tourId;
 	}
 	
 	@Override
@@ -148,7 +214,7 @@ public class TourDaoImpl implements TourDao {
 		String sql = "UPDATE "
 					   + "daily_tour_detail "
 				   + "SET "
-				   	   + "index = ?, "
+				   	   + "`index` = ?, "
 				   	   + "start_datetime = ?, "
 				   	   + "stay_time = ?, "
 				   	   + "update_date = now() "
@@ -162,7 +228,7 @@ public class TourDaoImpl implements TourDao {
 			
 			pstmt.setInt(1, place.getIndex());
 			pstmt.setTimestamp(2, Timestamp.valueOf(place.getStartDateTime()));
-			pstmt.setTime(3, Time.valueOf(place.getStayTime()));
+			pstmt.setString(3, place.getStayTime().toString());
 			pstmt.setInt(4, place.getId());
 			
 			result = pstmt.executeUpdate();
@@ -181,7 +247,7 @@ public class TourDaoImpl implements TourDao {
 	public int insertPlaceByPlace(Place place) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String sql = "INSERT INTO daily_tour_detail VALUES{0, ?, ?, ?, ?, ?, ?, ?, ? , ? , NOW(), NOW())";
+		String sql = "INSERT INTO daily_tour_detail VALUES(0, ?, ?, ?, ?, ?, ?, ?, ? , ? , NOW(), NOW(), 0, null)";
 		int result = 0;
 		
 		try {
@@ -217,7 +283,8 @@ public class TourDaoImpl implements TourDao {
 		String sql = "UPDATE "
 					   + "daily_tour_detail "
 				   + "SET "
-				   	   + "deleted = 1 "
+				   	   + "deleted = 1,"
+				   	   + "deleted_datetime = now() "
 				   + "WHERE "
 				       + "id = ? ";
 		int result = 0;

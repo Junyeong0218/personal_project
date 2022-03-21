@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MapController {
 
 	@GetMapping("maps")
-	public String maps(int id) {
+	public String maps(int days, int id) {
 		
 		return "maps/maps";
 	}

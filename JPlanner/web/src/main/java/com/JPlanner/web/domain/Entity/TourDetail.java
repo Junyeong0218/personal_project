@@ -28,5 +28,5 @@ public class TourDetail {
 	private double coordY;
 	private int index;
 	private LocalDateTime placeStartDateTime;
-	private LocalTime stayTime;
+	private String stayTime;
 }

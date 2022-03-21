@@ -69,7 +69,43 @@ public class TourServiceImpl implements TourService {
 	}
 	
 	@Override
-	public int updateTourSchedulesByReqDto(UpdateTourReqDto updateTourReqDto, int userId) {
+	public int insertTourSchedulesByReqDto(UpdateTourReqDto updateTourReqDto) {
+
+		List<Tour> tours = updateTourReqDto.getChangedTour();
+		int totalResult = 0;
+		
+		for(int i=0; i<tours.size(); i++) {
+			Tour tour = tours.get(i);
+			System.out.println("insert할 tour : ");
+			System.out.println(tour);
+			int result = tourDao.insertTourByTour(tour);
+			int tourId = 0;
+			totalResult += result;
+			if(result == 1) {
+				System.out.println("tourId 받아오기");
+				tourId = tourDao.selectTourIdByTour(tour);
+				System.out.println("받아온 tourId : " + tourId);
+				if(tourId == 0) {
+					throw new IllegalArgumentException("tourId를 받아올 수 없음");
+				}
+				List<Place> places = tours.get(i).getPlaces();
+				for(int j=0; j<places.size(); j++) {
+					Place place = places.get(j);
+					place.setTourId(tourId);
+					System.out.println("insert할 place : ");
+					System.out.println(place);
+					totalResult += tourDao.insertPlaceByPlace(place);
+				}
+			} else {
+				throw new IllegalArgumentException("tour insert 실패");
+			}
+		}
+		
+		return totalResult;
+	}
+	
+	@Override
+	public int updateTourSchedulesByReqDto(UpdateTourReqDto updateTourReqDto) {
 		
 		List<Tour> origin = updateTourReqDto.getOriginTour();
 		List<Tour> changed = updateTourReqDto.getChangedTour();
@@ -78,9 +114,12 @@ public class TourServiceImpl implements TourService {
 		for(int i=0; i<origin.size(); i++) {
 			Tour originTour = origin.get(i);
 			Tour changedTour = changed.get(i);
+			System.out.println(originTour);
+			System.out.println(changedTour);
 			
 			if(!isEqualTour(originTour, changedTour)) {
 				result += tourDao.updateTourByTour(changedTour);
+				System.out.println("! isEqualTour : " + !isEqualTour(originTour, changedTour) + " -> update 대상입니다.\n");
 			}
 			
 			List<Place> originPlaces = originTour.getPlaces();
@@ -89,27 +128,35 @@ public class TourServiceImpl implements TourService {
 			for(int j=0; j<changedPlaces.size(); j++) {
 				Place changedPlace = changedPlaces.get(j);
 				boolean isFound = false;
+				System.out.println("changedPlace 검색 시작 : " + changedPlace);
 				
 				searchSamePlace:
 				for(int k=0; k<originPlaces.size(); k++) {
-					Place originPlace = changedPlaces.get(k);
+					Place originPlace = originPlaces.get(k);
 					
 					if(isEqualPlace(originPlace, changedPlace)) {
 						changedPlace.setId(originPlace.getId());
 						result += tourDao.updatePlaceByPlace(changedPlace);
+						System.out.println("founded ! -> placeIndicator 세팅된 changedPlcae 출력");
+						System.out.println("[changed]" + changedPlace);
 						originPlaces.remove(k);
 						isFound = true;
 						break searchSamePlace;
 					}
 				}
-				if(isFound == false && originPlaces.size() == 0) {
+				System.out.println("originPlaces 에서 발견 못한 경우 insert 대상이 되는 changedPlace");
+				if(isFound == false) {
 					result += tourDao.insertPlaceByPlace(changedPlace);
+					System.out.println("insert 대상 changedPlace : " + changedPlace);
 				}
+				System.out.println("-----------------------------------------------------------------");
 			}
-			
+			System.out.println("changedPlaces와 매칭 후 남겨진 originPlaces" + originPlaces);
 			for(int j=0; j<originPlaces.size(); j++) {
 				tourDao.deletePlaceByPlaceId(originPlaces.get(j).getId());
+				System.out.println("삭제된 place = " + originPlaces.get(j));
 			}
+			System.out.println("Tour 1개 반복 끝----------------------------------------------------------------------");
 		}
 		
 		return result;

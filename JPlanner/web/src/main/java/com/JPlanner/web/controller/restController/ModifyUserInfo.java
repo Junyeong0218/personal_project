@@ -101,7 +101,5 @@ public class ModifyUserInfo {
 		out.println("{\"result\": " + result + "}");
 		out.close();
 	}
-	
-	
 
 }
