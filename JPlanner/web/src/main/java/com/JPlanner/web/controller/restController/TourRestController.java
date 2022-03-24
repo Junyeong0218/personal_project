@@ -2,17 +2,17 @@ package com.JPlanner.web.controller.restController;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.JPlanner.web.domain.Tour.Tour;
-import com.JPlanner.web.domain.user.User;
-import com.JPlanner.web.dto.UpdateTourReqDto;
+import com.JPlanner.web.config.auth.PrincipalDetails;
+import com.JPlanner.web.entity.tour.Tour;
+import com.JPlanner.web.entity.user.User;
+import com.JPlanner.web.requestDto.UpdateTourReqDto;
 import com.JPlanner.web.service.TourService;
 
 @RestController
@@ -23,9 +23,10 @@ public class TourRestController {
 	private TourService tourService;
 	
 	@PostMapping("getTourSchedules")
-	public List<Tour> getTourSchedules(int scheduleId, HttpServletRequest request) {
+	public List<Tour> getTourSchedules(int scheduleId,
+									   @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
-		User user = (User) request.getSession().getAttribute("user");
+		User user = principalDetails.getUser();
 		
 		List<Tour> tours = tourService.getTourSchedulesByScheduleId(scheduleId, user.getId());
 		

@@ -5,37 +5,38 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.JPlanner.web.domain.schedule.Schedule;
-import com.JPlanner.web.domain.user.User;
-import com.JPlanner.web.dto.InsertScheduleDto;
-import com.JPlanner.web.dto.MainCalendarResDto;
-import com.JPlanner.web.dto.UpdateScheduleDto;
-import com.JPlanner.web.service.CalendarService;
+import com.JPlanner.web.config.auth.PrincipalDetails;
+import com.JPlanner.web.entity.schedule.Schedule;
+import com.JPlanner.web.entity.user.User;
+import com.JPlanner.web.requestDto.InsertScheduleReqDto;
+import com.JPlanner.web.requestDto.UpdateScheduleReqDto;
+import com.JPlanner.web.responseDto.MainCalendarResDto;
+import com.JPlanner.web.service.ScheduleService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/user/")
+@RequiredArgsConstructor
 public class ScheduleRestController {
 	
-	@Autowired
-	private CalendarService calendarService;
+	private final ScheduleService scheduleService;
 	
 	@PostMapping("getCalendar")
-	public MainCalendarResDto getCalendar(int ym, HttpServletRequest request) {
+	public MainCalendarResDto getCalendar(int ym, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		if(ym == 0) {
 			ym = LocalDateTime.now().getYear() * 100 + LocalDateTime.now().getMonthValue();
 		}
 		
-		User user = (User) request.getSession().getAttribute("user");
+		User user = principalDetails.getUser();
 		
-		List<Integer> dates = calendarService.selectAllDates(ym);
-		Map<Integer, List<Schedule>> schedules = calendarService.selectSchedules(dates, user.getId());
+		List<Integer> dates = scheduleService.selectAllDates(ym);
+		Map<Integer, List<Schedule>> schedules = scheduleService.selectSchedules(dates, user.getId());
 		
 		MainCalendarResDto mainCalendarResDto = new MainCalendarResDto(dates, schedules);
 		
@@ -45,84 +46,88 @@ public class ScheduleRestController {
 	@PostMapping("getSchedule")
 	public Schedule getSchedule(int scheduleId) {
 		
-		Schedule schedule = calendarService.getSchedule(scheduleId);
+		Schedule schedule = scheduleService.getSchedule(scheduleId);
 		
 		return schedule;
 		
 	}
 	
 	@PostMapping("getScheduleList")
-	public List<Schedule> getScheduleList(int ym, HttpServletRequest request) {
+	public List<Schedule> getScheduleList(int ym, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
-		User user = (User) request.getSession().getAttribute("user");
+		User user = principalDetails.getUser();
 		
-		List<Schedule> scheduleList = calendarService.getScheduleList(ym, user.getId());
+		List<Schedule> scheduleList = scheduleService.getScheduleList(ym, user.getId());
 		
 		return scheduleList;
 		
 	}
 	
 	@PostMapping("insertCommonSchedule")
-	public int insertCommonSchedule(InsertScheduleDto insertScheduleDto, HttpServletRequest request) {
+	public int insertCommonSchedule(InsertScheduleReqDto insertScheduleDto,
+									@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		if(insertScheduleDto.getDescription() == null || insertScheduleDto.getDescription().equals("")) {
 			insertScheduleDto.setDescription(insertScheduleDto.getTitle());
 		}
 		
-		User user = (User) request.getSession().getAttribute("user");
+		User user = principalDetails.getUser();
 		
-		int result = calendarService.insertCommonSchedule(insertScheduleDto, user.getId());
+		int result = scheduleService.insertCommonSchedule(insertScheduleDto, user.getId());
 		
 		return result;
 	}
 	
 	@PostMapping("insertTourSchedule")
-	public Schedule insertTourSchedule(InsertScheduleDto insertScheduleDto, HttpServletRequest request) {
+	public Schedule insertTourSchedule(InsertScheduleReqDto insertScheduleDto,
+									   @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		if(insertScheduleDto.getDescription() == null || insertScheduleDto.getDescription().equals("")) {
 			insertScheduleDto.setDescription(insertScheduleDto.getTitle());
 		}
 		
-		User user = (User) request.getSession().getAttribute("user");
+		User user = principalDetails.getUser();
 		
-		Schedule insertedSchedule = calendarService.insertTourSchedule(insertScheduleDto, user.getId());
+		Schedule insertedSchedule = scheduleService.insertTourSchedule(insertScheduleDto, user.getId());
 		
 		return insertedSchedule;
 	}
 
 	@PostMapping("updateCommonSchedule")
-	public int updateCommonSchedule(UpdateScheduleDto updateScheduleDto, HttpServletRequest request) {
+	public int updateCommonSchedule(UpdateScheduleReqDto updateScheduleDto,
+									@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		if(updateScheduleDto.getDescription() == null || updateScheduleDto.getDescription().equals("")) {
 			updateScheduleDto.setDescription(updateScheduleDto.getTitle());
 		}
 		
-		User user = (User) request.getSession().getAttribute("user");
+		User user = principalDetails.getUser();
 		
-		int result = calendarService.updateCommonSchedule(updateScheduleDto, user.getId());
+		int result = scheduleService.updateCommonSchedule(updateScheduleDto, user.getId());
 		
 		return result;
 	}
 	
 	@PostMapping("updateTourSchedule")
-	public Schedule updateTourSchedule(UpdateScheduleDto updateScheduleDto, HttpServletRequest request) {
+	public Schedule updateTourSchedule(UpdateScheduleReqDto updateScheduleDto,
+									   @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		if(updateScheduleDto.getDescription() == null || updateScheduleDto.getDescription().equals("")) {
 			updateScheduleDto.setDescription(updateScheduleDto.getTitle());
 		}
 		System.out.println(updateScheduleDto);
 		
-		User user = (User) request.getSession().getAttribute("user");
+		User user = principalDetails.getUser();
 		
-		Schedule updatedSchedule = calendarService.updateTourSchedule(updateScheduleDto, user.getId());
+		Schedule updatedSchedule = scheduleService.updateTourSchedule(updateScheduleDto, user.getId());
 		
 		return updatedSchedule;
 	}
 	
 	@PostMapping("deleteSchedule")
-	public int deleteSchedule(int scheduleId, HttpServletRequest request) throws IOException {
+	public int deleteSchedule(int scheduleId) throws IOException {
 		
-		int result = calendarService.deleteSchedule(scheduleId);
+		int result = scheduleService.deleteSchedule(scheduleId);
 		
 		return result;
 	}

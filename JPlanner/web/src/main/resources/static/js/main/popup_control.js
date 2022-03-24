@@ -213,7 +213,7 @@ function insertSchedule(event) {
 							const startDay = new Date(startDate).getDate();
 							const endDay = new Date(endDate).getDate();
 							const days = endDay - startDay + 1;
-							const link = `/maps?days=${days}id=${data.id}`;
+							const link = `/maps?days=${days}&id=${data.id}`;
 							
 							window.open(link, "_blank");
 							

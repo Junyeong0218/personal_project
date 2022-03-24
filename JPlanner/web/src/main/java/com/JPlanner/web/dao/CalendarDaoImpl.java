@@ -8,20 +8,16 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Repository;
 
-import com.JPlanner.web.domain.schedule.Schedule;
+import com.JPlanner.web.config.DBConfig;
+import com.JPlanner.web.entity.schedule.Schedule;
 
-@Repository
-@EnableAutoConfiguration
 public class CalendarDaoImpl implements CalendarDao {
 	
-	@Autowired
-	private DataSource dataSource;
+	private DBConfig dataSource;
 	
 	@Override
 	public List<Schedule> selectSchedulesByDates(List<Integer> dates, int userId) {
@@ -35,7 +31,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		List<Schedule> schedules = new ArrayList<Schedule>();
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, dates.get(0));
@@ -77,7 +73,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		Schedule schedule = null;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, scheduleId);
@@ -114,7 +110,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		Schedule insertedSchedule = null;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, schedule.getTitle());
@@ -154,7 +150,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		List<Schedule> scheduleList = new ArrayList<Schedule>();
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, yearmonth);
@@ -192,7 +188,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, schedule.getType());
@@ -222,7 +218,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, schedule.getType());
@@ -253,7 +249,7 @@ public class CalendarDaoImpl implements CalendarDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, scheduleId);

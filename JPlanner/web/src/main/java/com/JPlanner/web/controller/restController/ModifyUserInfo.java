@@ -1,27 +1,24 @@
 package com.JPlanner.web.controller.restController;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.JPlanner.web.domain.user.User;
-import com.JPlanner.web.dto.UpdatePasswordDto;
-import com.JPlanner.web.dto.UpdateUserInfoDto;
+import com.JPlanner.web.config.auth.PrincipalDetails;
+import com.JPlanner.web.entity.user.User;
+import com.JPlanner.web.requestDto.SigninReqDto;
+import com.JPlanner.web.requestDto.UpdateUserReqDto;
 import com.JPlanner.web.service.AuthService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @MultipartConfig(
@@ -29,20 +26,18 @@ import com.JPlanner.web.service.AuthService;
 		maxFileSize = 1024 * 1024 * 3,
 		maxRequestSize = 1024 * 1024 * 10
 )
+@RequestMapping("/user/")
+@RequiredArgsConstructor
 public class ModifyUserInfo {
-	
-	@Autowired
+
 	private AuthService authService;
 	
-	private final String SEP = File.separator;
-	
-	@PostMapping("/user/modifyuserinfo")
-	@ResponseBody
-	public void modifyUserInfo(@ModelAttribute UpdateUserInfoDto updateUserInfoDto,
-							   HttpServletRequest request,
-							   HttpServletResponse response) throws IOException, ServletException {
+	@PostMapping("modifyUserInfo")
+	public int modifyUserInfo(UpdateUserReqDto updateUserInfoDto,
+							  @AuthenticationPrincipal PrincipalDetails principalDetails)
+									 throws IOException, ServletException {
 		
-		User user = (User) request.getSession().getAttribute("user");
+		User user = principalDetails.getUser();
 		updateUserInfoDto.setId(user.getId());
 		
 		System.out.println(updateUserInfoDto);
@@ -52,7 +47,7 @@ public class ModifyUserInfo {
 		if(updateUserInfoDto.getFile() == null) {
 			result = authService.updateUser(updateUserInfoDto); 
 		} else {
-			String url = request.getServletContext().getRealPath("/static" + SEP + "images" + SEP + "userinfo" + SEP + user.getUsername());
+			String url = new ClassPathResource("/static/images/userinfo/" + user.getUsername()).getPath();
 			
 			StringTokenizer st = new StringTokenizer(updateUserInfoDto.getFile().getContentType(), "/");
 			
@@ -69,37 +64,24 @@ public class ModifyUserInfo {
 		}
 		
 		if(result == 1) {
-			HttpSession session = request.getSession();
 			user = authService.selectUserById(updateUserInfoDto.getId());
-			session.setAttribute("user", user);
+			principalDetails.setUser(user);
 		}
 		
-		System.out.println(result);
-		
-		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("{\"result\": " + result + "}");
-		out.close();
+		return result;
 	}
 	
-	@PostMapping("/user/modifyuserpw")
-	@ResponseBody
-	public void modifyUserPw(@RequestParam String password,
-							   HttpServletRequest request,
-							   HttpServletResponse response) throws IOException, ServletException {
+	@PostMapping("modifyUserPassword")
+	public int modifyUserPassword(SigninReqDto signinReqDto,
+								  @AuthenticationPrincipal PrincipalDetails principalDetails) 
+										  throws IOException, ServletException {
 		
-		User user = (User) request.getSession().getAttribute("user");
-		UpdatePasswordDto updatePasswordDto = new UpdatePasswordDto(user.getId(),
-																	password);
+		User user = principalDetails.getUser();
+		signinReqDto.setId(user.getId());
 		
-		int result = authService.updatePassword(updatePasswordDto);
+		int result = authService.updatePassword(signinReqDto);
 		
-		System.out.println(result);
-		
-		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("{\"result\": " + result + "}");
-		out.close();
+		return result;
 	}
 
 }

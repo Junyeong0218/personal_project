@@ -1,0 +1,12 @@
+#spring.devtools.livereload.enabled=true
+##org.springframework.jdbc.datasource.DriverManagerDataSource
+#spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+#spring.datasource.url=jdbc:mariadb://127.0.0.1:3306/personal_project?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+#spring.datasource.username=root
+#spring.datasource.password=toor
+
+#spring.mvc.view.prefix=/WEB-INF/views/
+#spring.mvc.view.suffix=.jsp
+
+#spring.jackson.time-zone=Asia/Seoul
+#spring.jackson.deserialization.adjust-dates-to-context-time-zone=false

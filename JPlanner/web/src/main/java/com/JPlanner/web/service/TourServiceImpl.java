@@ -6,25 +6,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.JPlanner.web.dao.TourDao;
-import com.JPlanner.web.domain.Entity.TourDetail;
-import com.JPlanner.web.domain.Tour.Place;
-import com.JPlanner.web.domain.Tour.Tour;
-import com.JPlanner.web.dto.UpdateTourReqDto;
+import com.JPlanner.web.entity.tour.Place;
+import com.JPlanner.web.entity.tour.Tour;
+import com.JPlanner.web.entity.tour.TourDetail;
+import com.JPlanner.web.entity.tour.TourRepository;
+import com.JPlanner.web.requestDto.UpdateTourReqDto;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class TourServiceImpl implements TourService {
 	
-	@Autowired
-	private TourDao tourDao;
+	private final TourRepository tourRepository;
 
 	@Override
 	public List<Tour> getTourSchedulesByScheduleId(int scheduleId, int userId) {
 		
-		List<TourDetail> tourDetails = tourDao.getTourSchedulesById(scheduleId, userId);
+		List<TourDetail> tourDetails = tourRepository.getTourSchedulesById(scheduleId, userId);
 		
 		List<Tour> tours = new ArrayList<Tour>();
 		
@@ -78,12 +79,12 @@ public class TourServiceImpl implements TourService {
 			Tour tour = tours.get(i);
 			System.out.println("insert할 tour : ");
 			System.out.println(tour);
-			int result = tourDao.insertTourByTour(tour);
+			int result = tourRepository.insertTourByTour(tour);
 			int tourId = 0;
 			totalResult += result;
 			if(result == 1) {
 				System.out.println("tourId 받아오기");
-				tourId = tourDao.selectTourIdByTour(tour);
+				tourId = tourRepository.selectTourIdByTour(tour);
 				System.out.println("받아온 tourId : " + tourId);
 				if(tourId == 0) {
 					throw new IllegalArgumentException("tourId를 받아올 수 없음");
@@ -94,8 +95,8 @@ public class TourServiceImpl implements TourService {
 					place.setTourId(tourId);
 					System.out.println("insert할 place : ");
 					System.out.println(place);
-					totalResult += tourDao.insertPlaceByPlace(place);
 				}
+				totalResult += tourRepository.insertPlacesByPlace(places);
 			} else {
 				throw new IllegalArgumentException("tour insert 실패");
 			}
@@ -118,7 +119,7 @@ public class TourServiceImpl implements TourService {
 			System.out.println(changedTour);
 			
 			if(!isEqualTour(originTour, changedTour)) {
-				result += tourDao.updateTourByTour(changedTour);
+				result += tourRepository.updateTourByTour(changedTour);
 				System.out.println("! isEqualTour : " + !isEqualTour(originTour, changedTour) + " -> update 대상입니다.\n");
 			}
 			
@@ -136,7 +137,7 @@ public class TourServiceImpl implements TourService {
 					
 					if(isEqualPlace(originPlace, changedPlace)) {
 						changedPlace.setId(originPlace.getId());
-						result += tourDao.updatePlaceByPlace(changedPlace);
+						result += tourRepository.updatePlaceByPlace(changedPlace);
 						System.out.println("founded ! -> placeIndicator 세팅된 changedPlcae 출력");
 						System.out.println("[changed]" + changedPlace);
 						originPlaces.remove(k);
@@ -146,14 +147,14 @@ public class TourServiceImpl implements TourService {
 				}
 				System.out.println("originPlaces 에서 발견 못한 경우 insert 대상이 되는 changedPlace");
 				if(isFound == false) {
-					result += tourDao.insertPlaceByPlace(changedPlace);
+					result += tourRepository.insertPlaceByPlace(changedPlace);
 					System.out.println("insert 대상 changedPlace : " + changedPlace);
 				}
 				System.out.println("-----------------------------------------------------------------");
 			}
 			System.out.println("changedPlaces와 매칭 후 남겨진 originPlaces" + originPlaces);
 			for(int j=0; j<originPlaces.size(); j++) {
-				tourDao.deletePlaceByPlaceId(originPlaces.get(j).getId());
+				tourRepository.deletePlaceByPlaceId(originPlaces.get(j).getId());
 				System.out.println("삭제된 place = " + originPlaces.get(j));
 			}
 			System.out.println("Tour 1개 반복 끝----------------------------------------------------------------------");

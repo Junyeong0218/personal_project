@@ -5,72 +5,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.JPlanner.web.config.DBConfig;
 import com.JPlanner.web.domain.user.User;
-import com.JPlanner.web.dto.UpdatePasswordDto;
-import com.JPlanner.web.dto.UpdateUserInfoDto;
 
-@Repository
-@EnableAutoConfiguration
 public class UserDaoImpl implements UserDao {
 	
-	@Autowired
-	private DataSource dataSource;
-	
-	@Override
-	public int signin(User user) {
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = "select count(um.username) + count(um2.password) from user_mst um "
-					+ "left outer join user_mst um2 on(um.id = um2.id and um2.password = ?) "
-					+ "where um.username = ?";
-		int result = 0;
-		
-		try {
-			con = dataSource.getConnection();
-			pstmt = con.prepareStatement(sql);
-			
-			pstmt.setString(1, user.getPassword());
-			pstmt.setString(2, user.getUsername());
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				result = rs.getInt(1);
-			}
-			
-			rs.close();
-			pstmt.close();
-			con.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
+
+	private DBConfig dataSource;
 	
 	@Override
 	public int signup(User user) {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String sql = "insert into user_mst values(0, ?, ?, ?, ?, ?, NULL, now(), now(), 0)";
+		String sql = "insert into user_mst values(0, ?, ?, ?, ?, ?, NULL, now(), now(), 0, 'ROLE_USER')";
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, user.getUsername());
-			pstmt.setString(2, user.getPassword());
+			pstmt.setString(2, new BCryptPasswordEncoder().encode(user.getPassword()));
 			pstmt.setString(3, user.getName());
 			pstmt.setInt(4, user.getPwQuestion());
 			pstmt.setString(5, user.getPwAnswer());
@@ -97,7 +58,7 @@ public class UserDaoImpl implements UserDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, username);
@@ -129,7 +90,7 @@ public class UserDaoImpl implements UserDao {
 		User user = null;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, id);
@@ -146,8 +107,7 @@ public class UserDaoImpl implements UserDao {
 				user.setPwQuestion(rs.getInt("pw_question"));
 				user.setPwAnswer(rs.getString("pw_answer"));
 				user.setImgType(rs.getString("image_type"));
-				user.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
-				user.setUpdateDate(rs.getTimestamp("update_date").toLocalDateTime());
+				user.setRole(rs.getString("role"));
 			}
 			
 			rs.close();
@@ -171,7 +131,7 @@ public class UserDaoImpl implements UserDao {
 		User user = null;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, username);
@@ -188,8 +148,7 @@ public class UserDaoImpl implements UserDao {
 				user.setPwQuestion(rs.getInt("pw_question"));
 				user.setPwAnswer(rs.getString("pw_answer"));
 				user.setImgType(rs.getString("image_type"));
-				user.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
-				user.setUpdateDate(rs.getTimestamp("update_date").toLocalDateTime());
+				user.setRole(rs.getString("role"));
 			}
 			
 			rs.close();
@@ -204,7 +163,7 @@ public class UserDaoImpl implements UserDao {
 	}
 	
 	@Override
-	public int updateUserByDto(UpdateUserInfoDto updateUserInfoDto) {
+	public int updateUserByUser(User user) {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -212,17 +171,17 @@ public class UserDaoImpl implements UserDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			
-			if(updateUserInfoDto.getFile() == null) {
+			if(user.getFile() == null) {
 				sql = "update user_mst set name = ?, pw_question = ?, pw_answer = ?, image_type = NULL, update_date = now() where id = ?";
 				
 				pstmt = con.prepareStatement(sql);
 
-				pstmt.setString(1, updateUserInfoDto.getName());
-				pstmt.setInt(2, updateUserInfoDto.getQuestion());
-				pstmt.setString(3, updateUserInfoDto.getAnswer());
-				pstmt.setInt(4, updateUserInfoDto.getId());
+				pstmt.setString(1, user.getName());
+				pstmt.setInt(2, user.getPwQuestion());
+				pstmt.setString(3, user.getPwAnswer());
+				pstmt.setInt(4, user.getId());
 				
 				result = pstmt.executeUpdate();
 				
@@ -231,11 +190,11 @@ public class UserDaoImpl implements UserDao {
 				
 				pstmt = con.prepareStatement(sql);
 
-				pstmt.setString(1, updateUserInfoDto.getName());
-				pstmt.setInt(2, updateUserInfoDto.getQuestion());
-				pstmt.setString(3, updateUserInfoDto.getAnswer());
-				pstmt.setString(4, updateUserInfoDto.getImgType());
-				pstmt.setInt(5, updateUserInfoDto.getId());
+				pstmt.setString(1, user.getName());
+				pstmt.setInt(2, user.getPwQuestion());
+				pstmt.setString(3, user.getPwAnswer());
+				pstmt.setString(4, user.getImgType());
+				pstmt.setInt(5, user.getId());
 				
 				result = pstmt.executeUpdate();
 			}
@@ -251,20 +210,19 @@ public class UserDaoImpl implements UserDao {
 	}
 	
 	@Override
-	public int updatePasswordByPassword(UpdatePasswordDto updatePasswordDto) {
+	public int updatePasswordByUser(User user) {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String sql = "update user_mst set password = ?, update_date = now() where id = ?";
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 
-			pstmt.setString(1, updatePasswordDto.getPassword());
-			pstmt.setInt(2, updatePasswordDto.getId());
+			pstmt.setString(1, user.getPassword());
+			pstmt.setInt(2, user.getId());
 			
 			result = pstmt.executeUpdate();
 			

@@ -118,7 +118,7 @@ form > div > span {
 	position: relative;
 	top: 4px;
 	margin: 0;
-	padding: 1px 7px 1px 5px;
+	width: 100px;
 	font: inherit;
 	font-size: 20px;
 	border: none;

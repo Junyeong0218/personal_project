@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/security/tags" %>
+
+<s:authorize access="isAuthenticated()">
+	<s:authentication property="principal" var="principal" />
+</s:authorize>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -28,16 +34,16 @@
                         <a href="/main"><img src="/images/logo.png" alt="main_logo"></a>
                     </div>
                     <div class="user-info">
-                        <div>
-                        	<c:if test="${sessionScope.user.imgType == null}">
-                        		<img src="/images/userinfo/profile_image.png">
-                        	</c:if>
-                        	<c:if test="${sessionScope.user.imgType != null}">
-                        		<img src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
-                        	</c:if>
-                        </div>
-                        <span class="username">${sessionScope.user.name} 님</span>
-                        
+	                        <div>
+	                        	<c:if test="${principal.user.imgType == null}">
+	                        		<img src="/images/userinfo/profile_image.png">
+	                        	</c:if>
+	                        	<c:if test="${principal.user.imgType != null}">
+	                        		<img src="/images/userinfo/${principal.user.username}/profile_image.${principal.user.imgType}">
+	                        	</c:if>
+	                        	
+	                        </div>
+	                        <span class="username">${principal.user.name} 님</span>
                     </div>
                     <div class="menus">
                     	<div class="menu">

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.JPlanner.web.domain.Tour.Tour;
-import com.JPlanner.web.dto.UpdateTourReqDto;
+import com.JPlanner.web.entity.tour.Tour;
+import com.JPlanner.web.requestDto.UpdateTourReqDto;
 
 @Service
 public interface TourService {

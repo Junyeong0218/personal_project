@@ -13,5 +13,5 @@ function logout() {
 }
 
 function confirmPw() {
-	location.href="/user/checkpw";
+	location.href="/user/checkPassword";
 }

@@ -14,14 +14,14 @@ modifyUserInfoBtn.addEventListener("click", function(event) {
 	$.ajax({
 	        type: "post",
 	        enctype: "multipart/form-data",
-	        url: "/user/modifyuserinfo",
+	        url: "/user/modifyUserInfo",
 	        data: formData,
 	        processData: false,    
 	        contentType: false,      
 	        cache: false,
 	        success: function (data) {
 				data = JSON.parse(data);
-				if(data.result == '1') {
+				if(data == 1) {
 					message.innerText = "변경이 완료되었습니다.";
 					showPopUp();
 					closeBtn.addEventListener("click", function() {
@@ -50,11 +50,11 @@ modifyPasswordBtn.addEventListener("click", function(event) {
 	
 	$.ajax({
 	        type: "post",
-	        url: "/user/modifyuserpw",
+	        url: "/user/modifyUserPassword",
 	        data: { "password": password },
 	        dataType: "json",
 	        success: function (data) {
-				if(data.result == '1') {
+				if(data == 1) {
 					message.innerText = "변경이 완료되었습니다.\n다시 로그인해주세요.";
 					showPopUp();
 					closeBtn.addEventListener("click", function() {

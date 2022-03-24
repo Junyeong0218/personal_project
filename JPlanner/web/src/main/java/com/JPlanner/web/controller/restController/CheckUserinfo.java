@@ -1,56 +1,40 @@
 package com.JPlanner.web.controller.restController;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.JPlanner.web.domain.user.User;
-import com.JPlanner.web.dto.SigninDto;
+import com.JPlanner.web.config.auth.PrincipalDetails;
+import com.JPlanner.web.entity.user.User;
+import com.JPlanner.web.requestDto.SigninReqDto;
 import com.JPlanner.web.service.AuthService;
 
 @RestController
-@RequestMapping("/user/")
+@RequestMapping("/")
 public class CheckUserinfo {
 
 	@Autowired
 	private AuthService authService;
 	
-	@PostMapping("checkusername")
-	@ResponseBody
-	public void checkUsername(@RequestParam String username,
-							 HttpServletResponse response) throws IOException {
+	@PostMapping("checkUsername")
+	public int checkUsername(String username) {
 		
 		int result = authService.checkUsername(username);
 		
-		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("{\"result\": " + result + "}");
-		out.close();
+		return result;
 	}
 	
-	@PostMapping("checkpw")
-	@ResponseBody
-	public void postCheckPassword(@RequestParam(name="password") String password,
-								  HttpServletRequest request,
-								  HttpServletResponse response) throws IOException {
+	@PostMapping("user/checkPassword")
+	public int checkhPassword(SigninReqDto signinReqDto,
+							  @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
-		User user = (User) request.getSession().getAttribute("user");
-		SigninDto signinDto = new SigninDto(user.getUsername(), password);
+		User user = principalDetails.getUser();
+		signinReqDto.setUsername(user.getUsername());
 		
-		int result = authService.checkPassword(signinDto);
+		int result = authService.checkPassword(signinReqDto);
 
-		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("{\"result\": " + result + "}");
-		out.close();
+		return result;
 	}
 }

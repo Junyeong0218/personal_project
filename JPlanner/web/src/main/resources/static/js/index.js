@@ -29,6 +29,6 @@ function goToSelect() {
 function toSignup() {
     main.className = "to-hidden";
     setTimeout(() => {
-        location.href="http://localhost:8080/user/signup"
+        location.href="http://localhost:8080/signup"
     }, 450);
 }

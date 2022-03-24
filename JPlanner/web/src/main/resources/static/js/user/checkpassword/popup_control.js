@@ -7,16 +7,16 @@ function checkPw() {
 	
 	$.ajax({
 	        type: "post",
-	        url: "/user/checkpw",
+	        url: "/user/checkPassword",
 	        data: { "password": password },
 	        dataType: "json",
 	        success: function (data) {
-				if(data.result == '1') {
+				if(data == 1) {
+					location.href="/user/userInfo";
+					return;
+				} else {
 					message.innerText = "비밀번호가 올바르지 않습니다.";
 					showPopUp();
-					return;
-				} else if(data.result == '2') {
-					location.href="/user/userinfo";
 					return;
 				}
 		  	},

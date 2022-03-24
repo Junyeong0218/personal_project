@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.JPlanner.web.entity.user.UserRepository">
+	<insert id="signup" parameterType="com.JPlanner.web.entity.user.User">
+		insert into
+			user_mst
+		values(
+			0,
+			#{username},
+			#{password},
+			#{name},
+			#{pwQuestion},
+			#{pwAnswer},
+			null,
+			now(),
+			now(),
+			0,
+			"ROLL_USER"
+		);
+	</insert>
+	
+	<select id="selectUsernameByUsername" resultType="Integer" parameterType="String">
+		select
+			count(username)
+		from
+			user_mst
+		where
+			username = #{username};
+	</select>
+	
+	<select id="checkPasswordbyUsername" resultType="String" parameterType="String">
+		select
+			password
+		from
+			user_mst
+		where
+			username = #{username};
+	</select>
+	
+	<select id="selectUserByUsername" resultType="com.JPlanner.web.entity.user.User" parameterType="String">
+		select
+			*
+		from
+			user_mst
+		where
+			username = #{username};
+	</select>
+	
+	<select id="selectUserById" resultType="com.JPlanner.web.entity.user.User" parameterType="Integer">
+		select
+			*
+		from
+			user_mst
+		where
+			id = #{id};
+	</select>
+	
+	<update id="updateUserByUserWithImage" parameterType="com.JPlanner.web.entity.user.User">
+		update
+			user_mst
+		set
+			name = #{name}, 
+			pw_question = #{pwQuestion}, 
+			pw_answer = #{pwAnswer}, 
+			image_type = #{imgType}, 
+			update_date = now() 
+		where 
+			id = #{id};
+	</update>
+	
+	<update id="updateUserByUserWithoutImage" parameterType="com.JPlanner.web.entity.user.User">
+		update
+			user_mst
+		set
+			name = #{name}, 
+			pw_question = #{pwQuestion}, 
+			pw_answer = #{pwAnswer}, 
+			image_type = null, 
+			update_date = now() 
+		where 
+			id = #{id};
+	</update>
+	
+	<update id="updatePasswordByUser" parameterType="com.JPlanner.web.entity.user.User">
+		update
+			user_mst
+		set
+			password = #{password},
+			update_date = now()
+		where
+			id = #{id};
+	</update>
+</mapper>

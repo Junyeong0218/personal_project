@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.JPlanner.web.domain.schedule.Schedule;
-import com.JPlanner.web.dto.InsertScheduleDto;
+import com.JPlanner.web.requestDto.InsertScheduleReqDto;
 
 @Repository
 public interface CalendarDao {

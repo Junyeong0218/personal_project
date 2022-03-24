@@ -1,0 +1,33 @@
+application:
+  version: v1.0.
+  title: JPlanner
+
+spring:
+  profiles: 
+    active: local
+  
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/personal_project?useUnicode=true&allowMultiQueries=true&serverTimezone=Asia/Seoul
+    username: root
+    password: toor
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+#file:
+#  path: C:\personal_project\JPlanner\web\src\main\resources\static\
+
+mybatis:
+  mapper-locations:  - /mappers/*.xml
+
+---
+spring:  profiles: local
+server:
+  port: 8080
+   
+---
+spring:
+  jackson:
+    time-zone: Asia/Seoul
+    deserialization:      adjust-dates-to-context-time-zone: false

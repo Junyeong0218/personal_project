@@ -9,20 +9,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.JPlanner.web.domain.Entity.TourDetail;
-import com.JPlanner.web.domain.Tour.Place;
-import com.JPlanner.web.domain.Tour.Tour;
+import com.JPlanner.web.config.DBConfig;
+import com.JPlanner.web.domain.tour.Place;
+import com.JPlanner.web.domain.tour.Tour;
+import com.JPlanner.web.entity.Entity.TourDetail;
 
-@Repository
+
 public class TourDaoImpl implements TourDao {
 	
-	@Autowired
-	private DataSource dataSource;
+
+	private DBConfig dataSource;
 
 	@Override
 	public List<TourDetail> getTourSchedulesById(int scheduleId, int userId) {
@@ -60,7 +59,7 @@ public class TourDaoImpl implements TourDao {
 		List<TourDetail> tourDetails = null;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, scheduleId);
@@ -111,7 +110,7 @@ public class TourDaoImpl implements TourDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, tour.getScheduleId());
@@ -149,7 +148,7 @@ public class TourDaoImpl implements TourDao {
 		int tourId = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, tour.getScheduleId());
@@ -187,7 +186,7 @@ public class TourDaoImpl implements TourDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, tour.getSearchPriority());
@@ -223,7 +222,7 @@ public class TourDaoImpl implements TourDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, place.getIndex());
@@ -251,7 +250,7 @@ public class TourDaoImpl implements TourDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, place.getTourId());
@@ -290,7 +289,7 @@ public class TourDaoImpl implements TourDao {
 		int result = 0;
 		
 		try {
-			con = dataSource.getConnection();
+			con = dataSource.dataSource().getConnection();
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, placeId);

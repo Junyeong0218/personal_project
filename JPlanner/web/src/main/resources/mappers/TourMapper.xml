@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.JPlanner.web.entity.tour.TourRepository">
+  	<select id="getTourSchedulesById" resultType="com.JPlanner.web.entity.tour.TourDetail" parameterType="Integer">
+  		select
+  			schedule.id AS scheduleId,
+  			tm.id AS tourId,
+  			tm.title,
+  			tm.description ,
+  			tm.search_priority AS searchPriority,
+  			tm.start_datetime AS tourStartDateTime,
+  			tm.arrive_datetime AS tourArriveDateTime,
+  			td.daily_tour_id AS place_tourId,
+  			td.id AS placeIndicator,
+  			td.place_id AS placeId,
+  			td.place_name AS plceName,
+  			td.place_address AS placeAddress,
+  			td.coord_x AS coordX,
+  			td.coord_y AS coordY,
+  			td.index,
+  			td.start_datetime AS placeStartDateTime,
+  			td.stay_time AS stayTime
+  		from
+  			schedule
+  			left outer join daily_tour_mst tm on(tm.schedule_id = schedule.id)
+  			left outer join daily_tour_detail td on(tm.id = td.daily_tour_id)
+  		where
+  			schedule.id = #{scheduleId} and schedule.user_id = #{userId} and td.deleted = 0
+  		order by
+  			tourId asc,
+  			td.index asc;
+  	</select>
+  
+  	<insert id="insertTourByTour" parameterType="com.JPlanner.web.entity.tour.Tour">
+  		insert into
+  			daily_tour_mst
+  		values(
+  			0,
+  			#{scheduleId},
+  			#{title},
+  			#{description},
+  			#{searchPriority},
+  			#{startDateTime},
+  			#{arriveDateTime},
+  			now(),
+  			now(),
+  			0,
+  			null
+  		);
+  	</insert>
+  	
+  	<select id="selectTourIdByTour" parameterType="com.JPlanner.web.entity.tour.Tour">
+  		select
+  			id
+  		from
+  			daily_tour_mst
+  		where
+  			schedule_id = #{scheduleId} and deleted = 0
+  		order by
+  			reg_date desc;
+  	</select>
+  	
+  	<update id="updateTourByTour" parameterType="com.JPlanner.web.entity.tour.Tour">
+  		update
+  			daily_tour_mst
+  		set
+  			search_priority = #{searchPriority},
+  			start_datetime = #{startDateTime},
+  			arrive_datetime = #{arriveDateTime},
+  			update_date = now()
+  		where
+  			id = #{id};
+  	</update>
+  	
+  	<update id="updatePlaceByPlace" parameterType="com.JPlanner.web.entity.tour.Place">
+  		update
+  			daily_tour_detail
+  		set
+  			index = #{index},
+  			start_datetime = #{startDateTime},
+  			stay_time = #{stayTime},
+  			update_date = now()
+  		where
+  			id = #{id};
+  	</update>
+  	
+  	<insert id="insertPlacesByPlace" parameterType="com.JPlanner.web.entity.tour.Place">
+  		<foreach collection="list" item="item" open="(" close=")" separator=",">
+  			insert into
+  				daily_tour_detail
+  			values(
+  				0,
+  				#{item.tourId},
+  				#{item.placeId},
+  				#{item.placeAddress},
+  				#{item.coordX},
+  				#{item.coordY},
+  				#{item.index},
+  				#{item.startDateTime},
+  				#{item.stayTime},
+  				now(),
+  				now(),
+  				0,
+  				null
+  			)
+  		</foreach>
+  		;
+  	</insert>
+  	
+  	<insert id="insertPlaceByPlace" parameterType="com.JPlanner.web.entity.tour.Place">
+  			insert into
+  				daily_tour_detail
+  			values(
+  				0,
+  				#{tourId},
+  				#{placeId},
+  				#{placeAddress},
+  				#{coordX},
+  				#{coordY},
+  				#{index},
+  				#{startDateTime},
+  				#{stayTime},
+  				now(),
+  				now(),
+  				0,
+  				null
+  			);
+  	</insert>
+  	
+  	<update id="deletePlaceByPlaceId" parameterType="Integer">
+  		update
+  			daily_tour_detail
+  		set
+  			deleted = 0,
+  			deleted_datetime = now()
+  		where
+  			id = #{id};
+  	</update>
+  </mapper>
+  
+  
+  
+  
+  
+  

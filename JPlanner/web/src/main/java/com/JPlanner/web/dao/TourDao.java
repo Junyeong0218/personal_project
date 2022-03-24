@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.JPlanner.web.domain.Entity.TourDetail;
-import com.JPlanner.web.domain.Tour.Place;
-import com.JPlanner.web.domain.Tour.Tour;
+import com.JPlanner.web.domain.tour.Place;
+import com.JPlanner.web.domain.tour.Tour;
+import com.JPlanner.web.entity.Entity.TourDetail;
 
 @Repository
 public interface TourDao {

@@ -2,97 +2,120 @@ package com.JPlanner.web.service;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.JPlanner.web.dao.UserDao;
-import com.JPlanner.web.domain.user.User;
-import com.JPlanner.web.dto.SigninDto;
-import com.JPlanner.web.dto.SignupDto;
-import com.JPlanner.web.dto.UpdatePasswordDto;
-import com.JPlanner.web.dto.UpdateUserInfoDto;
+import com.JPlanner.web.entity.user.User;
+import com.JPlanner.web.entity.user.UserRepository;
+import com.JPlanner.web.requestDto.SigninReqDto;
+import com.JPlanner.web.requestDto.SignupReqDto;
+import com.JPlanner.web.requestDto.UpdateUserReqDto;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 	
-	@Autowired
-	private UserDao userDao;
-	
-	@Autowired
-	private FileService fileService;
+	private final UserRepository userRepository;
+	private final FileService fileService;
 	
 	@Override
-	public int signin(SigninDto signinDto) {
-		User user = signinDto.toEntity();
+	public int signup(SignupReqDto signupReqDto) {
+		User user = signupReqDto.toEntity();
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		
-		int result = userDao.signin(user);
-		
-		return result;
-	}
-	
-	@Override
-	public int signup(SignupDto signupDto) {
-		User user = signupDto.toEntity();
-		
-		int result = userDao.signup(user);
+		int result = userRepository.signup(user);
 		
 		return result;
 	}
 	
 	@Override
 	public int checkUsername(String username) {
-		int result = userDao.selectUsernameByUsername(username);
+		int result = userRepository.selectUsernameByUsername(username);
 		
 		return result;
 	}
 	
 	@Override
-	public int checkPassword(SigninDto signinDto) {
-		User user = signinDto.toEntity();
+	public int checkPassword(SigninReqDto signinReqDto) {
+		User user = signinReqDto.toEntityWithUsername();
 		
-		int result = userDao.signin(user);
+		String password = userRepository.checkPasswordbyUsername(user.getUsername());
 		
-		return result;
+		return new BCryptPasswordEncoder().matches(signinReqDto.getPassword(), password) ? 1 : 0 ;
 	}
 	
 	@Override
 	public User selectUserByUsername(String username) {
-		User user = userDao.selectUserByUsername(username);
+		User user = userRepository.selectUserByUsername(username);
 		
 		return user;
 	}
 	
 	@Override
 	public User selectUserById(int id) {
-		User user = userDao.selectUserById(id);
+		User user = userRepository.selectUserById(id);
 		
 		return user;
 	}
 	
 	@Override
-	public int updateUser(UpdateUserInfoDto updateUserInfoDto) {
-		int result = userDao.updateUserByDto(updateUserInfoDto);
+	public int updateUser(UpdateUserReqDto updateUserReqDto) {
+		int result = userRepository.updateUserByUserWithoutImage(updateUserReqDto.toEntity());
 		
 		return result;
 	}
 	
 	@Override
-	public int updateUser(UpdateUserInfoDto updateUserInfoDto, String url) throws IOException {
-		boolean uploadFlag = fileService.setProfileImage(updateUserInfoDto.getFile(), updateUserInfoDto.getImgType(), url);
+	public int updateUser(UpdateUserReqDto updateUserReqDto, String url) throws IOException {
+		boolean uploadFlag = fileService.setProfileImage(updateUserReqDto.getFile(), updateUserReqDto.getImgType(), url);
 		int result = -1;
 		
 		if(uploadFlag) {
-			result = userDao.updateUserByDto(updateUserInfoDto);
+			result = userRepository.updateUserByUserWithImage(updateUserReqDto.toEntity());
 		}
 		
 		return result;
 	}
 	
 	@Override
-	public int updatePassword(UpdatePasswordDto updatePasswordDto) {
-		int result = userDao.updatePasswordByPassword(updatePasswordDto);
+	public int updatePassword(SigninReqDto signinReqDto) {
+		int result = userRepository.updatePasswordByUser(signinReqDto.toEntityWithId());
 				
 		return result;
 	}
+	
+//	private boolean installProfileImage(MultipartFile file, String extension, String url) {
+//		boolean uploadFlag = false;
+//
+//		String fileName = file.getOriginalFilename();
+//		
+//		File tempFile = new File(url);
+//		if(!tempFile.exists()) {
+//			tempFile.mkdirs();
+//		}
+//		
+//		System.out.println(url);
+//		
+//		InputStream fis = file.getInputStream();
+//		String filePath = url + SEP + "profile_image." + extension;
+//		FileOutputStream fos = new FileOutputStream(filePath);
+//
+//		byte[] buf = new byte[1024];
+//		int size = 0;
+//		while( (size = fis.read(buf)) != (-1) ) {
+//			fos.write(buf, 0, size);
+//		}
+//		
+//		uploadFlag = true;
+//			
+//		fis.close();
+//		fos.close();
+//		
+//		return uploadFlag;
+//		
+//		return false;
+//	}
 
 }

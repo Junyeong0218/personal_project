@@ -29,7 +29,7 @@
             </div>
 
             <div id="login-form" class="login-form">
-                <form action="javascript:signin()" method="post">
+                <form action="/signin" method="post">
                     <div>
                         <label>
                             <span>아이디</span>
@@ -63,7 +63,7 @@
     </div>
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/index.js"></script>
-    <script src="/js/signin.js"></script>
+    <script src="/js/signin-popup.js"></script>
     <script src="/js/background_control.js"></script>
 </body>
 

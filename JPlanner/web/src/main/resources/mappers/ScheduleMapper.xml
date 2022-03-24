@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.JPlanner.web.entity.schedule.ScheduleRepository">
+  	<select id="selectSchedulesByDates" parameterType="com.JPlanner.web.entity.schedule.ScheduleOneMonth"
+  										resultType="com.JPlanner.web.entity.schedule.Schedule">
+  		select
+  			id,
+  			title,
+  			description,
+  			start_date AS startDate,
+  			end_date AS endDate
+  		FROM
+  			schedule
+		WHERE
+			((DATE(schedule.start_date) <![CDATA[>]]> DATE(#{firstDate}) and DATE(schedule.start_date) <![CDATA[<]]> DATE(#{lastDate}))
+			OR (DATE(schedule.end_date) <![CDATA[>]]> DATE(#{firstDate}) and DATE(schedule.end_date) <![CDATA[<]]> DATE(#{lastDate})))
+			and user_id = #{userId}
+			and deleted = 0
+		ORDER BY
+			start_date asc, 
+			end_date desc, 
+			id asc;
+  	</select>
+  	
+  	<select id="getScheduleById" resultType="com.JPlanner.web.entity.schedule.Schedule"
+  								 parameterType="Integer">
+  		select
+  			id,
+  			schedule_type AS type,
+  			title,
+  			description,
+  			start_date AS startDate,
+  			end_date AS endDate
+  		from
+  			schedule
+  		where
+  			id = #{scheduleId};
+  	</select>
+  	
+  	<select id="getScheduleBySchedule" resultType="com.JPlanner.web.entity.schedule.Schedule"
+  									   parameterType="com.JPlanner.web.entity.schedule.Schedule">
+  		select
+  			*
+  		from
+  			schedule
+  		where
+  			title = #{title} and user_id = ${userId} and deleted = 0
+  		order by
+  			reg_date desc
+  		limit 1;
+  	</select>
+  	
+  	<select id="getScheduleListByYearMonth" resultType="com.JPlanner.web.entity.schedule.Schedule"
+  											parameterType="Integer">
+  		select
+  			*
+  		from
+  			schedule
+  		where
+  			date(start_date) <![CDATA[<=]]> DATE(#{yearmonth}) and 
+  			date(end_date) <![CDATA[>=]]> DATE(#{yearmonth}) and 
+  			user_id = #{userId} and 
+  			deleted = 0
+  		order by
+  			start_date asc;
+  	</select>
+  
+  	<insert id="insertScheduleBySchedule" parameterType="com.JPlanner.web.entity.schedule.Schedule">
+  		insert into
+  			schedule
+  		values(
+  			0,
+  			#{type},
+  			#{title},
+  			#{description},
+  			#{startDate},
+  			#{endDate},
+  			now(),
+  			now(),
+  			#{userId},
+  			0
+  		);
+  	</insert>
+  	
+  	<update id="updateScheduleBySchedule" parameterType="com.JPlanner.web.entity.schedule.Schedule">
+  		update
+  			schedule
+  		set
+  			schedule_type = #{type},
+  			title = #{title},
+  			start_date = #{startDate},
+  			end_date = #{endDate},
+  			description = #{description},
+  			update_date = now()
+  		where
+  			id = #{id} and user_id = #{userId}; 
+  	</update>
+  	
+  	<update id="deleteScheduleById" parameterType="Integer">
+  		update
+  			schedule
+  		set
+  			deleted = 1,
+  			update_date = now()
+  		where
+  			id = #{scheduleId};
+  	</update>
+  </mapper>
