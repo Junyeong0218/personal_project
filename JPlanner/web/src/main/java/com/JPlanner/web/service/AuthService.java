@@ -1,7 +1,5 @@
 package com.JPlanner.web.service;
 
-import java.io.IOException;
-
 import com.JPlanner.web.entity.user.User;
 import com.JPlanner.web.requestDto.SigninReqDto;
 import com.JPlanner.web.requestDto.SignupReqDto;
@@ -17,8 +15,7 @@ public interface AuthService {
 	public User selectUserByUsername(String username);
 	public User selectUserById(int id);
 	
-	public int updateUser(UpdateUserReqDto updateUserInfoDto);
-	public int updateUser(UpdateUserReqDto updateUserInfoDto, String url) throws IOException;
+	public int updateUser(UpdateUserReqDto updateUserInfoDto, User user);
 	public int updatePassword(SigninReqDto signinReqDto);
 	
 }

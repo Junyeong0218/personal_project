@@ -115,7 +115,6 @@ public class ScheduleRestController {
 		if(updateScheduleDto.getDescription() == null || updateScheduleDto.getDescription().equals("")) {
 			updateScheduleDto.setDescription(updateScheduleDto.getTitle());
 		}
-		System.out.println(updateScheduleDto);
 		
 		User user = principalDetails.getUser();
 		

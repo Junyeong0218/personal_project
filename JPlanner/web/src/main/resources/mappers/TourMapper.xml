@@ -10,19 +10,19 @@
   			tm.id AS tourId,
   			tm.title,
   			tm.description ,
-  			tm.search_priority AS searchPriority,
+  			tm.search_priority,
   			tm.start_datetime AS tourStartDateTime,
   			tm.arrive_datetime AS tourArriveDateTime,
   			td.daily_tour_id AS place_tourId,
   			td.id AS placeIndicator,
-  			td.place_id AS placeId,
-  			td.place_name AS plceName,
-  			td.place_address AS placeAddress,
-  			td.coord_x AS coordX,
-  			td.coord_y AS coordY,
+  			td.place_id,
+  			td.place_name,
+  			td.place_address,
+  			td.coord_x,
+  			td.coord_y,
   			td.index,
   			td.start_datetime AS placeStartDateTime,
-  			td.stay_time AS stayTime
+  			td.stay_time
   		from
   			schedule
   			left outer join daily_tour_mst tm on(tm.schedule_id = schedule.id)
@@ -42,9 +42,9 @@
   			#{scheduleId},
   			#{title},
   			#{description},
-  			#{searchPriority},
-  			#{startDateTime},
-  			#{arriveDateTime},
+  			#{search_priority},
+  			#{start_datetime},
+  			#{arrive_datetime},
   			now(),
   			now(),
   			0,
@@ -52,7 +52,7 @@
   		);
   	</insert>
   	
-  	<select id="selectTourIdByTour" parameterType="com.JPlanner.web.entity.tour.Tour">
+  	<select id="selectTourIdByTour" resultType="Integer" parameterType="com.JPlanner.web.entity.tour.Tour">
   		select
   			id
   		from
@@ -67,9 +67,9 @@
   		update
   			daily_tour_mst
   		set
-  			search_priority = #{searchPriority},
-  			start_datetime = #{startDateTime},
-  			arrive_datetime = #{arriveDateTime},
+  			search_priority = #{search_priority},
+  			start_datetime = #{start_datetime},
+  			arrive_datetime = #{arrive_datetime},
   			update_date = now()
   		where
   			id = #{id};
@@ -79,35 +79,37 @@
   		update
   			daily_tour_detail
   		set
-  			index = #{index},
-  			start_datetime = #{startDateTime},
-  			stay_time = #{stayTime},
+  			`index` = #{index},
+  			start_datetime = #{start_datetime},
+  			stay_time = #{stay_time},
   			update_date = now()
   		where
   			id = #{id};
   	</update>
   	
   	<insert id="insertPlacesByPlace" parameterType="com.JPlanner.web.entity.tour.Place">
-  		<foreach collection="list" item="item" open="(" close=")" separator=",">
   			insert into
   				daily_tour_detail
-  			values(
+  			values
+  			<foreach collection="list" item="item" separator=",">
+  			(
   				0,
   				#{item.tourId},
-  				#{item.placeId},
-  				#{item.placeAddress},
-  				#{item.coordX},
-  				#{item.coordY},
+  				#{item.place_id},
+  				#{item.place_name},
+  				#{item.place_address},
+  				#{item.coord_x},
+  				#{item.coord_y},
   				#{item.index},
-  				#{item.startDateTime},
-  				#{item.stayTime},
+  				#{item.start_datetime},
+  				#{item.stay_time},
   				now(),
   				now(),
   				0,
   				null
   			)
-  		</foreach>
-  		;
+  			</foreach>
+  			;
   	</insert>
   	
   	<insert id="insertPlaceByPlace" parameterType="com.JPlanner.web.entity.tour.Place">
@@ -116,13 +118,14 @@
   			values(
   				0,
   				#{tourId},
-  				#{placeId},
-  				#{placeAddress},
-  				#{coordX},
-  				#{coordY},
+  				#{place_id},
+  				#{place_name},
+  				#{place_address},
+  				#{coord_x},
+  				#{coord_y},
   				#{index},
-  				#{startDateTime},
-  				#{stayTime},
+  				#{start_datetime},
+  				#{stay_time},
   				now(),
   				now(),
   				0,

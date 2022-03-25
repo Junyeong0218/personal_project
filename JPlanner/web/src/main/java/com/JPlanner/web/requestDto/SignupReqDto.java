@@ -14,16 +14,16 @@ public class SignupReqDto {
 	private String username;
 	private String password;
 	private String name;
-	private int pwQuestion;
-	private String pwAnswer;
+	private int pw_question;
+	private String pw_answer;
 	
 	public User toEntity() {
 		return User.builder()
 				   .username(username)
 				   .password(password)
 				   .name(name)
-				   .pwQuestion(pwQuestion)
-				   .pwAnswer(pwAnswer)
+				   .pw_question(pw_question)
+				   .pw_answer(pw_answer)
 				   .build();
 	}
 }

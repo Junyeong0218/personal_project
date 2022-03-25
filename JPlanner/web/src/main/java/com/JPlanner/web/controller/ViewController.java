@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
 public class ViewController {
 	
 	private static String INDEX = "index";
@@ -14,34 +13,28 @@ public class ViewController {
 	private static String USERINFO = "user/userInfo";
 	private static String CHECK_PASSWORD = "user/checkPassword";
 	
-	@GetMapping("main")
+	@GetMapping("/main")
 	public String main() {
 		return MAIN;
 	}
 	
-	@GetMapping("signup")
+	@GetMapping("/signup")
 	public String signup() {
 		return SIGNUP;
 	}
 	
-	@GetMapping("user/checkPassword")
+	@GetMapping("/user/checkPassword")
 	public String checkPassWord() {
 		return CHECK_PASSWORD;
 	}
 	
-	@GetMapping("user/userInfo")
+	@GetMapping("/user/userInfo")
 	public String userInfo() {
 		return USERINFO;
 	}
 
-	@RequestMapping("index")
+	@RequestMapping("/index")
 	public String index() {
-		
-		return INDEX;
-	}
-	
-	@RequestMapping()
-	public String defaultPage() {
 		
 		return INDEX;
 	}

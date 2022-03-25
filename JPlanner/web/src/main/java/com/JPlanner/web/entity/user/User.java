@@ -19,12 +19,12 @@ public class User {
 	private String username;
 	private String password;
 	private String name;
-	private int pwQuestion;
-	private String pwAnswer;
+	private int pw_question;
+	private String pw_answer;
 	private MultipartFile file;
-	private String imgType;
-	private LocalDateTime createDate;
-	private LocalDateTime updateDate;
+	private String image_type;
+	private LocalDateTime create_date;
+	private LocalDateTime update_date;
 	
 	private String role;
 	

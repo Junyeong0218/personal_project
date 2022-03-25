@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface TourRepository {
 
-	public List<TourDetail> getTourSchedulesById(int id, int userId);
+	public List<TourDetail> getTourSchedulesById(int scheduleId, int userId);
 	
 	public int insertTourByTour(Tour tour);
 	public int selectTourIdByTour(Tour tour);

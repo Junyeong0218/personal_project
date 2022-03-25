@@ -1,12 +1,10 @@
 package com.JPlanner.web.controller.restController;
 
 import java.io.IOException;
-import java.util.StringTokenizer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,41 +28,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ModifyUserInfo {
 
-	private AuthService authService;
+	private final AuthService authService;
 	
 	@PostMapping("modifyUserInfo")
-	public int modifyUserInfo(UpdateUserReqDto updateUserInfoDto,
+	public int modifyUserInfo(UpdateUserReqDto UpdateUserReqDto,
 							  @AuthenticationPrincipal PrincipalDetails principalDetails)
 									 throws IOException, ServletException {
 		
 		User user = principalDetails.getUser();
-		updateUserInfoDto.setId(user.getId());
+		UpdateUserReqDto.setId(user.getId());
 		
-		System.out.println(updateUserInfoDto);
+		System.out.println(UpdateUserReqDto);
 		
-		int result = 1;
-		
-		if(updateUserInfoDto.getFile() == null) {
-			result = authService.updateUser(updateUserInfoDto); 
-		} else {
-			String url = new ClassPathResource("/static/images/userinfo/" + user.getUsername()).getPath();
-			
-			StringTokenizer st = new StringTokenizer(updateUserInfoDto.getFile().getContentType(), "/");
-			
-			int tokens = st.countTokens();
-			
-			for(int i=0; i<tokens-1; i++) {
-				st.nextToken();
-			}
-			
-			updateUserInfoDto.setImgType(st.nextToken());
-			System.out.println(updateUserInfoDto.getImgType());
-			
-			result = authService.updateUser(updateUserInfoDto, url);
-		}
+		int result = authService.updateUser(UpdateUserReqDto, principalDetails.getUser());
 		
 		if(result == 1) {
-			user = authService.selectUserById(updateUserInfoDto.getId());
+			user = authService.selectUserById(UpdateUserReqDto.getId());
 			principalDetails.setUser(user);
 		}
 		

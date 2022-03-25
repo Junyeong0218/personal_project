@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/security/tags" %>
+
+<s:authorize access="isAuthenticated()">
+	<s:authentication property="principal" var="principal" />
+</s:authorize>
+
 <!DOCTYPE html>
 <html>
 
@@ -24,14 +30,14 @@
                     </div>
                     <div class="user-info">
                         <div>
-                        	<c:if test="${sessionScope.user.imgType == null}">
+                        	<c:if test="${principal.user.image_type == null}">
                         		<img src="/images/userinfo/profile_image.png">
                         	</c:if>
-                        	<c:if test="${sessionScope.user.imgType != null}">
-                        		<img src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
+                        	<c:if test="${principal.user.image_type != null}">
+                        		<img src="/images/userinfo/${principal.user.username}/profile_image.${principal.user.image_type}">
                         	</c:if>
                         </div>
-                        <span class="username">${sessionScope.user.name} 님</span>
+                        <span class="username">${principal.user.name} 님</span>
                         
                     </div>
                     <div class="menus">
@@ -82,21 +88,21 @@
 				    <div>
 				        <label>
 				            <span>아이디</span>
-				            <span>${sessionScope.user.username}</span>
+				            <span>${principal.user.username}</span>
 				        </label>
 				        <label>
 				            <span>이름</span>
-				            <input type="text" name="name" required autocomplete="off" value="${sessionScope.user.name}">
+				            <input type="text" name="name" required autocomplete="off" value="${principal.user.name}">
 				        </label>
 				        <div class="profile-image">
 				            <span>프로필 이미지</span>
 				            <div>
 				            	<div>
-				            		<c:if test="${sessionScope.user.imgType == null}">
+				            		<c:if test="${principal.user.image_type == null}">
 		                        		<img id="pre-img" src="/images/userinfo/profile_image.png">
 		                        	</c:if>
-		                        	<c:if test="${sessionScope.user.imgType != null}">
-		                        		<img id="pre-img" src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
+		                        	<c:if test="${principal.user.image_type != null}">
+		                        		<img id="pre-img" src="/images/userinfo/${principal.user.username}/profile_image.${principal.user.image_type}">
 		                        	</c:if>
 				            	</div>
 				            	<label for="profile_image">파일 선택</label>
@@ -106,24 +112,24 @@
 				        <label class="question">
 				            <span>비밀번호 찾기 질문</span>
 				            
-				            <select name="question" required>
+				            <select name="pw_question" required>
 				            	
-				            	<c:if test="${sessionScope.user.pwQuestion == 1}"><option value="1" selected>ㅁㄴㅇㄹ</option></c:if>
-				            	<c:if test="${sessionScope.user.pwQuestion != 1}"><option value="1">ㅁㄴㅇㄹ</option></c:if>
+				            	<c:if test="${principal.user.pw_question == 1}"><option value="1" selected>ㅁㄴㅇㄹ</option></c:if>
+				            	<c:if test="${principal.user.pw_question != 1}"><option value="1">ㅁㄴㅇㄹ</option></c:if>
 				                
-				                <c:if test="${sessionScope.user.pwQuestion == 2}"><option value="2" selected>ㅁㄴㄹㅇ</option></c:if>
-				            	<c:if test="${sessionScope.user.pwQuestion != 2}"><option value="2">ㅁㄴㄹㅇ</option></c:if>
+				                <c:if test="${principal.user.pw_question == 2}"><option value="2" selected>ㅁㄴㄹㅇ</option></c:if>
+				            	<c:if test="${principal.user.pw_question != 2}"><option value="2">ㅁㄴㄹㅇ</option></c:if>
 				                
-				                <c:if test="${sessionScope.user.pwQuestion == 3}"><option value="3" selected>ㅁㄴㄹㅇ</option></c:if>
-				            	<c:if test="${sessionScope.user.pwQuestion != 3}"><option value="3">ㅁㄴㄹㅇ</option></c:if>
+				                <c:if test="${principal.user.pw_question == 3}"><option value="3" selected>ㅁㄴㄹㅇ</option></c:if>
+				            	<c:if test="${principal.user.pw_question != 3}"><option value="3">ㅁㄴㄹㅇ</option></c:if>
 				                
-				                <c:if test="${sessionScope.user.pwQuestion == 4}"><option value="4" selected>ㅁㄴㅇㄹ</option></c:if>
-				            	<c:if test="${sessionScope.user.pwQuestion != 4}"><option value="4">ㅁㄴㅇㄹ</option></c:if>
+				                <c:if test="${principal.user.pw_question == 4}"><option value="4" selected>ㅁㄴㅇㄹ</option></c:if>
+				            	<c:if test="${principal.user.pw_question != 4}"><option value="4">ㅁㄴㅇㄹ</option></c:if>
 				            </select>
 				        </label>
 				        <label>
 				            <span>답변</span>
-				            <input type="text" name="answer" required autocomplete="off" value="${sessionScope.user.pwAnswer}">
+				            <input type="text" name="pw_answer" required autocomplete="off" value="${principal.user.pw_answer}">
 				        </label>
 				    </div>
 				    
@@ -139,7 +145,7 @@
 					<div>
 						<label>
 				            <span>아이디</span>
-				            <span>${sessionScope.user.username}</span>
+				            <span>${principal.user.username}</span>
 				        </label>
 				        <label>
 				            <span>비밀번호</span>

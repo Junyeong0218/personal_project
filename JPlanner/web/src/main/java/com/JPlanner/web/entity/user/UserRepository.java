@@ -13,7 +13,6 @@ public interface UserRepository {
 	public User selectUserByUsername(String username);
 	public User selectUserById(int id);
 	
-	public int updateUserByUserWithImage(User user);
-	public int updateUserByUserWithoutImage(User user);
+	public int updateUserByUser(User user);
 	public int updatePasswordByUser(User user);
 }

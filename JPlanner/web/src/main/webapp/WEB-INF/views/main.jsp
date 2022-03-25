@@ -35,11 +35,11 @@
                     </div>
                     <div class="user-info">
 	                        <div>
-	                        	<c:if test="${principal.user.imgType == null}">
+	                        	<c:if test="${principal.user.image_type == null}">
 	                        		<img src="/images/userinfo/profile_image.png">
 	                        	</c:if>
-	                        	<c:if test="${principal.user.imgType != null}">
-	                        		<img src="/images/userinfo/${principal.user.username}/profile_image.${principal.user.imgType}">
+	                        	<c:if test="${principal.user.image_type != null}">
+	                        		<img src="/images/userinfo/${principal.user.username}/profile_image.${principal.user.image_type}">
 	                        	</c:if>
 	                        	
 	                        </div>

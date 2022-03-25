@@ -13,5 +13,25 @@
     "name": "file.path",
     "type": "java.lang.String",
     "description": "A description for 'file.path'"
+  },
+  {
+    "name": "sr er.servlet.context-path",
+    "type": "java.lang.String",
+    "description": "A description for 'sr er.servlet.context-path'"
+  },
+  {
+    "name": "sr er.port",
+    "type": "java.lang.String",
+    "description": "A description for 'sr er.port'"
+  },
+  {
+    "name": "sr er.servlet.encoding.charset",
+    "type": "java.lang.String",
+    "description": "A description for 'sr er.servlet.encoding.charset'"
+  },
+  {
+    "name": "sr er.servlet.encoding.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'sr er.servlet.encoding.enabled'"
   }
 ]}

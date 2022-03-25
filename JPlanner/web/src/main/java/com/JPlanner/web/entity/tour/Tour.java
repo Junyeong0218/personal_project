@@ -16,10 +16,10 @@ public class Tour {
 	private int scheduleId;
 	private String title;
 	private String description;
-	private String searchPriority;
-	private LocalDateTime startDateTime;
-	private LocalDateTime arriveDateTime;
-	private LocalDateTime regDate;
-	private LocalDateTime updateDate;
+	private String search_priority;
+	private LocalDateTime start_datetime;
+	private LocalDateTime arrive_datetime;
+	private LocalDateTime reg_date;
+	private LocalDateTime update_date;
 	private List<Place> places;
 }

@@ -1,7 +1,6 @@
 package com.JPlanner.web.entity.tour;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,14 +13,14 @@ public class Place {
 
 	private int id;
 	private int tourId;
-	private int placeId;
-	private String placeName;
-	private String placeAddress;
-	private double coordX;
-	private double coordY;
+	private int place_id;
+	private String place_name;
+	private String place_address;
+	private double coord_x;
+	private double coord_y;
 	private int index;
-	private LocalDateTime startDateTime;
-	private String stayTime;
-	private LocalDateTime regDate;
-	private LocalDateTime updateDate;
+	private LocalDateTime start_datetime;
+	private String stay_time;
+	private LocalDateTime reg_date;
+	private LocalDateTime update_date;
 }

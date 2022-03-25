@@ -40,14 +40,14 @@ public class TourServiceImpl implements TourService {
 			Place place = new Place();
 			place.setId(tourDetail.getPlaceIndicator());
 			place.setTourId(tourDetail.getPlace_tourId());
-			place.setPlaceId(tourDetail.getPlaceId());
-			place.setPlaceName(tourDetail.getPlaceName());
-			place.setPlaceAddress(tourDetail.getPlaceAddress());
-			place.setCoordX(tourDetail.getCoordX());
-			place.setCoordY(tourDetail.getCoordY());
+			place.setPlace_id(tourDetail.getPlace_id());
+			place.setPlace_name(tourDetail.getPlace_name());
+			place.setPlace_address(tourDetail.getPlace_address());
+			place.setCoord_x(tourDetail.getCoord_x());
+			place.setCoord_y(tourDetail.getCoord_y());
 			place.setIndex(tourDetail.getIndex());
-			place.setStartDateTime(tourDetail.getPlaceStartDateTime());
-			place.setStayTime(tourDetail.getStayTime());
+			place.setStart_datetime(tourDetail.getPlaceStartDateTime());
+			place.setStay_time(tourDetail.getStay_time());
 			
 			if(tour_id.add(tourDetail.getTourId())) {
 				Tour tour = new Tour();
@@ -55,9 +55,9 @@ public class TourServiceImpl implements TourService {
 				tour.setId(tourDetail.getTourId());
 				tour.setTitle(tourDetail.getTitle());
 				tour.setDescription(tourDetail.getDescription());
-				tour.setSearchPriority(tourDetail.getSearchPriority());
-				tour.setStartDateTime(tourDetail.getTourStartDateTime());
-				tour.setArriveDateTime(tourDetail.getTourArriveDateTime());
+				tour.setSearch_priority(tourDetail.getSearch_priority());
+				tour.setStart_datetime(tourDetail.getTourStartDateTime());
+				tour.setArrive_datetime(tourDetail.getTourArriveDateTime());
 				tour.setPlaces(new ArrayList<Place>());
 				
 				tours.add(tour);
@@ -164,17 +164,17 @@ public class TourServiceImpl implements TourService {
 	}
 	
 	private boolean isEqualPlace(Place origin, Place changed) {
-		return Double.compare(origin.getCoordX(), changed.getCoordX()) == 0 &&
-			   Double.compare(origin.getCoordY(), changed.getCoordY()) == 0 &&
-			   origin.getPlaceAddress().equals(changed.getPlaceAddress()) &&
-			   origin.getPlaceId() == changed.getPlaceId() &&
-			   origin.getPlaceName().equals(changed.getPlaceName());
+		return Double.compare(origin.getCoord_x(), changed.getCoord_x()) == 0 &&
+			   Double.compare(origin.getCoord_y(), changed.getCoord_y()) == 0 &&
+			   origin.getPlace_address().equals(changed.getPlace_address()) &&
+			   origin.getPlace_id() == changed.getPlace_id() &&
+			   origin.getPlace_name().equals(changed.getPlace_name());
 	}
 	
 	private boolean isEqualTour(Tour origin, Tour changed) {
-		return origin.getSearchPriority().equals(changed.getSearchPriority()) &&
-			   origin.getStartDateTime().isEqual(changed.getStartDateTime()) &&
-			   origin.getArriveDateTime().isEqual(changed.getArriveDateTime());
+		return origin.getSearch_priority().equals(changed.getSearch_priority()) &&
+			   origin.getStart_datetime().isEqual(changed.getStart_datetime()) &&
+			   origin.getArrive_datetime().isEqual(changed.getArrive_datetime());
 	}
 
 }

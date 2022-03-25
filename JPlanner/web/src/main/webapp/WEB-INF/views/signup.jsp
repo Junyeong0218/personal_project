@@ -40,7 +40,7 @@
                         </label>
                         <label class="question">
                             <span>비밀번호 찾기 질문</span>
-                            <select name="pwQuestion" required>
+                            <select name="pw_question" required>
                                 <option value="1" selected>ㅁㄴㅇㄹ</option>
                                 <option value="2">ㅁㄴㄹㅇ</option>
                                 <option value="3">ㅁㄴㄹㅇ</option>
@@ -49,7 +49,7 @@
                         </label>
                         <label>
                             <span>답변</span>
-                            <input type="text" name="pwAnswer" required autocomplete="off">
+                            <input type="text" name="pw_answer" required autocomplete="off">
                         </label>
                     </div>
                     <div id=btns>

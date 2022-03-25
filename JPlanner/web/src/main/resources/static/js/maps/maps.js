@@ -248,8 +248,9 @@ function addHTMLForTourList(tourList) {
 		placeIndex.push(0);
 		wayPointCnt.push(1);
 		const tour = tourList[i];
-		const startDate = new Date(tour.startDateTime);
-		const arriveDate = new Date(tour.arriveDateTime);
+		console.log(tour);
+		const startDate = new Date(tour.start_datetime);
+		const arriveDate = new Date(tour.arrive_datetime);
 		const year = startDate.getFullYear();
 		const month = String(startDate.getMonth() + 1).padStart(2, "0");
 		const day = String(startDate.getDate()).padStart(2, "0");
@@ -266,7 +267,7 @@ function addHTMLForTourList(tourList) {
 									   <span>${startTime} ~ ${endTime}</span>
 								   </div>
 								   <div class="day-priority">
-									   <span>${tour.searchPriority}</span>
+									   <span>${tour.search_priority}</span>
 								   </div>`;
 		dailyTourList.appendChild(tourContainer);
 		
@@ -298,11 +299,11 @@ function addHTMLForTourList(tourList) {
 				placeContainer.className = "middle-place";
 				placeTexts.innerHTML = `<span>경유지${wayPointCnt[i]++}</span>`;
 			}
-			const startDateTime = new Date(place.startDateTime);
+			const startDateTime = new Date(place.start_datetime);
 			let hour = String(startDateTime.getHours()).padStart(2, "0");
 			let minute = String(startDateTime.getMinutes()).padStart(2, "0");
 			
-			placeTexts.innerHTML += `<span id="${place.placeId}" class="place-name">${place.placeName}</span>`;
+			placeTexts.innerHTML += `<span id="${place.place_id}" class="place-name">${place.place_name}</span>`;
 			if(placeContainer.id == "end-place") {
 				placeTexts.innerHTML += `<div class="times">
 											 <label for="end-time">
@@ -322,9 +323,9 @@ function addHTMLForTourList(tourList) {
 										 	 </label>
 									 	 </div>`;
 			}
-			   placeTexts.innerHTML += `<span class="hidden">${place.placeAddress}</span>
-										<span id="x" class="hidden">${place.coordX}</span>
-										<span id="y" class="hidden">${place.coordY}</span>`;
+			   placeTexts.innerHTML += `<span class="hidden">${place.place_address}</span>
+										<span id="x" class="hidden">${place.coord_x}</span>
+										<span id="y" class="hidden">${place.coord_y}</span>`;
 			placeContainer.appendChild(placeTexts);
 			placeIndex[i] = place.index;
 			placeContainer.innerHTML += `<div class="waypointBtns">
@@ -348,7 +349,7 @@ function addHTMLForTourList(tourList) {
 			
 			if(placeContainer.id != "end-place") {
 				const stayTimeTag = placeContainer.querySelector(".stay-time");
-				const stayTime = String(place.stayTime).split(":");
+				const stayTime = String(place.stay_time).split(":");
 				hour = stayTime[0] * 1;
 				minute = stayTime[1] * 1;
 				if(hour == "00") {
@@ -471,9 +472,9 @@ function collectTourData() {
 			"scheduleId": queryStringObj.id,
 			"title": days[i].querySelector(".day-title").children[0].innerText,
 			"description": days[i].querySelector(".day-title").children[0].innerText,
-			"searchPriority": days[i].querySelector(".day-priority > span").innerText,
-			"startDateTime": tourStartDateTime,
-			"arriveDateTime": tourArriveDateTime,
+			"search_priority": days[i].querySelector(".day-priority > span").innerText,
+			"start_datetime": tourStartDateTime,
+			"arrive_datetime": tourArriveDateTime,
 			"places": []
 		};
 		const scheduler = schedulers[i];
@@ -509,14 +510,14 @@ function collectTourData() {
 			const place_address = place.querySelector("#x").previousElementSibling.innerText.trim();
 			const place_index = place.querySelector(".waypointBtns > div").id;
 			const eachPlace = {
-				"coordX": place_coordX,
-				"coordY": place_coordY,
+				"coord_x": place_coordX,
+				"coord_y": place_coordY,
 				"index": place_index,
-				"placeAddress": place_address,
-				"placeId": place_id,
-				"placeName": place_name,
-				"startDateTime": place_startTime,
-				"stayTime": place_stayTime,
+				"place_address": place_address,
+				"place_id": place_id,
+				"place_name": place_name,
+				"start_datetime": place_startTime,
+				"stay_time": place_stayTime,
 				"tourId": days[i].id
 			};
 			tour.places.push(eachPlace);

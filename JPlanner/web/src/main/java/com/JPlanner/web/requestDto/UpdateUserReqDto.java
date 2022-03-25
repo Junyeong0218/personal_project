@@ -15,18 +15,18 @@ public class UpdateUserReqDto {
 	
 	private int id;
 	private String name;
-	private int question;
-	private String answer;
-	private String imgType;
+	private int pw_question;
+	private String pw_answer;
+	private String image_type;
 	private MultipartFile file;
 	
 	public User toEntity() {
 		return User.builder()
 				   .id(id)
 				   .name(name)
-				   .pwQuestion(question)
-				   .pwAnswer(answer)
-				   .imgType(imgType)
+				   .pw_question(pw_question)
+				   .pw_answer(pw_answer)
+				   .image_type(image_type)
 				   .file(file)
 				   .build();
 	}

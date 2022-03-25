@@ -279,7 +279,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 		
 		if(result == 1) {
 			Schedule insertedSchedule = scheduleRepository.getScheduleBySchedule(schedule);
-			System.out.println(insertedSchedule);
 			
 			return insertedSchedule;
 		}

@@ -12,8 +12,8 @@
 			#{username},
 			#{password},
 			#{name},
-			#{pwQuestion},
-			#{pwAnswer},
+			#{pw_question},
+			#{pw_answer},
 			null,
 			now(),
 			now(),
@@ -58,19 +58,19 @@
 			id = #{id};
 	</select>
 	
-	<update id="updateUserByUserWithImage" parameterType="com.JPlanner.web.entity.user.User">
+	<update id="updateUserByUser" parameterType="com.JPlanner.web.entity.user.User">
 		update
 			user_mst
 		set
 			name = #{name}, 
-			pw_question = #{pwQuestion}, 
-			pw_answer = #{pwAnswer}, 
-			image_type = #{imgType}, 
+			pw_question = #{pw_question}, 
+			pw_answer = #{pw_answer}, 
+			image_type = #{image_type}, 
 			update_date = now() 
 		where 
 			id = #{id};
 	</update>
-	
+<!-- 	
 	<update id="updateUserByUserWithoutImage" parameterType="com.JPlanner.web.entity.user.User">
 		update
 			user_mst
@@ -82,7 +82,7 @@
 			update_date = now() 
 		where 
 			id = #{id};
-	</update>
+	</update> -->
 	
 	<update id="updatePasswordByUser" parameterType="com.JPlanner.web.entity.user.User">
 		update

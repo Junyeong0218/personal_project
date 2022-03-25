@@ -1,7 +1,12 @@
 package com.JPlanner.web.service;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 public class AuthServiceImpl implements AuthService {
 	
 	private final UserRepository userRepository;
-	private final FileService fileService;
 	
 	@Override
 	public int signup(SignupReqDto signupReqDto) {
@@ -41,9 +45,11 @@ public class AuthServiceImpl implements AuthService {
 	public int checkPassword(SigninReqDto signinReqDto) {
 		User user = signinReqDto.toEntityWithUsername();
 		
-		String password = userRepository.checkPasswordbyUsername(user.getUsername());
+		String encodedPassword = userRepository.checkPasswordbyUsername(user.getUsername());
 		
-		return new BCryptPasswordEncoder().matches(signinReqDto.getPassword(), password) ? 1 : 0 ;
+		int result = new BCryptPasswordEncoder().matches(signinReqDto.getPassword(), encodedPassword) ? 1 : 0 ; 
+		
+		return result;
 	}
 	
 	@Override
@@ -61,61 +67,50 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	@Override
-	public int updateUser(UpdateUserReqDto updateUserReqDto) {
-		int result = userRepository.updateUserByUserWithoutImage(updateUserReqDto.toEntity());
+	public int updateUser(UpdateUserReqDto updateUserReqDto, User user) {
+		int result = 0;
 		
-		return result;
-	}
-	
-	@Override
-	public int updateUser(UpdateUserReqDto updateUserReqDto, String url) throws IOException {
-		boolean uploadFlag = fileService.setProfileImage(updateUserReqDto.getFile(), updateUserReqDto.getImgType(), url);
-		int result = -1;
-		
-		if(uploadFlag) {
-			result = userRepository.updateUserByUserWithImage(updateUserReqDto.toEntity());
+		if(updateUserReqDto.getFile() != null) {
+			installProfileImage(updateUserReqDto, user);
 		}
+		result = userRepository.updateUserByUser(updateUserReqDto.toEntity());
 		
 		return result;
 	}
 	
 	@Override
 	public int updatePassword(SigninReqDto signinReqDto) {
+		signinReqDto.setPassword(new BCryptPasswordEncoder().encode(signinReqDto.getPassword()));
 		int result = userRepository.updatePasswordByUser(signinReqDto.toEntityWithId());
 				
 		return result;
 	}
 	
-//	private boolean installProfileImage(MultipartFile file, String extension, String url) {
-//		boolean uploadFlag = false;
-//
-//		String fileName = file.getOriginalFilename();
-//		
-//		File tempFile = new File(url);
-//		if(!tempFile.exists()) {
-//			tempFile.mkdirs();
-//		}
-//		
-//		System.out.println(url);
-//		
-//		InputStream fis = file.getInputStream();
-//		String filePath = url + SEP + "profile_image." + extension;
-//		FileOutputStream fos = new FileOutputStream(filePath);
-//
-//		byte[] buf = new byte[1024];
-//		int size = 0;
-//		while( (size = fis.read(buf)) != (-1) ) {
-//			fos.write(buf, 0, size);
-//		}
-//		
-//		uploadFlag = true;
-//			
-//		fis.close();
-//		fos.close();
-//		
-//		return uploadFlag;
-//		
-//		return false;
-//	}
+	private boolean installProfileImage(UpdateUserReqDto updateUserReqDto, User user) {
+		String username = user.getUsername();
+		String fileName = updateUserReqDto.getFile().getOriginalFilename();
+
+		String imageType = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
+
+		String classPathFolder = new ClassPathResource("src/main/resources/static/images/userinfo/" + username).getPath();
+		String absolutePathFolder = Paths.get(classPathFolder).toAbsolutePath().toString();
+		
+		Path imagePath = Paths.get(absolutePathFolder, "/profile_image." + imageType);
+		
+		File file = new File(absolutePathFolder);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+		
+		try {
+			Files.write(imagePath, updateUserReqDto.getFile().getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		updateUserReqDto.setImage_type(imageType);
+		
+		return true;
+	}
 
 }

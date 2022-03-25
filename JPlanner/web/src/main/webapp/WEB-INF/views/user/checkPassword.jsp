@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/security/tags" %>
+
+<s:authorize access="isAuthenticated()">
+	<s:authentication property="principal" var="principal" />
+</s:authorize>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -22,14 +28,14 @@
                     </div>
                     <div class="user-info">
                         <div>
-                        	<c:if test="${sessionScope.user.imgType == null}">
+                        	<c:if test="${principal.user.image_type == null}">
                         		<img src="/images/userinfo/profile_image.png">
                         	</c:if>
-                        	<c:if test="${sessionScope.user.imgType != null}">
-                        		<img src="/images/userinfo/${sessionScope.user.username}/profile_image.${sessionScope.user.imgType}">
+                        	<c:if test="${principal.user.image_type != null}">
+                        		<img src="/images/userinfo/${principal.user.username}/profile_image.${principal.user.image_type}">
                         	</c:if>
                         </div>
-                        <span class="username">${sessionScope.user.name} 님</span>
+                        <span class="username">${principal.user.name} 님</span>
                         
                     </div>
                     <div class="menus">

@@ -1,5 +1,6 @@
 package com.JPlanner.web.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -26,7 +27,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests()
-			.antMatchers("/main", "/maps", "/user")
+			.antMatchers("/main", "/maps", "/user/**")
 			.authenticated()
 			.anyRequest()
 			.permitAll()
