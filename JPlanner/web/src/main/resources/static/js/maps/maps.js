@@ -687,9 +687,10 @@ function showPlaceInfo(latLng, placeName) {
 
 			$.ajax({
 		   		type: "get",
-		    	url: `https://dapi.kakao.com/v2/local/search/keyword.json?y=${latLng.getLat()}&x=${latLng.getLng()}&sort=accuracy&query=${placeName == null ? address : placeName}`,
+		    	url: `https://dapi.kakao.com/v2/local/search/keyword.json?query=${placeName == null ? address : placeName}&x=${latLng.getLng()}&y=${latLng.getLat()}&sort=accuracy&`,
 		    	headers: { "Authorization": "KakaoAK abd8abba6430208eec39d8f882753415" },
 		    	success: function (data) {
+					console.log(data);
 					const documents = data.documents;
 					createOverlay(latLng, documents, placeName, address);
 		  		},
@@ -1088,44 +1089,76 @@ function adjustWayPointCnt() {
 function searchKeyword() {
 	searchedPlaces.textContent = "";
 	const keyword = searcher.value;
-	$.ajax({
-   		type: "get",
-    	url: `https://dapi.kakao.com/v2/local/search/keyword.json?sort=accuracy&query=${keyword}`,
-    	headers: { "Authorization": "KakaoAK abd8abba6430208eec39d8f882753415" },
-    	success: function (data) {
-			const documents = data.documents;
-			
-			addSearchResult(documents);
-		},
-		error: function (xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
+	const documents = [];
+	let page = 1;
+	let is_end = false;
+	for(let i=0; i<3; i++) {
+		/* ajax는 기본적으로 비동기 방식이다. (async == true)
+		   반복문에서 변수의 증감을 이용한 요청을 하기 위해서는 ajax를 명시적으로 동기로 바꾸어줄 필요가 있다 (async -> false) */
+		$.ajax({
+	   		type: "get",
+	    	url: `https://dapi.kakao.com/v2/local/search/keyword.json`,
+	    	headers: { "Authorization": "KakaoAK abd8abba6430208eec39d8f882753415" },
+	    	async : false,
+	    	data : {
+				"query": keyword,
+				"page": page,
+				"size": 15,
+				"sort": "accuracy"
+			},
+	    	success: function (data) {
+				documents.push(data.documents);
+				
+				is_end = data.meta.is_end; 
+				if(is_end == false) {
+					page++;
+				}
+			},
+			error: function (xhr, status, error) {
+				console.log(xhr);
+				console.log(status);
+				console.log(error);
+			}
+		});
+	}
+	addSearchResult(documents);
 }
 
 function addSearchResult(documents) {
 	for(let i=0; i<documents.length; i++) {
-		const li = document.createElement("li");
-		li.id = documents[i].id;
-		li.className = "searched-place";
-		li.innerHTML = `<div>
-							<a href="${documents[i].place_url}" target="_blank">${documents[i].place_name}</a>
-							<span>${documents[i].address_name}</span>
-						</div>`;
-						
-		const latLng = new kakao.maps.LatLng(documents[i].y, documents[i].x);
-						
-		li.addEventListener("mouseover", function() {
-			moveCenter(latLng);
-		});
-		li.addEventListener("click", function() {
-			showPlaceInfo(latLng, documents[i].place_name);
-			
-			searchedPlaces.textContent = "";
-		});
-		searchedPlaces.appendChild(li);
+		const doc = documents[i];
+		for(let j=0; j<doc.length; j++) {
+			const placeId = doc[j].id;
+			let isExist = false;
+			const list = searchedPlaces.children;
+			for(let k=0; k<list.length; k++) {
+				if(list[k].id == placeId) {
+					isExist = true;
+					break;
+				}
+			}
+			if(isExist == false) {
+				const li = document.createElement("li");
+				li.id = placeId;
+				li.className = "searched-place";
+				li.innerHTML = `<div>
+									<a href="${doc[j].place_url}" target="_blank">${doc[j].place_name}</a>
+									<span>${doc[j].address_name}</span>
+								</div>`;
+								
+				const latLng = new kakao.maps.LatLng(doc[j].y, doc[j].x);
+								
+				li.addEventListener("mouseover", function() {
+					moveCenter(latLng);
+				});
+				li.addEventListener("click", function() {
+					showPlaceInfo(latLng, doc[j].place_name);
+					
+					searchedPlaces.textContent = "";
+				});
+				searchedPlaces.appendChild(li);
+			}
+		}
 	}
 }
 
@@ -1277,16 +1310,17 @@ function loadNavi(scheduler) {
 		"origin": origin,
 		"destination": destination,
 		"priority": priority,
-		"car_type": 1,
-		"car_fuel": "GASOLINE"
+		"alternatives": true
 	} : {
 		"origin": origin,
 		"destination": destination,
 		"waypoints": wayPoints,
 		"priority": priority,
-		"car_type": 1,
-		"car_fuel": "GASOLINE"
+		"alternatives": true
 	};
+	
+	/*"car_type": 1,
+	"car_fuel": "GASOLINE"*/
 	
 	const url = "https://apis-navi.kakaomobility.com/v1/waypoints/directions";
 	
@@ -1306,7 +1340,9 @@ function loadNavi(scheduler) {
 			
 			const sections = data.routes[0].sections;
 			
-			showSections(sections, placeNames);
+			console.log(data);
+			
+			/*showSections(sections, placeNames);*/
 		},
 		error: function (xhr, status, error) {
 			console.log(xhr);
